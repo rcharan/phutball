@@ -1,5 +1,7 @@
 from .config import board_rows, board_cols, board_letters
 
+import re
+
 class Location:
   '''Abstracts a location on the board
   
@@ -95,6 +97,7 @@ class Location:
     self._letter_index = index %  board_cols
     self._number_index = index // board_cols
 
+  @property
   def flat_index(self):
     '''Inverts the constructor from flat_index'''
     return self.letter_index + board_cols * self.number_index

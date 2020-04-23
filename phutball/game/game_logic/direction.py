@@ -25,11 +25,7 @@ class Direction:
         
   def __add__(self, obj):
     try:
-      return Location(
-        (self.delta_x + obj.letter_index,
-         self.delta_y + obj.number
-        )
-      )
+      return Location(self.delta_x + obj.letter_index, self.delta_y + obj.number)
     except ValueError: # Location does not exist
       return None
     

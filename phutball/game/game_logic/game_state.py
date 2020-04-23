@@ -1,7 +1,7 @@
 from .location       import Location
 from .location_state import empty, player, ball, LocationState
-from .direction      import directions
 from .config         import board_rows, board_cols
+from .jump           import Jump
 
 
 # Initial state: ball is in the middle
@@ -27,7 +27,7 @@ class GameState:
   place           : place a new player on the board (one of two legal move types)
   remove          : for undoing actions
   get_legal_jumps : A list of allowed jump strings
-  make_jump       : Make a jump represented by an allowed jump string
+  jump             : Make a jump represented by an allowed jump string
   undo_jump       : for undoing actions
   '''
   
@@ -48,7 +48,7 @@ class GameState:
         self.ball_loc   = Location(self.ball_loc)
 
   def __getitem__(self, loc):
-    return self.space_array(loc.flat_index)
+    return self.space_array[loc.flat_index]
 
   def __setitem__(self, loc, value):
     self.space_array[loc.flat_index] = value
@@ -73,7 +73,7 @@ class GameState:
       return None
     return self.ball_loc.number <= 1
 
-  def _validate_user_input(loc):
+  def _validate_user_input(self, loc):
     '''Returns a Location object on success
     (a location on the board),
     raises on failure'''
@@ -89,8 +89,10 @@ class GameState:
     if self[loc] is not empty:
       raise ValueError('Illegal Move')
 
-    self[loc] = player
-    return self
+    out = self.copy()
+
+    out[loc] = player
+    return out
   
   def remove(self, loc):
     loc = self._validate_user_input(loc)
@@ -108,86 +110,47 @@ class GameState:
       self[self.ball_loc] = ball
         
   def get_legal_jumps(self):
-    return [jump_str for jump_str, _ in self._get_legal_jumps()]
+    return [str(jump) for jump in Jump.get_legal_jumps(self)]
 
-  def make_jump(self, jump_str):
-    for allowed_str, new_state in self._get_legal_jumps():
-      if jump_str == allowed_str:
-        return new_state
-    raise ValueError('Jump not allowe')
+
+  def jump(self, jump_str):
+    allowed_jumps = Jump.get_legal_jumps(self)
+    if jump_str not in allowed_jumps:
+      raise ValueError('Jump not allowed')
+    else:
+      jump = allowed_jumps[allowed_jumps.index(jump_str)]
+      return jump.new_state
 
   def undo_jump(self, jump_str):
     raise NotImplementedError('Not implemented yet')
 
-  def _get_legal_jumps(self):
-    '''Returns a list of allowed jumps. Each list of type
-    ([jump_destination], GameState) with the locations the ball traverses
-    and the new state obtained
-    '''
-    legal_jumps = (self._get_legal_jumps_from_rest(direction) for direction in directions)
-    legal_jumps = sum(legal_jumps, [])
-    legal_jumps = [(
-      '-'.join(map(str, jump_seq)),
-      new_state
-    ) for jump_seq, new_state in legal_jumps]
-    return legal_jumps
-  
-  def _get_legal_jumps_from_rest(self, direction):
-    target_loc = self.ball_loc + direction
-    if not target_loc.on_board:
-      return []
-    elif self[target_loc] is empty:
-      return []
-    elif self[target_loc] is player:
-      new_state = self.copy()
-      new_state.move_ball(target_loc)
-      return new_state._get_legal_jumps_from_motion(direction)
-
-  def _get_legal_jumps_from_motion(self, direction, mid_jump = False):
-    target_loc = self.ball_loc + direction
-
-    # Case 1: Victory by jumping off the board
-    if not target_loc.on_board and target_loc.on_goal_line:
-      new_state = self.copy()
-      new_state.move_ball(target_loc)
-      return [([target_loc], new_state)]
-
-    # Case 2: failed jump
-    elif not target_loc.on_board:
-      return []
-
-    # Otherwise, proceed with the jump
-    else:
-
-      # Advance the piece
-      new_state = self.copy()
-      new_state.move_ball(target_loc)
-
-      # Case 3: Jump must continue
-      if self[target_loc] is player:
-        return new_state._get_legal_jumps_from_motion(direction)
-
-      # Case 4: Can consider new jumps, or no jump at all
-      elif self[target_loc] is empty:
-
-        out = [([target_loc], new_state)]
-
-        for future_locations, future_state in new_state.get_legal_jumps():
-          out.append(
-            ([target_loc] + future_locations, future_state)
-          )
-        return out
-
-  def __iter__(self):
+  def _iterable(self, process_item = None):
     '''Returns and iterable of iterables.
     Outer loop goes by row, inner loop by
-    columns'''
+    columns
+
+    Parameters
+    ----------
+
+    process_row: None or callable. If callable, it is passed
+    a Location object as well as the datum in question.
+
+    '''
     char_array = self.char_array
     out = []
     for _ in range(board_rows):
-      out.append(char_array[-board_cols:])
+      row = char_array[-board_cols:]
+      if process_item is not None:
+        flat_indices = range(len(char_array) - board_cols, len(char_array))
+        flat_indices = map(Location, flat_indices)
+        row = [process_item(loc, datum) for loc, datum in zip(flat_indices, row)]
+      out.append(row)
       char_array = char_array[:-board_cols]
     return iter(out)
 
+  def __iter__(self):
+    processor = lambda loc, datum : (str(loc), datum)
+    return self._iterable(processor)
+
   def __repr__(self):
-    return '\n'.join(iter(self))
+    return '\n'.join(self._iterable())
