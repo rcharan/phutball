@@ -1,0 +1,9 @@
+<table style='width:100%'>
+	{% for row in board.game_state %}	
+	<tr>
+		{% for col in row %}
+			<th>{{ col }}</th>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>

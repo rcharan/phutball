@@ -1,0 +1,6 @@
+<h1>Currently Active Games</h1>
+<ul>
+{% for board in boards %}
+    <li><a href = "{% url 'game' board.game_id %}">{{ board.game_id }}</a></li>
+{% endfor %}
+</ul>
