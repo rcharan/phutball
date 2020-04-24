@@ -2,6 +2,7 @@ import config from './config'
 
 class Location {
 	constructor(flatIndex) {
+		console.log('Instantiated')
 		this.letterIndex  = flatIndex % config.cols;
 		this.numberIndex  = (flatIndex - this.letterIndex) / config.cols;
 		this.number       = config.rows - this.numberIndex;
@@ -9,12 +10,14 @@ class Location {
 	};
 
 	static fromVector(letterIndex, numberIndex) {
-		const flatIndex = letterIndex + numberIndex * config.cols;
-		var out = new Location(flatIndex);
-		if (out.exists) {
-			return out
-		} else {
+		console.log(letterIndex, numberIndex)
+		if ((numberIndex < -1) || (config.rows <  numberIndex) ||
+			(letterIndex <  0) || (config.cols <= letterIndex)) {
+			console.log('DNE')
 			return null
+		} else {
+			const flatIndex = letterIndex + numberIndex * config.cols;
+			return new Location(flatIndex)
 		}
 	};
 
@@ -34,12 +37,6 @@ class Location {
 		return (this.number <= 1) || (config.rows <= this.number)
 	};
 
-	get exists() {
-		return (
-			 (0 <= this.number)       && (this.number <= config.rows + 1) 
-		  && (0 <= this.letterIndex) && (this.letterIndex < config.cols)
-		)
-	};
 
 	get atTopGoalline() {
 		return this.number >= config.rows

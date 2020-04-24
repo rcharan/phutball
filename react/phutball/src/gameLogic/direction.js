@@ -19,6 +19,7 @@ class Direction {
 	}
 
 	add(loc) {
+		console.log('parent', loc.toString(), loc.letterIndex, loc.numberIndex)
 		return (Location.fromVector(
 			loc.letterIndex + this.delta_x,
 			loc.numberIndex + this.delta_y)
