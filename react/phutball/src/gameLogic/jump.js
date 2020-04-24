@@ -26,6 +26,10 @@ class Jump {
 
 	static getLegalJumps(boardState) {
 		const options  = directions.map(direction => Jump._fromRest(boardState, direction))
+		if (options.reduce((left, right) => left.concat(right)).includes(undefined)) {
+			console.log('cry')
+			Jump._fromRest(boardState, directions[6])
+		}
 		return options.reduce((left, right) => left.concat(right))
 	}
 
@@ -67,18 +71,19 @@ class Jump {
 		var nextState = boardState.copy()
 		nextState._moveBall(targetLoc)
 
-		// If the target is occupied, the jump must continue
-		if (previousOccupant === player) {
-			return Jump._fromMotion(nextState, direction)
-		} 
-
-		// If the target is empty, land! And then consider more jumps
-		else if (previousOccupant === empty) {
+		// If jumping to the goalline or the target is empty, land!
+		//  And then consider more jumps
+		if (!(targetLoc.onBoard) || (previousOccupant === empty)) {
 			const jump = new Jump(targetLoc, nextState);
 			var out = [jump];
 			Jump.getLegalJumps(nextState).forEach(nextJump => out.push(jump.prependTo(nextJump)))
 			return out
 		}
+
+		// If the target is occupied, the jump must continue
+		else if (previousOccupant === player) {
+			return Jump._fromMotion(nextState, direction)
+		} 
 
 	}
 

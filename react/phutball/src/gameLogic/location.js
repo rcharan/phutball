@@ -3,6 +3,10 @@ import config from './config'
 class Location {
 	constructor(flatIndex) {
 		this.letterIndex  = flatIndex % config.cols;
+		// Deal with negatives correctly
+		if (this.letterIndex < 0) {
+			this.letterIndex = this.letterIndex + config.cols
+		};
 		this.numberIndex  = (flatIndex - this.letterIndex) / config.cols;
 		this.number       = config.rows - this.numberIndex;
 		this.flatIndex    = flatIndex

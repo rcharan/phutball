@@ -51,10 +51,10 @@ class BoardState {
     return this.spaceArray[flatIndex] === empty
   };
 
-  place(loc) {
-    if (this.isLegalPlacement(loc)) {
+  place(flatIndex) {
+    if (this.isLegalPlacement(flatIndex)) {
       var   newBoard = this.copy();
-      const placeLoc = new Location(loc)
+      const placeLoc = new Location(flatIndex)
       newBoard.setSpace(placeLoc, player);
       return ({
        board    : newBoard,
