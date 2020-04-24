@@ -16,7 +16,7 @@ class Jump {
 	}
 
 	toString() {
-		return this.path.map(loc => loc.toString()).join('-')
+		return '*'+this.path.map(loc => loc.toString()).join('-')
 	}
 
 	prependTo(nextJump) {

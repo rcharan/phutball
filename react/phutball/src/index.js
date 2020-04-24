@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+
 import { BoardState, initialState, initialBallLoc } from './gameLogic/boardState'
-import { empty, player, ball } from './gameLogic/locationState'
+import Board from './components/board'
+import JumpList from './components/jump'
+import History from './components/history'
 
 class Game extends React.Component {
 	constructor(props) {
@@ -11,7 +14,8 @@ class Game extends React.Component {
 		this.state = {
 			board   : initialBoard,
 			xIsNext : true,
-			history : [initialBoard]
+			history : [{moveStr : 'Reset', board : initialBoard}],
+			moveNum : 1 // Number of move about to be made, 0 is start-of-game
 		};
 	}
 
@@ -22,7 +26,8 @@ class Game extends React.Component {
 		this.setState({
 			board   : moveInfo.board,
 			xIsNext : !this.state.xIsNext,
-			history : this.state.history.concat([moveInfo]),
+			history : this.state.history.slice(0, this.state.moveNum).concat([moveInfo]),
+			moveNum : this.state.moveNum + 1
 		})
 	}
 
@@ -34,6 +39,16 @@ class Game extends React.Component {
 	handleJump(jumpStr) {
 		const moveInfo = this.state.board.jump(jumpStr);
 		this.doMove(moveInfo)
+	}
+
+	handleHistory(moveNum) {
+		console.log(moveNum, this.state.history)
+		this.setState({
+			board   : this.state.history[moveNum].board,
+			xIsNext : (moveNum % 2 === 0),
+			history : this.state.history,
+			moveNum : moveNum + 1
+		})
 	}
 
 	render() {
@@ -53,6 +68,12 @@ class Game extends React.Component {
 							onJump     = {(jumpStr) => this.handleJump(jumpStr)}
 						/>
 					</div>
+					<div className = "history"><h1>History</h1><br/>
+						<History
+							history    = {this.state.history}
+							onClick    = {(moveNum) => this.handleHistory(moveNum)}
+						/>
+					</div>
 				</div>
 			</div>
 
@@ -61,79 +82,6 @@ class Game extends React.Component {
 	}
 }
 
-class JumpList extends React.Component {
-	render() {
-		return (
-			<ol>
-			{this.props.boardState.getLegalJumps().map(jumpStr => 
-				<li key={jumpStr}>
-				<JumpButton
-					str     = {jumpStr}
-					onClick = {() => this.props.onJump(jumpStr)}
-				/></li>
-			)}
-			</ol>
-		)
-	}
 
-}
-
-class JumpButton extends React.Component {
-	render () {
-		return (
-		    <button 
-		    	className="jump"
-		    	onClick={this.props.onClick}
-		    	key={this.props.str}
-		    >
-		    	{this.props.str}
-		    </button>
-		)
-	}
-}
-
-class Board extends React.Component {
-	renderSquare(index, contents) {
-		return (
-			<Square 
-				contents = {contents}
-				onClick  = {() => this.props.onPlace(index)}
-				index    = {index}
-			/>
-		)
-	}
-
-	renderRow(rowArray) {
-		return (rowArray.map(data => this.renderSquare(data.index, data.contents)))
-	}
-
-	render() {
-		return (this.props.boardState.boardArray.map(row => 
-			<div className="board-row">
-				{this.renderRow(row)}
-			</div>
-		))
-	}
-}
-
-function Square(props) {
-	if (props.contents === empty) {
-		return (
-		    <button className="square" onClick={props.onClick} key={props.index}></button>
-		)	
-	} else if (props.contents === player) {
-		return (
-		    <button className="square" onClick={props.onClick} key={props.index}>
-		    	<div className="player"/>
-		    </button>
-		)
-	} else if (props.contents === ball) {
-			return (
-		    <button className="square" onClick={props.onClick} key={props.index}>
-		    	<div className="ball"/>
-		    </button>
-		)
-	}
-}
 
 ReactDOM.render(<Game />, document.getElementById("root"));
