@@ -71,15 +71,15 @@ class BoardState {
   }
 
   jump(jumpStr) {
-    const legalJumps = Jump.getLegalJumps(this)
-    for (let jump in legalJumps) {
-      if (jump.toString() === jumpStr) {
-        return ({
-          board    : jump.endState,
-          moveStr  : jump.toString()
-        })
-      }
+    const legalJumps    = Jump.getLegalJumps(this)
+    const matchingJumps = legalJumps.filter(jump => (jump.toString() === jumpStr))
+    if (matchingJumps.length > 0) {
+      return ({
+        board    : matchingJumps[0].endState,
+        moveStr  : matchingJumps[0].toString()
+      })
     }
+    console.log('sigh')
 
     return null
 
