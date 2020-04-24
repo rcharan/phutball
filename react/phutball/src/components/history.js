@@ -20,25 +20,28 @@ class History extends React.Component {
 			rows.push(history.slice(index + 1, index + 3))
 		};
 
-		console.log(rows)
-
 		// Render JSX
 		return (
 			<>
 			<table>
+				<thead>
 				<tr>
 					<th/>
 					<th>X</th>
 					<th>O</th>
 				</tr>
+				</thead>
+				<tbody>
 				{rows.map((historyArray, index) => 
 					<HistoryRow
 						rowNum  = {index + 1}
 						items   = {historyArray}
 						onClick = {this.props.onClick}
+						key     = {index + 1}
 					/>
 					)
 				}
+				</tbody>
 			</table>
 			<HistoryButton
 				onClick = {this.props.onClick}
@@ -56,12 +59,13 @@ class HistoryRow extends React.Component {
 	render() {
 		return (
 			<tr key = {this.props.rowNum}>		
-			<td><bold>{this.props.rowNum}.</bold></td>
+			<td><b>{this.props.rowNum}.</b></td>
 			{this.props.items.map(item => 
 				<HistoryButton
 					onClick = {this.props.onClick}
 					moveNum = {item.moveNum}
 					moveStr = {item.moveStr}
+					key     = {item.moveNum}
 				/>
 			)}
 			</tr>
@@ -73,13 +77,13 @@ class HistoryRow extends React.Component {
 class HistoryButton extends React.Component {
 	render() {
 		return (
-			<th><button
+			<td><button
 				className = "historyButton"
 				onClick   = {() => this.props.onClick(this.props.moveNum)}
 				key       = {this.props.moveNum}
 			>
 				{this.props.moveStr}
-			</button></th>
+			</button></td>
 		)	
 	}
 }

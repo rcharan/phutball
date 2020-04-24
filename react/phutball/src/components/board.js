@@ -1,5 +1,4 @@
 import React from 'react';
-import { BoardState, initialState, initialBallLoc } from '../gameLogic/boardState'
 import { empty, player, ball } from '../gameLogic/locationState'
 
 class Board extends React.Component {
@@ -9,6 +8,7 @@ class Board extends React.Component {
 				contents = {contents}
 				onClick  = {() => this.props.onPlace(index)}
 				index    = {index}
+				key      = {index}
 			/>
 		)
 	}
@@ -18,8 +18,8 @@ class Board extends React.Component {
 	}
 
 	render() {
-		return (this.props.boardState.boardArray.map(row => 
-			<div className="board-row">
+		return (this.props.boardState.boardArray.map((row, numberIndex) => 
+			<div className="board-row" key={numberIndex}>
 				{this.renderRow(row)}
 			</div>
 		))
@@ -29,17 +29,17 @@ class Board extends React.Component {
 function Square(props) {
 	if (props.contents === empty) {
 		return (
-		    <button className="square" onClick={props.onClick} key={props.index}></button>
+		    <button className="square" onClick={props.onClick}></button>
 		)	
 	} else if (props.contents === player) {
 		return (
-		    <button className="square" onClick={props.onClick} key={props.index}>
+		    <button className="square" onClick={props.onClick}>
 		    	<div className="player"/>
 		    </button>
 		)
 	} else if (props.contents === ball) {
 			return (
-		    <button className="square" onClick={props.onClick} key={props.index}>
+		    <button className="square" onClick={props.onClick}>
 		    	<div className="ball"/>
 		    </button>
 		)
