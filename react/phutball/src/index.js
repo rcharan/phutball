@@ -42,7 +42,6 @@ class Game extends React.Component {
 	}
 
 	handleHistory(moveNum) {
-		console.log(moveNum, this.state.history)
 		this.setState({
 			board   : this.state.history[moveNum].board,
 			xIsNext : (moveNum % 2 === 0),

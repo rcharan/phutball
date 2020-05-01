@@ -26,10 +26,6 @@ class Jump {
 
 	static getLegalJumps(boardState) {
 		const options  = directions.map(direction => Jump._fromRest(boardState, direction))
-		if (options.reduce((left, right) => left.concat(right)).includes(undefined)) {
-			console.log('cry')
-			Jump._fromRest(boardState, directions[6])
-		}
 		return options.reduce((left, right) => left.concat(right))
 	}
 

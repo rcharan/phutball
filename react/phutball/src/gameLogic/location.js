@@ -1,24 +1,29 @@
 import config from './config'
 
 class Location {
-	constructor(flatIndex) {
-		this.letterIndex  = flatIndex % config.cols;
-		// Deal with negatives correctly
-		if (this.letterIndex < 0) {
-			this.letterIndex = this.letterIndex + config.cols
-		};
-		this.numberIndex  = (flatIndex - this.letterIndex) / config.cols;
-		this.number       = config.rows - this.numberIndex;
-		this.flatIndex    = flatIndex
+
+	constructor(flatIndex, letterIndex, numberIndex) {
+		// Pass either: flatIndex solely, or null, letterIndex, numberIndex
+		if (flatIndex === null) {
+			this.numberIndex = numberIndex
+			this.letterIndex = letterIndex
+			this.flatIndex   = numberIndex + letterIndex * config.cols;
+
+		} else {
+			// Constructor only for the case of on-board point
+			this.numberIndex  = flatIndex % config.cols;
+			this.letterIndex  = (flatIndex - this.numberIndex) / config.cols;
+			this.flatIndex    = flatIndex
+		}
+		this.number      = this.numberIndex +1
 	};
 
 	static fromVector(letterIndex, numberIndex) {
-		if ((numberIndex < -1) || (config.rows <  numberIndex) ||
-			(letterIndex <  0) || (config.cols <= letterIndex)) {
+		if ((numberIndex < -1) || (config.cols <  numberIndex) ||
+			(letterIndex <  0) || (config.rows <= letterIndex)) {
 			return null
 		} else {
-			const flatIndex = letterIndex + numberIndex * config.cols;
-			return new Location(flatIndex)
+			return new Location(null, letterIndex, numberIndex)
 		}
 	};
 
@@ -31,16 +36,16 @@ class Location {
 	};
 
 	get onBoard() {
-		return (1 <= this.number) && (this.number <= config.rows)
+		return (1 <= this.number) && (this.number <= config.cols)
 	};
 
 	get onGoalLine() {
-		return (this.number <= 1) || (config.rows <= this.number)
+		return (this.number <= 1) || (config.cols <= this.number)
 	};
 
 
-	get atTopGoalline() {
-		return this.number >= config.rows
+	get atRightGoalline() {
+		return this.number >= config.cols
 	};
 }
 

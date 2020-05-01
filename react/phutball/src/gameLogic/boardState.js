@@ -43,7 +43,7 @@ class BoardState {
     if (!this.gameOver) {
       return null
     } else {
-      return this.ballLoc.atTopGoalline
+      return this.ballLoc.atRightGoalline
     }
   };
 

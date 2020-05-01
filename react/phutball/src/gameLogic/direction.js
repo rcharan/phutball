@@ -20,12 +20,15 @@ class Direction {
 
 	add(loc) {
 		return (Location.fromVector(
-			loc.letterIndex + this.delta_x,
-			loc.numberIndex + this.delta_y)
-		)
+			loc.letterIndex + this.delta_y,
+			loc.numberIndex + this.delta_x
+		))
 	}
 }
 
+
+// Should refactor to
+// const directions = [1,2,3,4,6,7,8,9].map(num => new Direction(num))
 var directions = Array(8);
 
 for (var i = 0; i < 8; i ++) {
