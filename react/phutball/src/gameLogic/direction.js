@@ -27,12 +27,6 @@ class Direction {
 }
 
 
-// Should refactor to
-// const directions = [1,2,3,4,6,7,8,9].map(num => new Direction(num))
-var directions = Array(8);
-
-for (var i = 0; i < 8; i ++) {
-	directions[i] = new Direction([1,2,3,4,6,7,8,9][i])
-}
+const directions = [1,2,3,4,6,7,8,9].map(num => new Direction(num))
 
 export default directions

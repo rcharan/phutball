@@ -108,9 +108,6 @@ class BoardState {
     return out
   };
 
-  // TO DO: Implement Jumps
-
-
 };
 
 export {BoardState, initialState, initialBallLoc}
