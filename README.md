@@ -14,9 +14,8 @@ Gameplay instructions:
 - Click on a move in the "History" section to go to the state after that move was made.
 
 Notation:
-- The columns are lettered A-B-C-D-E-F-G-H-J-K-L-M-N-O-P (nota bene: there is no "I" column: this is a team sport!) from left to right.
-- The rows are numbered 1-19 from bottom to top. The ball may additionally move to rows 0 or 20, not shown on the board view presently. If the ball ends a move there, the game is over. (the game is also over if the ball ends on rows 1 or 19).
-- The cell letterings and numbers are currently not shown (sorry)
+- The rows are lettered A-B-C-D-E-F-G-H-J-K-L-M-N-O-P (nota bene: there is no "I" column: this is a team sport!) from left to right.
+- The columns are numbered 1-19 from left to right. The ball may additionally move to columns 0 or 20, not shown on the board view presently. If the ball ends a move there, the game is over. (the game is also over if the ball ends on rows 1 or 19).
 - The placement of a player is denoted as the letter and number of the cell into which it was placed (for example H13).
 - A jump is indicated by the sequence of cells through which the ball moves, in order.
 

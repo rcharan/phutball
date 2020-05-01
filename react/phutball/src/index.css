@@ -33,6 +33,21 @@ ol, ul {
   position: relative;
 }
 
+.label-square {
+  color: #999;
+  background: #fff;
+  float: left;
+  font-size: 16px;
+  line-height: 34px;
+  height: 32px;
+  width: 31px;
+  margin: 1px;
+  padding: 0px;
+  border: 0px;
+  text-align: center;
+  position: relative;
+}
+
 .square:focus {
   outline: none;
 }
