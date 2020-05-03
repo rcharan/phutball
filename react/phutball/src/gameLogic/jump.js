@@ -47,6 +47,11 @@ class Jump {
 			return []
 		}
 
+		// No jumping from the off-board goal-line
+		else if (!boardState.ballLoc.onBoard) {
+			return []
+		}
+
 		else {
 			var intermediateState = boardState.copy()
 			intermediateState._moveBall(targetLoc)
