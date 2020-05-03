@@ -14,11 +14,11 @@ class Board extends React.Component {
 		)
 	}
 
-	renderRow(rowArray, letterIndex) {
-		console.log(letterIndex, config.letters[letterIndex])
+	renderRow(rowArray, rowIndex) {
+		console.log(rowIndex, config.letters[rowIndex])
 		return (
-
-		[<div className="label-square">{config.letters[letterIndex]}</div>].concat(
+			[].concat(
+			[<div className="label-square">{config.letters[rowIndex]}</div>],
 			rowArray.map(data => this.renderSquare(data.index, data.contents)),
 			[<div className="label-square"></div>]
 		))
@@ -26,17 +26,19 @@ class Board extends React.Component {
 	}
 
 	renderColLabels() {
-		const colLabels = [''].concat(
+		const colLabels = [].concat(
+			[''],
 			Array(config.cols).fill().map((_, i) => i + 1),
 			['']
 		)
+		
 		return (
 			<div className="board-row">	
-			{colLabels.map(i =>
-				<div className="label-square">
-					{i}
-				</div>
-			)}
+				{colLabels.map(i =>
+					<div className="label-square">
+						{i}
+					</div>
+				)}
 			</div>
 		)
 	}
@@ -45,9 +47,9 @@ class Board extends React.Component {
 		return (
 			[
 				this.renderColLabels(),
-				this.props.boardState.boardArray.map((row, letterIndex) => 
-					<div className="board-row" key={letterIndex}>
-						{this.renderRow(row, letterIndex)}
+				this.props.boardState.boardArray.map((row, rowIndex) => 
+					<div className="board-row" key={rowIndex}>
+						{this.renderRow(row, rowIndex)}
 					</div>),
 				this.renderColLabels()
 			]
