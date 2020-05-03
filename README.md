@@ -6,7 +6,7 @@ Reinforcement Learning for Phutball (in honor of John Conway). See below for the
 
 This project is currently in pre-alpha. Phutball is a 2-player game that you can currently play locally in your browser. There is currently no AI/Bot to play against (coming soon!). You can find the rules on [wikipedia](https://en.wikipedia.org/wiki/Phutball). The rules are (mostly) enforced by the react app which you can play locally in your browser (see installation below). (They are also enforced by the Django app, but it's ugly, don't do it).
 
-To install the react app: Clone the repository and install the [node package manager](https://www.npmjs.com/get-npm) (npm). Navigate to the react/phutball directory in your terminal. Then run "npm start". A browser window should open with the default location for the node.js server (http://localhost:3000/). If there are any troubles, you may need to change the port (3000 by default). The app is tested on Chrome only.
+To install the react app: Clone the repository and install the [node package manager](https://www.npmjs.com/get-npm) (npm). Navigate to the react directory in your terminal. Then run "npm install" to install. After installtion, run with "npm start" from the same directory. A browser window should open with the default location for the node.js server (http://localhost:3000/). If there are any troubles, you may need to change the port (3000 by default). The app is tested on Chrome only.
 
 Gameplay instructions:
 - Click on a cell to place a player.
@@ -22,3 +22,5 @@ Notation:
 Caveats
 - The game does not currently check whether the game is over, so you will have to make that determination yourself.
 
+Trouble Shooting
+- On "npm start" if you get "Error getaddrinfo ENOTFOUND" try running "unset HOST" first
