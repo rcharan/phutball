@@ -1,7 +1,15 @@
 import React from 'react';
-import { empty, player, ball } from '../gameLogic/locationState'
+import { player } from '../gameLogic/locationState'
 import config from '../gameLogic/config'
+import Square from './square'
+import uiConfig from './config'
 
+
+/*****************************************************************************
+*
+* Utilities
+*
+*****************************************************************************/
 
 function map2DArray(array, func) {
 	return array.map((row, i) => row.map((cell, j) => func(cell, i, j)))
@@ -10,6 +18,12 @@ function map2DArray(array, func) {
 function bracketArray(array, left, right) {
 	return [left, ...array, right]
 }
+
+/*****************************************************************************
+*
+* Construction/Standardization of data for squares
+*
+*****************************************************************************/
 
 function leftRowLabel(rowIndex) {
 	return {
@@ -65,6 +79,12 @@ function boardCellData(cellChar, row, col) {
 	}
 }
 
+/*****************************************************************************
+*
+* Board: constructs the array of squares with appropriate data and passes
+*
+*****************************************************************************/
+
 class Board extends React.Component {
 
 	// Adds labels around the edge of the board
@@ -96,9 +116,10 @@ class Board extends React.Component {
 
 	render() {
 		return (
+			<>
 			<svg
-				width  = {(config.cols + 2)*35}
-				height = {(config.rows + 2)*35}
+				width  = {(config.cols + 2)*uiConfig.squareSize}
+				height = {(config.rows + 2)*uiConfig.squareSize}
 			>
 				{
 					map2DArray(this.getSquareData(), squareData => 
@@ -111,25 +132,11 @@ class Board extends React.Component {
 					)
 				}
 			</svg>
+			<div>{this.props.jumpMouseOver} is being moused over!</div>
+			</>
 		)
 
 	}
-}
-
-		// 	// x = {this.props.col / (config.cols + 2)}%
-		// 	// y = {this.props.row / (config.rows + 2)}%
-function Square(props) {
-	console.log(props)
-	return (
-		<svg 
-			x = {props.col * 35}
-			y = {props.row * 35}
-			width  = "35"
-			height = "35"
-		>
-			<circle cx="50%" cy="50%" r="30%" stroke="#1c87c9" stroke-width="4" fill="lightgray"/>
-		</svg>
-	)
 }
 
 

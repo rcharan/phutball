@@ -73,14 +73,13 @@ class HistoryRow extends React.Component {
 	}
 }
 
-
 class HistoryButton extends React.Component {
 	render() {
 		return (
 			<td><button
-				className = "historyButton"
-				onClick   = {() => this.props.onClick(this.props.moveNum)}
-				key       = {this.props.moveNum}
+				className   = "historyButton"
+				onClick     = {() => this.props.onClick(this.props.moveNum)}
+				key         = {this.props.moveNum}
 			>
 				{this.props.moveStr}
 			</button></td>
