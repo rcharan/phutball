@@ -3,7 +3,6 @@ import { BoardState, initialState, initialBallLoc } from '../gameLogic/boardStat
 import Board from './board'
 import JumpList from './jump'
 import History from './history'
-import Location from '../gameLogic/location'
 
 class Game extends React.Component {
 	constructor(props) {
