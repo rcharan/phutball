@@ -2,9 +2,10 @@ import directions from './direction'
 import { empty, player } from './locationState'
 
 class Jump {
-	constructor(path, endState) {
-		this._path    = path
-		this.endState = endState
+	constructor(path, endState, removedLocations) {
+		this._path            = path
+		this.endState         = endState
+		this.removedLocations = removedLocations
 	}
 
 	get path() {
@@ -21,11 +22,15 @@ class Jump {
 
 	prependTo(nextJump) {
 		const newPath = this.path.concat(nextJump.path)
-		return new Jump(newPath, nextJump.endState)
+		const removedLocations = this.removedLocations.concat(nextJump.removedLocations)
+
+		return new Jump(newPath, nextJump.endState, removedLocations)
 	}
 
 	static getLegalJumps(boardState) {
 		const options  = directions.map(direction => Jump._fromRest(boardState, direction))
+
+		// Join (concat) and return
 		return options.reduce((left, right) => left.concat(right))
 	}
 
@@ -55,11 +60,14 @@ class Jump {
 		else {
 			var intermediateState = boardState.copy()
 			intermediateState._moveBall(targetLoc)
-			return Jump._fromMotion(intermediateState, direction)
+
+			const removedLocations = [targetLoc]
+
+			return Jump._fromMotion(intermediateState, direction, removedLocations)
 		}
 	}
 
-	static _fromMotion(boardState, direction) {
+	static _fromMotion(boardState, direction, removedLocations) {
 		const targetLoc = direction.add(boardState.ballLoc)
 
 		// Don't attempt to jump to a place that does not exist
@@ -75,7 +83,9 @@ class Jump {
 		// If jumping to the goalline or the target is empty, land!
 		//  And then consider more jumps
 		if (!(targetLoc.onBoard) || (previousOccupant === empty)) {
-			const jump = new Jump(targetLoc, nextState);
+
+			const jump = new Jump(targetLoc, nextState, removedLocations);
+
 			var out = [jump];
 			Jump.getLegalJumps(nextState).forEach(nextJump => out.push(jump.prependTo(nextJump)))
 			return out
@@ -83,7 +93,8 @@ class Jump {
 
 		// If the target is occupied, the jump must continue
 		else if (previousOccupant === player) {
-			return Jump._fromMotion(nextState, direction)
+			removedLocations.push(targetLoc)
+			return Jump._fromMotion(nextState, direction, removedLocations)
 		} 
 
 	}

@@ -183,10 +183,38 @@ class Board extends React.Component {
 		return map2DArray(this.props.boardState.boardArray, boardCellData)
 	}
 
+	greyOutJumps(fullBoardArray) {
+		if (this.props.jumpMouseOver === null) {
+			return fullBoardArray
+		} else {
+			const jump = this.props.jumpMouseOver
+
+			var toGreyOut = jump.removedLocations
+			toGreyOut.push(this.props.boardState.ballLoc)
+
+			for (var i = 0; i < toGreyOut.length; i++) {
+				const loc = toGreyOut[i]
+				const contents = fullBoardArray[loc.letterIndex+1][loc.numberIndex+1]
+				contents.type = contents.type + 'Gray'
+			}
+
+			const negOneIndex = jump.path.length-1
+			fullBoardArray[jump.path[negOneIndex].letterIndex+1][jump.path[negOneIndex].numberIndex+1].type = 'ball'
+
+			return fullBoardArray
+		}
+	}
+
 	getSquareData() {
+		// Format the board and add boundaries
 		var out = this.addBoundary(this.formatBoard())
+
+		// Add the ball to the board (or off the board as the case may be)
 		const ballLoc = this.props.boardState.ballLoc
 		out[ballLoc.letterIndex + 1][ballLoc.numberIndex + 1].type = 'ball'
+
+		out = this.greyOutJumps(out)
+
 		return out
 	}
 

@@ -54,8 +54,21 @@ class Square extends React.Component {
 					rectangle(),
 				]);
 
+			case 'playerGray':
+				return ([
+					<circle cx="50%" cy="50%" r="30%" stroke="#999999" strokeWidth="2" fill="#999999" fillOpacity="1.0"/>,
+					rectangle(),
+				]);
+
 			case 'ball':
 				var out = [<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#FFFFFF"/>]
+				if ((this.props.col > 0) && (this.props.col <= config.cols)) {
+					out.push(rectangle())
+				}
+				return out
+
+			case 'ballGray':
+				var out = [<circle cx="50%" cy="50%" r="30%" stroke="#999999" strokeWidth="2" fill="#DDDDDD"/>]
 				if ((this.props.col > 0) && (this.props.col <= config.cols)) {
 					out.push(rectangle())
 				}
