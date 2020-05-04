@@ -1,5 +1,6 @@
 import React from 'react';
 import config from '../gameLogic/config'
+import uiConfig from './uiConfig'
 
 		// 	// x = {this.props.col / (config.cols + 2)}%
 		// 	// y = {this.props.row / (config.rows + 2)}%
@@ -26,7 +27,7 @@ function labelText(text) {
 function rectangle() {
 	return <rect cx="50%" cy="50%" width="100%" height="100%"
 					  fill="#FFFFFF" fillOpacity="0.0"
-					  stroke="#000000" strokeWidth="1"/>
+					  stroke="#000000" strokeWidth={uiConfig.borderWidth}/>
 }
 
 class Square extends React.Component {
@@ -54,10 +55,11 @@ class Square extends React.Component {
 				]);
 
 			case 'ball':
-				return ([
-					<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#FFFFFF"/>,
-					rectangle()
-				]);
+				var out = [<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#FFFFFF"/>]
+				if ((this.props.col > 0) && (this.props.col <= config.cols)) {
+					out.push(rectangle())
+				}
+				return out
 
 			default:
 				return labelText(this.props.type)
@@ -69,13 +71,14 @@ class Square extends React.Component {
 	// }
 
 	render() {
+		const coords = uiConfig.xyCoords(this.props.row, this.props.col);
 		return (
 			<>
 			<svg 
-				x = {this.props.col * 34.5}
-				y = {this.props.row * 34.5}
-				width  = "35"
-				height = "35"
+				x = {coords.x}
+				y = {coords.y}
+				width  = {uiConfig.cellSize}
+				height = {uiConfig.cellSize}
 				fillOpacity = "0.0"
 				onClick = {this.props.onClick}
 			>

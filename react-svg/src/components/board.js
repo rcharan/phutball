@@ -2,7 +2,7 @@ import React from 'react';
 import { player } from '../gameLogic/locationState'
 import config from '../gameLogic/config'
 import Square from './square'
-import uiConfig from './config'
+import uiConfig from './uiConfig'
 
 
 /*****************************************************************************
@@ -21,6 +21,40 @@ function bracketArray(array, left, right) {
 
 /*****************************************************************************
 *
+* Arrow
+*
+*****************************************************************************/
+
+function arrow(sourceLoc, targetLoc) {
+	const startXY = uiConfig.xyCenterCoords(sourceLoc.letterIndex + 1, sourceLoc.number)
+	const endXY   = uiConfig.xyCenterCoords(targetLoc.letterIndex + 1, targetLoc.number)
+	return (
+		<line
+			x1 = {startXY.x}
+			y1 = {startXY.y}
+			x2 = {endXY.x}
+			y2 = {endXY.y}
+			fill = "none"
+			stroke = "black"
+			strokeWidth = "2"
+			markerEnd = "url(#arrow)"
+		/>
+	)
+}
+
+function arrowheadDef() {
+	// From the Mozilla Docs
+	return (
+	    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5"
+	        markerWidth="6" markerHeight="6"
+	        orient="auto-start-reverse">
+	      <path d="M 0 0 L 10 5 L 0 10 z" />
+	    </marker>
+    )
+}
+
+/*****************************************************************************
+*
 * Construction/Standardization of data for squares
 *
 *****************************************************************************/
@@ -35,7 +69,7 @@ function leftRowLabel(rowIndex) {
 
 function rightRowLabel(rowIndex) {
 	return {
-		type : 'rowLabelRight',
+		Type : 'rowLabelRight',
 		row  : rowIndex + 1,
 		col  : config.cols + 1,		
 	}
@@ -102,16 +136,27 @@ class Board extends React.Component {
 
 	// Format the board data to a 2D array of square-data
 	formatBoard() {
-		console.log(this.props.boardState.boardArray)
 		return map2DArray(this.props.boardState.boardArray, boardCellData)
 	}
 
 	getSquareData() {
 		var out = this.addBoundary(this.formatBoard())
-		console.log(out)
 		const ballLoc = this.props.boardState.ballLoc
 		out[ballLoc.letterIndex + 1][ballLoc.numberIndex + 1].type = 'ball'
 		return out
+	}
+
+	hoverArrow() {
+		var arrowArray = []
+		if (this.props.jumpMouseOver !== null) {
+			const locArray = [this.props.boardState.ballLoc, ...this.props.jumpMouseOver.path]
+			for (var i = 0; i < locArray.length - 1; i ++) {
+				const source = locArray[i]
+				const target = locArray[i+1]
+				arrowArray.push(arrow(source, target))
+			}
+		}
+		return arrowArray
 	}
 
 
@@ -119,9 +164,12 @@ class Board extends React.Component {
 		return (
 			<>
 			<svg
-				width  = {(config.cols + 2)*uiConfig.squareSize}
-				height = {(config.rows + 2)*uiConfig.squareSize}
+				width  = {(config.cols + 2)*uiConfig.cellSize}
+				height = {(config.rows + 2)*uiConfig.cellSize}
 			>
+				<defs>
+					{arrowheadDef()}
+				</defs>
 				{
 					map2DArray(this.getSquareData(), squareData => 
 						<Square 
@@ -133,8 +181,8 @@ class Board extends React.Component {
 						/>
 					)
 				}
+				{this.hoverArrow()}
 			</svg>
-			<div>{this.props.jumpMouseOver} is being moused over!</div>
 			</>
 		)
 

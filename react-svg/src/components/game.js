@@ -12,7 +12,8 @@ class Game extends React.Component {
 			board   : initialBoard,
 			xIsNext : true,
 			history : [{moveStr : 'Reset', board : initialBoard}],
-			moveNum : 1 // Number of move about to be made, 0 is start-of-game
+			moveNum : 1, // Number of move about to be made, 0 is start-of-game
+			jumpMouseOver : null
 		};
 	}
 
@@ -34,8 +35,8 @@ class Game extends React.Component {
 		this.doMove(moveInfo)
 	}
 
-	handleJump(jumpStr) {
-		const moveInfo = this.state.board.jump(jumpStr);
+	handleJump(jumpObj) {
+		const moveInfo = this.state.board.jump(jumpObj);
 		this.doMove(moveInfo)
 	}
 
@@ -48,13 +49,13 @@ class Game extends React.Component {
 		})
 	}
 
-	handleJumpMouseOver(jumpStr) {
+	handleJumpMouseOver(jumpObj) {
 		this.setState({
 			board         : this.state.board,
 			xIsNext       : this.state.xIsNext,
 			history       : this.state.history,
 			moveNum 	  : this.state.moveNum,
-			jumpMouseOver : jumpStr
+			jumpMouseOver : jumpObj
 		})
 	}
 
@@ -83,8 +84,8 @@ class Game extends React.Component {
 					<div className = "jumps"><h1>Jumps</h1><br/>
 						<JumpList
 							boardState   = {this.state.board}
-							onJump       = {(jumpStr) => this.handleJump(jumpStr)}
-							onMouseEnter = {(jumpStr) => this.handleJumpMouseOver(jumpStr)}
+							onJump       = {(jumpObj) => this.handleJump(jumpObj)}
+							onMouseEnter = {(jumpObj) => this.handleJumpMouseOver(jumpObj)}
 							onMouseLeave  = {()        => this.handleJumpMouseLeave()}
 						/>
 					</div>

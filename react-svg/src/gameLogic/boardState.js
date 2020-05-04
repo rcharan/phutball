@@ -66,22 +66,24 @@ class BoardState {
   };
 
   getLegalJumps() {
-    const legalJumps = Jump.getLegalJumps(this)
-    return legalJumps.map(jump => jump.toString())
+    return Jump.getLegalJumps(this)
   }
 
-  jump(jumpStr) {
-    const legalJumps    = Jump.getLegalJumps(this)
-    const matchingJumps = legalJumps.filter(jump => (jump.toString() === jumpStr))
-    if (matchingJumps.length > 0) {
-      return ({
-        board    : matchingJumps[0].endState,
-        moveStr  : matchingJumps[0].toString()
-      })
+  // TO DO: Refactor this out( logic already contained in jumpObj)
+  jump(jumpObj) {
+    return {
+      board   : jumpObj.endState,
+      moveStr : jumpObj.toString()
     }
-    console.log('sigh')
-
-    return null
+    // const legalJumps    = Jump.getLegalJumps(this)
+    // const matchingJumps = legalJumps.filter(jump => (jump.toString() === jumpObj))
+    // if (matchingJumps.length > 0) {
+    //   return ({
+    //     board    : matchingJumps[0].endState,
+    //     moveStr  : matchingJumps[0].toString()
+    //   })
+    // }
+    // return null
 
   }
 
