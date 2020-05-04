@@ -77,10 +77,8 @@ function arrow(sourceLoc, targetLoc) {
 
 	const delta = Vector.fromPoints(source, target)
 
-	source = delta.unitVector.scale( 8).add(source)
+	source = delta.unitVector.scale(  8).add(source)
 	target = delta.unitVector.scale(-12).add(target)
-
-
 
 	return (
 		<line
@@ -99,10 +97,16 @@ function arrow(sourceLoc, targetLoc) {
 function arrowheadDef() {
 	// From the Mozilla Docs
 	return (
-	    <marker id="arrow" viewBox="0 0 6 5" refX="3" refY="2.5"
+	    <marker
+	    	id="arrow"
+	    	viewBox="0 0 6 5"
+	    	refX="3"
+	    	refY="2.5"
 	    	fill="red"
-	        markerWidth="6" markerHeight="5"
-	        orient="auto-start-reverse">
+	        markerWidth="6"
+	        markerHeight="5"
+	        orient="auto-start-reverse"
+	    >
 	      <path d="M 0 0 L 6 2.5 L 0 5 z" />
 	    </marker>
     )

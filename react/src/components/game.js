@@ -3,18 +3,30 @@ import { BoardState, initialState, initialBallLoc } from '../gameLogic/boardStat
 import Board from './board'
 import JumpList from './jump'
 import History from './history'
+import AI from './ai'
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props);
 		const initialBoard = new BoardState(initialState, initialBallLoc)
 		this.state = {
-			board   : initialBoard,
-			xIsNext : true,
-			history : [{moveStr : 'Reset', board : initialBoard}],
-			moveNum : 1, // Number of move about to be made, 0 is start-of-game
+			board         : initialBoard,
+			xIsNext       : true,
+			history       : [{moveStr : 'Reset', board : initialBoard}],
+			moveNum       : 1, // Number of move about to be made, 0 is start-of-game
 			jumpMouseOver : null,
 		};
+	}
+
+	get isAiTurn() {
+		if (this.state.board.gameOver) {
+			return false
+		} else if ((this.props.aiPlayer === 'X' && this.state.xIsNext) ||
+				   (this.props.aiPlayer === 'O' && !this.state.xIsNext)) {
+		   	return true
+	    } else {
+	    	return false
+	    }
 	}
 
 	doMove(moveInfo) {
@@ -31,7 +43,7 @@ class Game extends React.Component {
 	}
 
 	handlePlacement(flatIndex) {
-		if (this.state.board.gameOver) {
+		if (this.state.board.gameOver || this.isAiTurn) {
 			return
 		} else {
 			const moveInfo = this.state.board.place(flatIndex);
@@ -40,36 +52,32 @@ class Game extends React.Component {
 	}
 
 	handleJump(jumpObj) {
-		const moveInfo = this.state.board.jump(jumpObj);
-		this.doMove(moveInfo)
+		if (this.state.board.gameOver || this.isAiTurn) {
+			return
+		} else {
+			const moveInfo = this.state.board.jump(jumpObj);
+			this.doMove(moveInfo)
+		}
 	}
 
 	handleHistory(moveNum) {
 		this.setState({
-			board   : this.state.history[moveNum].board,
-			xIsNext : (moveNum % 2 === 0),
-			history : this.state.history,
-			moveNum : moveNum + 1,
+			board         : this.state.history[moveNum].board,
+			xIsNext       : (moveNum % 2 === 0),
+			history       : this.state.history,
+			moveNum       : moveNum + 1,
 			jumpMouseOver : null,
 		})
 	}
 
 	handleJumpMouseEnter(jumpObj) {
 		this.setState({
-			board         : this.state.board,
-			xIsNext       : this.state.xIsNext,
-			history       : this.state.history,
-			moveNum 	  : this.state.moveNum,
 			jumpMouseOver : jumpObj,
 		})
 	}
 
 	handleJumpMouseLeave() {
 		this.setState({
-			board         : this.state.board,
-			xIsNext       : this.state.xIsNext,
-			history       : this.state.history,
-			moveNum       : this.state.moveNum,
 			jumpMouseOver : null,
 		})
 	}
@@ -92,6 +100,14 @@ class Game extends React.Component {
 				<div><h1>
 					Winner: {this.state.board.winner ? 'X' : 'O'}
 				</h1></div>
+			)
+		} else if (this.isAiTurn) {
+			return (
+				<AI
+					board    ={this.state.board}
+					playRight={this.state.xIsNext}
+					doMove   ={(move) => this.doMove(move)}
+				/>
 			)
 		} else {
 			return (
