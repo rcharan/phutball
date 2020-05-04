@@ -32,6 +32,7 @@ function rectangle() {
 
 class Square extends React.Component {
 	content() {
+		var out
 		switch(this.props.type) {
 			case 'rowLabelLeft':
 				return labelText(config.letters[this.props.row-1])
@@ -48,6 +49,9 @@ class Square extends React.Component {
 			case 'emptyBoardCell':
 				return rectangle();
 
+			// case 'emptyBoardCellHover': 
+				// return [labelText(config.letters[this.props.row-1]+this.props.col), rectangle()]
+
 			case 'player':
 				return ([
 					<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#000000" fillOpacity="1.0"/>,
@@ -61,14 +65,14 @@ class Square extends React.Component {
 				]);
 
 			case 'ball':
-				var out = [<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#FFFFFF"/>]
+				out = [<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#FFFFFF"/>]
 				if ((this.props.col > 0) && (this.props.col <= config.cols)) {
 					out.push(rectangle())
 				}
 				return out
 
 			case 'ballGray':
-				var out = [<circle cx="50%" cy="50%" r="30%" stroke="#999999" strokeWidth="2" fill="#DDDDDD"/>]
+				out = [<circle cx="50%" cy="50%" r="30%" stroke="#999999" strokeWidth="2" fill="#DDDDDD"/>]
 				if ((this.props.col > 0) && (this.props.col <= config.cols)) {
 					out.push(rectangle())
 				}
@@ -78,10 +82,6 @@ class Square extends React.Component {
 				return labelText(this.props.type)
 		}
 	};
-
-	// mouseover() {
-// 
-	// }
 
 	render() {
 		const coords = uiConfig.xyCoords(this.props.row, this.props.col);
@@ -93,7 +93,7 @@ class Square extends React.Component {
 				width  = {uiConfig.cellSize}
 				height = {uiConfig.cellSize}
 				fillOpacity = "0.0"
-				onClick = {this.props.onClick}
+				onClick      = {this.props.onClick}
 			>
 				{this.content()}
 			</svg>

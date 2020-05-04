@@ -25,7 +25,5 @@ function xyCenterCoords(row, col) {
 uiConfig.xyCoords       = xyCoords
 uiConfig.xyCenterCoords = xyCenterCoords
 
-console.log(uiConfig)
-
 // export { uiConfig, xyCoords, xyCenterCoords };
 export default uiConfig

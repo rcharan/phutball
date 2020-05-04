@@ -3,6 +3,7 @@ import { BoardState, initialState, initialBallLoc } from '../gameLogic/boardStat
 import Board from './board'
 import JumpList from './jump'
 import History from './history'
+import Location from '../gameLogic/location'
 
 class Game extends React.Component {
 	constructor(props) {
@@ -13,7 +14,8 @@ class Game extends React.Component {
 			xIsNext : true,
 			history : [{moveStr : 'Reset', board : initialBoard}],
 			moveNum : 1, // Number of move about to be made, 0 is start-of-game
-			jumpMouseOver : null
+			jumpMouseOver : null,
+
 		};
 	}
 
@@ -26,7 +28,7 @@ class Game extends React.Component {
 			xIsNext       : !this.state.xIsNext,
 			history       : this.state.history.slice(0, this.state.moveNum).concat([moveInfo]),
 			moveNum 	  : this.state.moveNum + 1,
-			jumpMouseOver : null
+			jumpMouseOver : null,
 		})
 	}
 
@@ -45,17 +47,18 @@ class Game extends React.Component {
 			board   : this.state.history[moveNum].board,
 			xIsNext : (moveNum % 2 === 0),
 			history : this.state.history,
-			moveNum : moveNum + 1
+			moveNum : moveNum + 1,
+			jumpMouseOver : null,
 		})
 	}
 
-	handleJumpMouseOver(jumpObj) {
+	handleJumpMouseEnter(jumpObj) {
 		this.setState({
 			board         : this.state.board,
 			xIsNext       : this.state.xIsNext,
 			history       : this.state.history,
 			moveNum 	  : this.state.moveNum,
-			jumpMouseOver : jumpObj
+			jumpMouseOver : jumpObj,
 		})
 	}
 
@@ -65,7 +68,7 @@ class Game extends React.Component {
 			xIsNext       : this.state.xIsNext,
 			history       : this.state.history,
 			moveNum       : this.state.moveNum,
-			jumpMouseOver : null
+			jumpMouseOver : null,
 		})
 	}
 
@@ -74,9 +77,9 @@ class Game extends React.Component {
 			<div className = "game">
 				<div className = "game-board">
 					<Board 
-						boardState    = {this.state.board}
-						onPlace       = {(i) => this.handlePlacement(i)}
-						jumpMouseOver = {this.state.jumpMouseOver}
+						boardState     = {this.state.board}
+						onPlace        = {(i) => this.handlePlacement(i)}
+						jumpMouseOver  = {this.state.jumpMouseOver}
 					/>
 				</div>
 				<div className = "game-info">
@@ -85,8 +88,8 @@ class Game extends React.Component {
 						<JumpList
 							boardState   = {this.state.board}
 							onJump       = {(jumpObj) => this.handleJump(jumpObj)}
-							onMouseEnter = {(jumpObj) => this.handleJumpMouseOver(jumpObj)}
-							onMouseLeave  = {()        => this.handleJumpMouseLeave()}
+							onMouseEnter = {(jumpObj) => this.handleJumpMouseEnter(jumpObj)}
+							onMouseLeave  = {()       => this.handleJumpMouseLeave()}
 						/>
 					</div>
 					<div className = "history"><h1>History</h1><br/>

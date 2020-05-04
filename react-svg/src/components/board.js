@@ -8,10 +8,20 @@ import uiConfig from './uiConfig'
 /*****************************************************************************
 *
 * Utilities
-*  - Lifts
+*  - Array abstraction
 *  - Vector arithmetic
 *
 *****************************************************************************/
+
+class PaddedArray {
+	constructor(array) {
+		this.array = array
+	}
+
+	boardLoc(loc) {
+		return this.array[loc.letterIndex+1][loc.numberIndex+1]
+	}
+}
 
 function map2DArray(array, func) {
 	return array.map((row, i) => row.map((cell, j) => func(cell, i, j)))
@@ -36,7 +46,7 @@ class Vector {
 	}
 
 	get unitVector() {
-		if (this.length == 0) {
+		if (this.length === 0) {
 			return null
 		} else {
 			return this.scale(1/this.length)
@@ -183,9 +193,9 @@ class Board extends React.Component {
 		return map2DArray(this.props.boardState.boardArray, boardCellData)
 	}
 
-	greyOutJumps(fullBoardArray) {
+	greyOutJumps(paddedArray) {
 		if (this.props.jumpMouseOver === null) {
-			return fullBoardArray
+			return paddedArray
 		} else {
 			const jump = this.props.jumpMouseOver
 
@@ -193,29 +203,29 @@ class Board extends React.Component {
 			toGreyOut.push(this.props.boardState.ballLoc)
 
 			for (var i = 0; i < toGreyOut.length; i++) {
-				const loc = toGreyOut[i]
-				const contents = fullBoardArray[loc.letterIndex+1][loc.numberIndex+1]
-				contents.type = contents.type + 'Gray'
+				const loc      = toGreyOut[i]
+				const contents = paddedArray.boardLoc(loc)
+				contents.type  = contents.type + 'Gray'
 			}
 
-			const negOneIndex = jump.path.length-1
-			fullBoardArray[jump.path[negOneIndex].letterIndex+1][jump.path[negOneIndex].numberIndex+1].type = 'ball'
+			paddedArray.boardLoc(jump.path[jump.path.length-1]).type = 'ball'
 
-			return fullBoardArray
+			return paddedArray
 		}
 	}
 
 	getSquareData() {
 		// Format the board and add boundaries
 		var out = this.addBoundary(this.formatBoard())
+		out = new PaddedArray(out)
 
 		// Add the ball to the board (or off the board as the case may be)
-		const ballLoc = this.props.boardState.ballLoc
-		out[ballLoc.letterIndex + 1][ballLoc.numberIndex + 1].type = 'ball'
+		out.boardLoc(this.props.boardState.ballLoc).type = 'ball'
 
+		// Add extra features for hovering
 		out = this.greyOutJumps(out)
 
-		return out
+		return out.array
 	}
 
 	hoverArrow() {
@@ -231,8 +241,12 @@ class Board extends React.Component {
 		return arrowArray
 	}
 
-
 	render() {
+
+		function flatIndex(squareData) {
+			return (squareData.row-1) * (config.cols) + (squareData.col - 1)
+		}
+
 		return (
 			<>
 			<svg
@@ -245,11 +259,11 @@ class Board extends React.Component {
 				{
 					map2DArray(this.getSquareData(), squareData => 
 						<Square 
-							type 	= {squareData.type}
-							row  	= {squareData.row}
-							col  	= {squareData.col}
-							key  	= {squareData.row * (config.cols + 2) + squareData.col}
-							onClick = {() => this.props.onPlace((squareData.row-1) * (config.cols) + (squareData.col - 1))}
+							type 	     = {squareData.type}
+							row  	     = {squareData.row}
+							col  	     = {squareData.col}
+							key  	     = {squareData.row * (config.cols + 2) + squareData.col}
+							onClick      = {() => this.props.onPlace(     flatIndex(squareData))}
 						/>
 					)
 				}
