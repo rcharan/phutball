@@ -15,7 +15,6 @@ class Game extends React.Component {
 			history : [{moveStr : 'Reset', board : initialBoard}],
 			moveNum : 1, // Number of move about to be made, 0 is start-of-game
 			jumpMouseOver : null,
-
 		};
 	}
 
@@ -33,8 +32,12 @@ class Game extends React.Component {
 	}
 
 	handlePlacement(flatIndex) {
-		const moveInfo = this.state.board.place(flatIndex);
-		this.doMove(moveInfo)
+		if (this.state.board.gameOver) {
+			return
+		} else {
+			const moveInfo = this.state.board.place(flatIndex);
+			this.doMove(moveInfo)
+		}
 	}
 
 	handleJump(jumpObj) {
@@ -72,36 +75,84 @@ class Game extends React.Component {
 		})
 	}
 
+	renderBoard() {
+		return (
+			<div className = "game-board">
+				<Board 
+					boardState     = {this.state.board}
+					onPlace        = {(i) => this.handlePlacement(i)}
+					jumpMouseOver  = {this.state.jumpMouseOver}
+				/>
+			</div>
+		)
+	}
+
+	renderNextMove() {
+		if (this.state.board.gameOver) {
+			return (
+				<div><h1>
+					Winner: {this.state.board.winner ? 'X' : 'O'}
+				</h1></div>
+			)
+		} else {
+			return (
+				<div>
+					<h1>
+						Next player: {this.state.xIsNext ? 'X' : 'O'} <br/>
+					</h1>
+					Playing towards: {this.state.xIsNext ? 'Right' : 'Left'}
+				</div>
+			)
+		}
+			
+	}
+
+	renderJumpList() {
+		if (this.state.board.gameOver) {
+			return null
+		} else {
+			return (
+				<div className = "jumps"><h1>Jumps</h1><br/>
+					<JumpList
+						boardState   = {this.state.board}
+						onJump       = {(jumpObj) => this.handleJump(jumpObj)}
+						onMouseEnter = {(jumpObj) => this.handleJumpMouseEnter(jumpObj)}
+						onMouseLeave  = {()       => this.handleJumpMouseLeave()}
+					/>
+				</div>
+			)
+		}
+	}
+
+	renderHistory() {
+		return (
+			<div className = "history"><h1>History</h1><br/>
+				<History
+					history     = {this.state.history}
+					onClick     = {(moveNum) => this.handleHistory(moveNum)}
+				/>
+			</div>
+		)
+	}
+
+	renderGameInfo() {
+		return (
+			<div className = "game-info">
+				{[
+					this.renderNextMove(),
+					this.renderJumpList(),
+					this.renderHistory()
+				]}
+			</div>
+		)	
+	}
+
 	render() {
 		return (
 			<div className = "game">
-				<div className = "game-board">
-					<Board 
-						boardState     = {this.state.board}
-						onPlace        = {(i) => this.handlePlacement(i)}
-						jumpMouseOver  = {this.state.jumpMouseOver}
-					/>
-				</div>
-				<div className = "game-info">
-					<div>Next player: {this.state.xIsNext ? 'X' : 'O'}</div>
-					<div className = "jumps"><h1>Jumps</h1><br/>
-						<JumpList
-							boardState   = {this.state.board}
-							onJump       = {(jumpObj) => this.handleJump(jumpObj)}
-							onMouseEnter = {(jumpObj) => this.handleJumpMouseEnter(jumpObj)}
-							onMouseLeave  = {()       => this.handleJumpMouseLeave()}
-						/>
-					</div>
-					<div className = "history"><h1>History</h1><br/>
-						<History
-							history     = {this.state.history}
-							onClick     = {(moveNum) => this.handleHistory(moveNum)}
-						/>
-					</div>
-				</div>
+				{[this.renderBoard(),
+				  this.renderGameInfo()]}
 			</div>
-
-
 		)
 	}
 }

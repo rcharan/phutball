@@ -36,7 +36,7 @@ class BoardState {
   };
 
   get gameOver() {
-    return this.ballLoc.onGoalLine()
+    return this.ballLoc.onGoalLine
   };
 
   get winner() {
