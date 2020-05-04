@@ -5,7 +5,22 @@ import config from '../gameLogic/config'
 		// 	// y = {this.props.row / (config.rows + 2)}%
 
 function labelText(text) {
-	return <text cx="50%" cy="50%" fill="grey">{text}</text>
+		// return <text x="50%" y="50%" fill="grey">{text}</text>
+	return <text
+				x="50%"
+				y="50%"
+				fill="#999999"
+				fillOpacity="1.0"
+				// stroke="#999999"
+				// strokeWidth="1"
+				textAnchor="middle"
+				alignmentBaseline="middle"
+				// style = {{
+					// font : "13px sans-serif"
+				// }}
+			>
+				{text}
+			</text>
 }
 
 function rectangle() {
@@ -23,7 +38,7 @@ class Square extends React.Component {
 			case 'rowLabelRight':
 				return null;
 
-			case 'emptyCell':
+			case 'empty':
 				return null;
 
 			case 'colLabel':
@@ -35,7 +50,7 @@ class Square extends React.Component {
 			case 'player':
 				return ([
 					<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#000000"/>,
-					rectangle()
+					rectangle(),
 				]);
 
 			case 'ball':
@@ -55,6 +70,7 @@ class Square extends React.Component {
 
 	render() {
 		return (
+			<>
 			<svg 
 				x = {this.props.col * 34.5}
 				y = {this.props.row * 34.5}
@@ -64,6 +80,7 @@ class Square extends React.Component {
 			>
 				{this.content()}
 			</svg>
+			</>
 		)
 	}
 }
