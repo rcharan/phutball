@@ -8,6 +8,8 @@ import uiConfig from './uiConfig'
 /*****************************************************************************
 *
 * Utilities
+*  - Lifts
+*  - Vector arithmetic
 *
 *****************************************************************************/
 
@@ -19,6 +21,40 @@ function bracketArray(array, left, right) {
 	return [left, ...array, right]
 }
 
+class Vector {
+	constructor(deltaX, deltaY) {
+		this.x = deltaX
+		this.y = deltaY
+	};
+
+	static fromPoints(source, target) {
+		return new Vector(target.x - source.x, target.y - source.y)
+	}
+
+	get length() {
+		return Math.sqrt(this.x**2 + this.y**2)
+	}
+
+	get unitVector() {
+		if (this.length == 0) {
+			return null
+		} else {
+			return this.scale(1/this.length)
+		}
+	}
+
+	scale(scalar) {
+		return new Vector(this.x * scalar, this.y * scalar)
+	}
+
+	add(other) {
+		return new Vector(this.x + other.x, this.y + other.y)
+	}
+
+}
+
+
+
 /*****************************************************************************
 *
 * Arrow
@@ -26,14 +62,22 @@ function bracketArray(array, left, right) {
 *****************************************************************************/
 
 function arrow(sourceLoc, targetLoc) {
-	const startXY = uiConfig.xyCenterCoords(sourceLoc.letterIndex + 1, sourceLoc.number)
-	const endXY   = uiConfig.xyCenterCoords(targetLoc.letterIndex + 1, targetLoc.number)
+	var source = uiConfig.xyCenterCoords(sourceLoc.letterIndex + 1, sourceLoc.number);
+	var target = uiConfig.xyCenterCoords(targetLoc.letterIndex + 1, targetLoc.number);
+
+	const delta = Vector.fromPoints(source, target)
+
+	source = delta.unitVector.scale( 8).add(source)
+	target = delta.unitVector.scale(-8).add(target)
+
+
+
 	return (
 		<line
-			x1 = {startXY.x}
-			y1 = {startXY.y}
-			x2 = {endXY.x}
-			y2 = {endXY.y}
+			x1 = {source.x}
+			y1 = {source.y}
+			x2 = {target.x}
+			y2 = {target.y}
 			fill = "none"
 			stroke = "black"
 			strokeWidth = "2"
@@ -45,10 +89,10 @@ function arrow(sourceLoc, targetLoc) {
 function arrowheadDef() {
 	// From the Mozilla Docs
 	return (
-	    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5"
-	        markerWidth="6" markerHeight="6"
+	    <marker id="arrow" viewBox="0 0 6 5" refX="3" refY="2.5"
+	        markerWidth="6" markerHeight="5"
 	        orient="auto-start-reverse">
-	      <path d="M 0 0 L 10 5 L 0 10 z" />
+	      <path d="M 0 0 L 6 2.5 L 0 5 z" />
 	    </marker>
     )
 }
