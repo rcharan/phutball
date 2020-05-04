@@ -65,17 +65,17 @@ function colLabels(row) {
 	)
 }
 
-
-
-function boardCellData(cellChar, row, col) {
+function boardCellData(cellData, row, col) {
 	var type = 'emptyBoardCell'
-	if (cellChar === player) {
+	if (cellData.contents === player) {
 		type = 'player'
 	}
+
 	return {
-		type : type,
-		row  : row + 1,
-		col  : col + 1
+		type      : type,
+		row       : row + 1,
+		col  	  : col + 1,
+		flatIndex : cellData.index
 	}
 }
 
@@ -102,6 +102,7 @@ class Board extends React.Component {
 
 	// Format the board data to a 2D array of square-data
 	formatBoard() {
+		console.log(this.props.boardState.boardArray)
 		return map2DArray(this.props.boardState.boardArray, boardCellData)
 	}
 
@@ -124,10 +125,11 @@ class Board extends React.Component {
 				{
 					map2DArray(this.getSquareData(), squareData => 
 						<Square 
-							type = {squareData.type}
-							row  = {squareData.row}
-							col  = {squareData.col}
-							key  = {squareData.row * (config.cols + 2) + squareData.col}
+							type 	= {squareData.type}
+							row  	= {squareData.row}
+							col  	= {squareData.col}
+							key  	= {squareData.row * (config.cols + 2) + squareData.col}
+							onClick = {() => this.props.onPlace((squareData.row-1) * (config.cols) + (squareData.col - 1))}
 						/>
 					)
 				}

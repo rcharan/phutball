@@ -49,7 +49,7 @@ class Square extends React.Component {
 
 			case 'player':
 				return ([
-					<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#000000"/>,
+					<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#000000" fillOpacity="1.0"/>,
 					rectangle(),
 				]);
 
@@ -77,6 +77,7 @@ class Square extends React.Component {
 				width  = "35"
 				height = "35"
 				fillOpacity = "0.0"
+				onClick = {this.props.onClick}
 			>
 				{this.content()}
 			</svg>

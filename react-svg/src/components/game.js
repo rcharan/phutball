@@ -48,13 +48,23 @@ class Game extends React.Component {
 		})
 	}
 
-	handleJumpMouseover(jumpStr) {
+	handleJumpMouseOver(jumpStr) {
 		this.setState({
 			board         : this.state.board,
 			xIsNext       : this.state.xIsNext,
 			history       : this.state.history,
-			moveNum 	  : this.state.moveNum - 1,
+			moveNum 	  : this.state.moveNum,
 			jumpMouseOver : jumpStr
+		})
+	}
+
+	handleJumpMouseLeave() {
+		this.setState({
+			board         : this.state.board,
+			xIsNext       : this.state.xIsNext,
+			history       : this.state.history,
+			moveNum       : this.state.moveNum,
+			jumpMouseOver : null
 		})
 	}
 
@@ -72,15 +82,16 @@ class Game extends React.Component {
 					<div>Next player: {this.state.xIsNext ? 'X' : 'O'}</div>
 					<div className = "jumps"><h1>Jumps</h1><br/>
 						<JumpList
-							boardState = {this.state.board}
-							onJump     = {(jumpStr) => this.handleJump(jumpStr)}
+							boardState   = {this.state.board}
+							onJump       = {(jumpStr) => this.handleJump(jumpStr)}
+							onMouseEnter = {(jumpStr) => this.handleJumpMouseOver(jumpStr)}
+							onMouseLeave  = {()        => this.handleJumpMouseLeave()}
 						/>
 					</div>
 					<div className = "history"><h1>History</h1><br/>
 						<History
 							history     = {this.state.history}
 							onClick     = {(moveNum) => this.handleHistory(moveNum)}
-							onMouseOver = {(jumpStr) => this.handleJumpMouseover(jumpStr)}
 						/>
 					</div>
 				</div>

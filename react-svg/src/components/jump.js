@@ -7,9 +7,10 @@ class JumpList extends React.Component {
 			{this.props.boardState.getLegalJumps().map(jumpStr => 
 				<li key={jumpStr}>
 				<JumpButton
-					str         = {jumpStr}
-					onClick     = {() => this.props.onJump(jumpStr)}
-					onMouseOver = {() => this.props.onMouseOver(jumpStr)}
+					str          = {jumpStr}
+					onClick      = {() => this.props.onJump(jumpStr)}
+					onMouseEnter = {() => this.props.onMouseEnter(jumpStr)}
+					onMouseLeave = {this.props.onMouseLeave}
 				/></li>
 			)}
 			</ol>
@@ -20,12 +21,14 @@ class JumpList extends React.Component {
 
 class JumpButton extends React.Component {
 	render () {
+		console.log(this.props.onMouseLeave)
 		return (
 		    <button 
-		    	className   = "jump"
-		    	onClick     = {this.props.onClick}
-		    	key         = {this.props.str}
-		    	onMouseOver = {this.props.onMouseOver}
+		    	className    = "jump"
+		    	onClick      = {this.props.onClick}
+		    	key          = {this.props.str}
+		    	onMouseEnter = {this.props.onMouseEnter}
+		    	onMouseLeave = {this.props.onMouseLeave}
 		    >
 		    	{this.props.str}
 		    </button>
