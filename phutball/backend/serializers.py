@@ -17,17 +17,41 @@ from .models import Game, Board, id_len
 #
 ###########################################################################
 
-
-# # Read and Write
-# class BoardSerializer(serializers.ModelSerializer):
-#   class Meta:
-#     model  = Board
-#     fields = ['game_id', 'move_str', 'move_num', 'board_state']
+class IntegrityError(Exception):
+  '''Database Integrity Error'''
+  pass
 
 
-# class IntegrityError(Exception):
-#   '''Database Integrity Error'''
-#   pass
+def location(boardDict):
+  return {
+    numberIndex : ret['ball_loc_number_index'],
+    letterIndex : ret['ball_loc_letter_index']
+  }
+
+# Read and Write
+class BoardSerializer(serializers.ModelSerializer):
+  class Meta:
+    model  = Board
+    fields = ['game_id', 'move_str', 'move_num', 'board_state', 'ball_loc_letter_index', 'ball_loc_number_index']
+
+  def to_representation(self, instance):
+    ret = super().to_representation(instance)
+
+    ret['ball_loc']    = location(ret)
+    ret['space_array'] = ret['board_state']
+    del ret['ball_loc_letter_index'], ret['ball_loc_number_index'], ret['board_state']
+    return ret
+
+  def to_internal_value(self, data):
+    out = {}
+    out['game_id']     = data['game_id']
+    out['move_str']    = data['move_str']
+    out['move_num']    = int(data['move_num'])
+    out['board_state'] = data['space_array']
+    out['ball_loc_letter_index'] = data['ball_loc']['letter_index']
+    out['ball_loc_number_index'] = data['ball_loc']['ball_loc_number_index']
+    return out
+
 
 class BoardStateSerializer(Serializer):
   '''Utility for Serializing Board States in the Read-only Game representation'''
@@ -40,10 +64,7 @@ class BoardStateSerializer(Serializer):
     
     out = {
       'spaceArray' : ret['board_state'],
-      'ballLoc'    : {
-          numberIndex : ret['ball_loc_number_index'],
-          letterIndex : ret['ball_loc_letter_index']
-      }
+      'ballLoc'    : location(ret)
     } 
 
     return out
