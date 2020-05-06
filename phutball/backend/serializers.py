@@ -47,6 +47,8 @@ def location(boardDict):
 # Move Serialize
 #  - Read and Write for passing state changes to the frontend
 #
+# To Do: Validate Data
+#
 ###########################################################################
 
 class MoveSerializer(ModelSerializer):
@@ -71,10 +73,6 @@ class MoveSerializer(ModelSerializer):
     out['ball_loc_letter_index'] = data['ball_loc']['letter_index']
     out['ball_loc_number_index'] = data['ball_loc']['number_index']
     return out
-
-
-
-
 
 ###########################################################################
 #

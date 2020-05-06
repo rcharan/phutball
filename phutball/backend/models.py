@@ -44,9 +44,11 @@ class Game(Model):
                ai_player = False,
                player_0_name = 'Player 1',
                player_1_name = 'Player 2',
-               ai_player_num = False):
+               ai_player_num = False,
+               game_id = None):
 
-    game_id = self.new_id()
+    if game_id = None:
+      game_id = self.new_id()
     game    = self.objects.create(game_id       = game_id,
                                   player_0_name = player_0_name,
                                   player_1_name = player_1_name,
