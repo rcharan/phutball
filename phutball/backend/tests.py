@@ -37,7 +37,6 @@ def compare_structs(self, source, target):
 
   # Unwrap the source from Django wrappers
   else:
-    # Unwrap source to a regular dict
     source = {k : v for k, v in source.items()}
 
   # Compare Datatypes
@@ -57,7 +56,8 @@ def compare_structs(self, source, target):
       for s, t in zip(source[key], target[key]):
         compare_structs(self, s, t)
 
-    # If the source has a model, ask the model for the appropriate key again
+    # If the source has a model as a value,
+    #  ask the model for the appropriate key again
     elif isinstance(source[key], Model):
       compare_structs(self, source[key].__getattribute__(key), target[key])
 

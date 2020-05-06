@@ -1,14 +1,14 @@
 # TO DO: Really want Game States (Histories) not Board States
 
 from django.db import models
-from django.db.models.functions import RowNumber
-from django.db.models import F, Max, Window, Manager, Model
-from django.db.models import OuterRef, Subquery
+from django.db.models import Model
+
 from .game_logic.config     import board_rows, board_cols
-from .game_logic.game_state import initial_state, GameState
+from .game_logic.game_state import initial_state
 
 from random import choices
 import string
+
 id_len = 6
  # Longest possible jump string, approximately (comfortable upper bound)
 max_move_str_length = (board_rows * board_cols) * 2
