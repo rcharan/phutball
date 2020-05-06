@@ -4,7 +4,7 @@ from .game_logic import config
 
 ###########################################################################
 #
-# JS Data Structure:
+# JS Data internal Structure:
 #
 # Game State, initial:
 # - board         : initialBoard,
@@ -13,10 +13,22 @@ from .game_logic import config
 # - moveNum       : 1, // Number of move about to be made, 0 is start-of-game
 # - jumpMouseOver : null, 
 #
+# Board state:
 # - this.spaceArray = flatArray.slice();
 # - this.ballLoc    = ballLoc
 #
+#
+# For serialized data structure, see the tests file
+#
 ###########################################################################
+
+
+###########################################################################
+#
+# Utilities
+#
+###########################################################################
+
 
 class IntegrityError(Exception):
   '''Database Integrity Error'''
@@ -29,7 +41,14 @@ def location(boardDict):
     'letter_index' : boardDict['ball_loc_letter_index']
   }
 
-# Read and Write
+
+###########################################################################
+#
+# Move Serialize
+#  - Read and Write for passing state changes to the frontend
+#
+###########################################################################
+
 class MoveSerializer(ModelSerializer):
   class Meta:
     model  = Move
@@ -54,8 +73,19 @@ class MoveSerializer(ModelSerializer):
     return out
 
 
+
+
+
+###########################################################################
+#
+# Game Serializer
+#  - Read only, for loading the server-side state. (Writes are by passing
+#     single moves or creating a fresh game only).
+#
+###########################################################################
+
 class BoardStateSerializer(ModelSerializer):
-  '''Utility for Serializing Board States in the Read-only Game representation'''
+  '''Utility for Serializing Moves in the Read-only Game representation'''
   class Meta:
     model    = Move
     fields   = ['board_state', 'ball_loc_number_index', 'ball_loc_letter_index']
