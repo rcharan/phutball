@@ -64,12 +64,12 @@ class MoveSerializer(ModelSerializer):
 
   def to_internal_value(self, data):
     out = {}
-    out['game_id']     = data['game_id']
+    out['game_id']     = Game.objects.get(pk = data['game_id'])
     out['move_str']    = data['move_str']
     out['move_num']    = int(data['move_num'])
     out['board_state'] = data['space_array']
     out['ball_loc_letter_index'] = data['ball_loc']['letter_index']
-    out['ball_loc_number_index'] = data['ball_loc']['ball_loc_number_index']
+    out['ball_loc_number_index'] = data['ball_loc']['number_index']
     return out
 
 

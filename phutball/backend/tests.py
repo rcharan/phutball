@@ -18,6 +18,8 @@ from django.db.models import Model
 ###############################################################################
 
 def compare_structs(self, source, target):
+  # Show long diffs on failure
+  self.maxDiff = None
 
   # Entry point for Model-type sources
   if isinstance(source, Model):
@@ -25,7 +27,7 @@ def compare_structs(self, source, target):
     self.assertTrue(isinstance(target, dict))
     source_as_dict = {}
     for key in target:
-      source_as_dict[key] = out.__getattr__(key)
+      source_as_dict[key] = source.__getattribute__(key)
     source = source_as_dict
 
   # Base case for atomic types
@@ -57,7 +59,7 @@ def compare_structs(self, source, target):
 
     # If the source has a model, ask the model for the appropriate key again
     elif isinstance(source[key], Model):
-      compare_structs(self, source[key].__getattr__(key), target[key])
+      compare_structs(self, source[key].__getattribute__(key), target[key])
 
     # Otherwise, assert direct equality
     else:
@@ -153,6 +155,9 @@ class GameSerializerTests(TestCase):
 
     game = Game.new_game()
     
+    # Make a move
+    game.move_set.create(board_state = next_state, move_num = next_move_num,
+                         move_str = next_move_str)
 
     # Output of serializer
     serializer = GameSerializer(game)
@@ -172,14 +177,6 @@ class GameSerializerTests(TestCase):
       'jumpMouseOver' : None,
       'xIsNext'       : False
     }
-
-
-    # Make a move
-    game.move_set.create(board_state = next_state, move_num = next_move_num,
-                         move_str = next_move_str)
-
-    # Show long diffs on failure
-    self.maxDiff = None
 
     # Compare
     compare_structs(self, data, target)
@@ -215,22 +212,23 @@ class MoveSerializerTests(TestCase):
 
     new_move = {
       'game_id'     : game.game_id,
-      'move_str'    : next_move_str
-      'move_num'    : next_move_num
-      'board_state' : next_state
-      'ball_loc'    : next_board['ball_loc']
+      'move_str'    : next_move_str,
+      'move_num'    : next_move_num,
+      'space_array' : next_board['space_array'],
+      'ball_loc'    : next_board['ball_loc'],
     }
 
-    serializer = MoveSerializer(data=data)
+    serializer = MoveSerializer(data=new_move)
+    serializer.is_valid()
     serializer.save()
 
     target = {
       'board_state' : next_state,
       'move_num'    : 1,
       'move_str'    : next_move_str,
-      'game_id'     : game.game_id
-      'ball_loc_letter_index' : next_board['ball_loc']['number_index']
-      'ball_loc_number_index' : next_board['ball_loc']['letter_index']
+      'game_id'     : game.game_id,
+      'ball_loc_letter_index' : next_board['ball_loc']['letter_index'],
+      'ball_loc_number_index' : next_board['ball_loc']['number_index']
     }
 
     source = game.move_set.filter(move_num = 1)[0]
