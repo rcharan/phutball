@@ -1,3 +1,5 @@
+ # TO DO: Update to match JS implementation
+
 from .location       import Location
 from .location_state import empty, player, ball, LocationState
 from .config         import board_rows, board_cols
