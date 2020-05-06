@@ -29,7 +29,7 @@ function rectangle() {
 	return <rect cx="50%" cy="50%" width="100%" height="100%"
 					  fill="#FFFFFF" fillOpacity="0.0"
 					  stroke="#FFFFFF" strokeWidth={uiConfig.borderWidth}
-					  strokeOpaction="0.0"
+					  strokeOpacity="0.0"
 		   />
 }
 

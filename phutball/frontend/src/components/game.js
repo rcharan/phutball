@@ -1,21 +1,46 @@
 import React from 'react';
-import { BoardState, initialState, initialBallLoc } from '../gameLogic/boardState'
+import { BoardState, initialState, initialBallLoc, emptyState, emptyBallLoc} from '../gameLogic/boardState'
 import Board from './board'
 import JumpList from './jump'
 import History from './history'
 import AI from './ai'
+import API from '../api'
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props);
-		const initialBoard = new BoardState(initialState, initialBallLoc)
-		this.state = {
-			board         : initialBoard,
-			xIsNext       : true,
-			history       : [{moveStr : 'Reset', board : initialBoard}],
-			moveNum       : 1, // Number of move about to be made, 0 is start-of-game
-			jumpMouseOver : null,
+		// const initialBoard = new BoardState(initialState, initialBallLoc)
+		const emptyBoard = new BoardState(emptyState, emptyBallLoc);
+		var gameID = null;
+		if (this.props.gameID !== undefined) {
+			this.props.gameID = gameID
 		};
+
+		this.state = {
+			// board         : initialBoard,
+			board         : emptyBoard,
+			gameID        : gameID,
+			player0Name   : 'Player 1 - Default',
+			player1Name   : 'Player 2 - Default',
+			aiPlayer      : false,
+			aiPlayerNum   : false,
+			// history       : [{moveStr : 'Reset', board : initialBoard}],
+			history       : [],
+			moveNum       : 0, // Number of move about to be made, 0 is start-of-game
+			jumpMouseOver : null,
+			xIsNext       : false,
+			loading       : true
+		};
+		this.api = new API(gameID)
+
+	}
+
+	componentDidMount() {
+		this.api.createGame().then(result => {
+			this.setState(result);
+			this.setState({loading : false})
+			this.api.registerGameID(result.gameID);
+		})	
 	}
 
 	get isAiTurn() {
@@ -33,13 +58,15 @@ class Game extends React.Component {
 		if (moveInfo === null) {
 			return
 		}
+		const newMoveNum = this.state.moveNum + 1
 		this.setState({
 			board         : moveInfo.board,
 			xIsNext       : !this.state.xIsNext,
 			history       : this.state.history.slice(0, this.state.moveNum).concat([moveInfo]),
-			moveNum 	  : this.state.moveNum + 1,
+			moveNum 	  : newMoveNum,
 			jumpMouseOver : null,
 		})
+		this.api.postMove(moveInfo, newMoveNum)
 	}
 
 	handlePlacement(flatIndex) {
@@ -113,7 +140,10 @@ class Game extends React.Component {
 			return (
 				<div>
 					<h1>
-						Next player: {this.state.xIsNext ? 'X' : 'O'} <br/>
+						Next player: {this.state.xIsNext ?
+											this.state.player0Name : 
+											this.state.player1Name
+									 } <br/>
 					</h1>
 					Playing towards: {this.state.xIsNext ? 'Right' : 'Left'}
 				</div>
@@ -166,7 +196,7 @@ class Game extends React.Component {
 		return (
 			<div className = "game">
 				{[this.renderBoard(),
-				  this.renderGameInfo()]}
+				  this.state.loading? null : this.renderGameInfo()]}
 			</div>
 		)
 	}

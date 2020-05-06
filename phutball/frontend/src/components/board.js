@@ -225,7 +225,9 @@ class Board extends React.Component {
 		out = new PaddedArray(out)
 
 		// Add the ball to the board (or off the board as the case may be)
-		out.boardLoc(this.props.boardState.ballLoc).type = 'ball'
+		if (this.props.boardState.ballLoc !== null) {
+			out.boardLoc(this.props.boardState.ballLoc).type = 'ball'
+		}
 
 		// Add extra features for hovering
 		out = this.greyOutJumps(out)

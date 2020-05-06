@@ -9,6 +9,9 @@ const initialBallLoc = new Location((initialState.length - 1) / 2);
 
 initialState[initialBallLoc.flatIndex] = ball;
 
+const emptyState = Array(config.rows * config.cols).fill(empty)
+const emptyBallLoc = null
+
 class BoardState {
 
   // Allows empty construction (for copy)
@@ -112,4 +115,4 @@ class BoardState {
 
 };
 
-export {BoardState, initialState, initialBallLoc}
+export {BoardState, initialState, initialBallLoc, emptyState, emptyBallLoc}

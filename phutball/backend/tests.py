@@ -171,8 +171,8 @@ class GameSerializerTests(TestCase):
       'player_1_name' : 'Player 2',
       'ai_player'     : False,
       'ai_player_num' : False,
-      'history'       : [{'moveStr' : 'Reset'      , 'board' : initial_board},
-                         {'moveStr' : next_move_str, 'board' : next_board   }],
+      'history'       : [{'move_str' : 'Reset'      , 'board' : initial_board},
+                         {'move_str' : next_move_str, 'board' : next_board   }],
       'moveNum'       : 2,
       'jumpMouseOver' : None,
       'xIsNext'       : False

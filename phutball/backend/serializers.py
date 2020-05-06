@@ -113,7 +113,7 @@ class GameSerializer(ModelSerializer):
     history_data = []
 
     for move_num, move in enumerate(move_history):
-      history_data.append({'moveStr' : move.move_str, 'board' : BoardStateSerializer(move).data})
+      history_data.append({'move_str' : move.move_str, 'board' : BoardStateSerializer(move).data})
       if move_num != move.move_num:
         raise IntegrityError
 
