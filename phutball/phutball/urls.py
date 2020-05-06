@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from customers import views
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # url(r'^api/game/$', views.customers_list),
+    url(r'^api/game/(?P<pk>[0-9A-Z]{6,6})$', views.game_view),
+
 ]
