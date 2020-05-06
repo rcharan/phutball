@@ -6,7 +6,7 @@ from .serializers import MoveSerializer, GameSerializer
 from .models import Game, Move
 
 @api_view(['GET', 'PUT', 'POST'])
-def game_view(request, pk = None):
+def game_view(request):
   '''Game View:
     GET  - Load an entire game
     PUT  - Create a new game
@@ -14,44 +14,55 @@ def game_view(request, pk = None):
   '''
   if request.method == 'POST':
     return post_move(request)
-  else:
-    return create_or_load_game(request, pk)
 
-
-def create_or_load_game(request, game_id):
-  if request.method == 'PUT':
-    game = Game.new_game(game_id = game_id)
-    http_code = status.HTTP_201_CREATED
+  elif request.method == 'PUT':
+    return create_game(request)
 
   elif request.method == 'GET':
+    return load_game(request)
 
-    if game_exists(game_id):
-      game = Game.objects.get(pk = game_id)
-      http_code = status.HTTP_200_OK
 
+def create_game(request):
+
+  game_params = {}
+  for param in ['ai_player', 'player_0_name', 'player_1_name', 'ai_player_num']:
+    if param not in request.data or not request.data[param]:
+      pass
     else:
-      return game_dne()
+      game_params[param] = request.data[param]
+
+  game = Game.new_game(**game_params)
+  return Response({'game_id' : game.game_id}, status = status.HTTP_201_CREATED)
+
+def load_game(request):
+  game_id = request.data['game_id']
+
+  try:
+    game = Game.objects.get(pk = game_id)
+  except game.DoesNotExist:
+    return game_dne()
+
 
   serializer = GameSerializer(game)
-  return Response(serializer.data, status = http_code)
+  return Response(serializer.data, status = status.HTTP_200_OK)
+
 
 def post_move(request):
   game_id = request.data['game_id']
-  if game_exists(game_id):
+
+  try:
     game = Game.objects.get(pk = game_id)
-  else:
+  except game.DoesNotExist:
     return game_dne()
 
   serializer = MoveSerializer(data = request.data)
+
   if serializer.is_valid():
     serializer.save()
-    return Response({'Success' : 'Move logged'}, status = status.HTTP_201_CREATED)
+    return Response({'Success' : 'Move Logged'}, status = status.HTTP_201_CREATED)
 
   else:
-    return Response({'Error' : 'Invalid Move'}, status = status.HTTP_400_BAD_REQUEST)
-
-def game_exists(game_id):
-  return Game.objects.filter(pk = game_id).exists()
+    return Response({'Error' : 'Invalid Move'},  status = status.HTTP_400_BAD_REQUEST)
 
 def game_dne():
-  return 
+  return Response({'Error' : 'Game Does Not Exist'}, status = status.HTTP_404_NOT_FOUND)

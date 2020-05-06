@@ -41,11 +41,11 @@ class Game(Model):
 
   @classmethod
   def new_game(self,
-               ai_player = False,
                player_0_name = 'Player 1',
                player_1_name = 'Player 2',
+               ai_player     = False,
                ai_player_num = False,
-               game_id = None):
+               game_id       = None):
 
     if game_id is None:
       game_id = self.new_id()

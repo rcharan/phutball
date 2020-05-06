@@ -14,7 +14,7 @@ class AI extends React.Component {
 
 	tick() {
 		this.setState({time : this.state.time + 1})
-		if (this.state.time == 3) {
+		if (this.state.time === 3) {
 			this.setState({status : this.randomMove()})
 		} else if (this.state.time >= 5) {
 			this.props.doMove(this.state.status)	

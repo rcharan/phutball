@@ -1,30 +1,29 @@
 import React from 'react';
-import { BoardState, initialState, initialBallLoc, emptyState, emptyBallLoc} from '../gameLogic/boardState'
+import { BoardState, emptyState, emptyBallLoc} from '../gameLogic/boardState'
 import Board from './board'
 import JumpList from './jump'
 import History from './history'
 import AI from './ai'
 import API from '../api'
+import './game.css'
+import { useParams } from "react-router-dom";
+
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props);
-		// const initialBoard = new BoardState(initialState, initialBallLoc)
+
+		let { gameID } = useParams();
+
 		const emptyBoard = new BoardState(emptyState, emptyBallLoc);
-		var gameID = null;
-		if (this.props.gameID !== undefined) {
-			this.props.gameID = gameID
-		};
 
 		this.state = {
-			// board         : initialBoard,
 			board         : emptyBoard,
 			gameID        : gameID,
-			player0Name   : 'Player 1 - Default',
-			player1Name   : 'Player 2 - Default',
+			player0Name   : '',
+			player1Name   : '',
 			aiPlayer      : false,
 			aiPlayerNum   : false,
-			// history       : [{moveStr : 'Reset', board : initialBoard}],
 			history       : [],
 			moveNum       : 0, // Number of move about to be made, 0 is start-of-game
 			jumpMouseOver : null,
@@ -36,10 +35,9 @@ class Game extends React.Component {
 	}
 
 	componentDidMount() {
-		this.api.createGame().then(result => {
+		this.api.getGame().then(result => {
+			result['loading'] = false
 			this.setState(result);
-			this.setState({loading : false})
-			this.api.registerGameID(result.gameID);
 		})	
 	}
 
@@ -193,12 +191,16 @@ class Game extends React.Component {
 	}
 
 	render() {
-		return (
-			<div className = "game">
-				{[this.renderBoard(),
-				  this.state.loading? null : this.renderGameInfo()]}
-			</div>
-		)
+		if (this.state.loading) {
+			return <div className="loader">loading</div>
+		} else {
+			return (
+				<div className = "game">
+					{[this.renderBoard(),
+					  this.state.loading? null : this.renderGameInfo()]}
+				</div>
+			)
+		}
 	}
 }
 

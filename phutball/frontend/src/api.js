@@ -9,8 +9,11 @@ export default class API {
 	constructor(gameID) {
 		if (arguments.length === 0 || gameID === null) {
 			this.url = `${API_URL}/api/game/`
+
 		} else {
-			this.registerGameID(gameID)
+			
+			this.gameID = gameID
+			this.url = `${API_URL}/api/game/${gameID}`;
 		}
 	}
 
@@ -29,17 +32,14 @@ export default class API {
 		data.move_num = move_num
 		data.game_id  = this.gameID
 
-        return axios.post(this.url,data);
+        return axios.post(this.url, data);
+
 	}
 
 	createGame() {
-		return axios.put(this.url).then(request => deserializeGame(request.data))
+		return axios.put(this.url).then(request => request.data['game_id'])
 	}
 
-	registerGameID(gameID) {
-		this.gameID = gameID
-		this.url = `${API_URL}/api/game/${gameID}`;
-	}
 
 }
 
