@@ -1,5 +1,6 @@
 from rest_framework.serializers import Serializer, ModelSerializer
-from .models import Game, Board, id_len
+from .models import Game, Move, id_len
+from .game_logic import config
 
 ###########################################################################
 #
@@ -24,12 +25,12 @@ class IntegrityError(Exception):
 
 def location(boardDict):
   return {
-    numberIndex : ret['ball_loc_number_index'],
-    letterIndex : ret['ball_loc_letter_index']
+    'number_index' : boardDict['ball_loc_number_index'],
+    'letter_index' : boardDict['ball_loc_letter_index']
   }
 
 # Read and Write
-class MoveSerializer(serializers.ModelSerializer):
+class MoveSerializer(ModelSerializer):
   class Meta:
     model  = Move
     fields = ['game_id', 'move_str', 'move_num', 'board_state', 'ball_loc_letter_index', 'ball_loc_number_index']
@@ -53,27 +54,27 @@ class MoveSerializer(serializers.ModelSerializer):
     return out
 
 
-class BoardStateSerializer(Serializer):
+class BoardStateSerializer(ModelSerializer):
   '''Utility for Serializing Board States in the Read-only Game representation'''
   class Meta:
-    model            = Game
-    read_only_fields = ['board_state', 'ball_loc_number_index', 'ball_loc_letter_index']
+    model    = Move
+    fields   = ['board_state', 'ball_loc_number_index', 'ball_loc_letter_index']
   
   def to_representation(self, instance):
     ret = super().to_representation(instance)
     
     out = {
-      'spaceArray' : ret['board_state'],
-      'ballLoc'    : location(ret)
+      'space_array' : ret['board_state'],
+      'ball_loc'    : location(ret)
     } 
 
     return out
 
-class GameSerializer(serializers.ModelSerializer):
+class GameSerializer(ModelSerializer):
   '''Read Only to send Game State to the Frontend'''
   class Meta:
     model  = Game
-    read_only_fields = ['game_id', 'player_0_name', 'player_1_name', 'ai_player', 'ai_player_num']
+    fields = ['game_id', 'player_0_name', 'player_1_name', 'ai_player', 'ai_player_num']
 
   def to_representation(self, instance):
     '''Add in move history, other associated data'''
@@ -85,9 +86,10 @@ class GameSerializer(serializers.ModelSerializer):
 
     for move_num, move in enumerate(move_history):
       history_data.append({'moveStr' : move.move_str, 'board' : BoardStateSerializer(move).data})
-      if move_num != move.move_num
+      if move_num != move.move_num:
         raise IntegrityError
 
+    ret['history']       = history_data
     ret['board']         = history_data[-1]['board']
     ret['moveNum']       = move_num + 1
     ret['jumpMouseOver'] = None
