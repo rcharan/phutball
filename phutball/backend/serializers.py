@@ -29,9 +29,9 @@ def location(boardDict):
   }
 
 # Read and Write
-class BoardSerializer(serializers.ModelSerializer):
+class MoveSerializer(serializers.ModelSerializer):
   class Meta:
-    model  = Board
+    model  = Move
     fields = ['game_id', 'move_str', 'move_num', 'board_state', 'ball_loc_letter_index', 'ball_loc_number_index']
 
   def to_representation(self, instance):
