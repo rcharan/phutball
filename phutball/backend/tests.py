@@ -7,6 +7,44 @@ from .game_logic.game_state import initial_state
 from .game_logic import config
 from .game_logic.location_state import player
 
+def compare_structs(self, source, target):
+  # Base case for non-dict types
+  if not isinstance(source, dict):
+    self.assertEqual(source, target)
+    return
+  else:
+    # Unwrap to a regular dict
+    source = {k : v for k, v in source.items()}
+
+  # Compare Datatypes
+  self.assertEqual(type(source), type(target))
+
+  # Check keys
+  self.assertEqual(sorted(source.keys()), sorted(target.keys()))
+
+  for key in source.keys():
+    if isinstance(source[key], dict):
+      self.compare_structs(source[key], target[key])
+    elif isinstance(source[key], list):
+      for s, t in zip(source[key], target[key]):
+        self.compare_structs(s, t)
+    else:
+      self.assertEqual(source[key], target[key])
+
+# Computations for the initial ball location
+ball_loc_flat_index   = initial_state.index('O')
+ball_loc_number_index = ball_loc_flat_index % config.board_cols
+ball_loc_letter_index = ball_loc_flat_index // config.board_cols
+
+# Data Structure for the Initial Position
+initial_board = {
+  'space_array' : initial_state,
+  'ball_loc'    : {
+    'number_index' : ball_loc_number_index,
+    'letter_index' : ball_loc_letter_index
+  }
+}  
+
 class DataModelTests(TestCase):
   # def setUp(self):
     # game    = Game.new_game()
@@ -45,53 +83,17 @@ class GameSerializerTests(TestCase):
     with self.assertRaises(IntegrityError):
       GameSerializer(game).data
 
-  def compare_structs(self, source, target):
-
-    # Base case for non-dict types
-    if not isinstance(source, dict):
-      self.assertEqual(source, target)
-      return
-    else:
-      # Unwrap to a regular dict
-      source = {k : v for k, v in source.items()}
-
-    # Compare Datatypes
-    self.assertEqual(type(source), type(target))
-
-    # Check keys
-    self.assertEqual(sorted(source.keys()), sorted(target.keys()))
-
-    for key in source.keys():
-      if isinstance(source[key], dict):
-        self.compare_structs(source[key], target[key])
-      elif isinstance(source[key], list):
-        for s, t in zip(source[key], target[key]):
-          self.compare_structs(s, t)
-      else:
-        self.assertEqual(source[key], target[key])
 
   def test_serialize_game(self):
 
     game = Game.new_game()
-
-    # Computations for the initial ball location
-    ball_loc_flat_index   = initial_state.index('O')
-    ball_loc_number_index = ball_loc_flat_index % config.board_cols
-    ball_loc_letter_index = ball_loc_flat_index // config.board_cols
-
-    initial_board = {
-      'space_array' : initial_state,
-      'ball_loc'    : {
-        'number_index' : ball_loc_number_index,
-        'letter_index' : ball_loc_letter_index
-      }
-    }  
     
     # Make a move
     next_state    = initial_state[:2] + player.value + initial_state[3:]
     game.move_set.create(board_state = next_state, move_num = '1',
                          move_str = 'A4')
 
+    # Data Structure for the Resulting Position
     next_board = {
       'space_array' : next_state,
       'ball_loc' : {
@@ -100,13 +102,14 @@ class GameSerializerTests(TestCase):
       }
     }
 
-
+    # Output of serializer
     serializer = GameSerializer(game)
     data = serializer.data
 
+    # Expected output (when serializer is a dict)
     target = {
-      'board' : next_board,
-      'game_id' : game.game_id, 
+      'board'         : next_board,
+      'game_id'       : game.game_id, 
       'player_0_name' : 'Player 1',
       'player_1_name' : 'Player 2',
       'ai_player'     : False,
@@ -118,6 +121,32 @@ class GameSerializerTests(TestCase):
       'xIsNext'       : False
     }
 
+    # Show long diffs on failure
     self.maxDiff = None
-    self.compare_structs(data, target)
 
+    # Compare
+    compare_structs(self, data, target)
+
+
+class MoveSerializerTests(TestCase):
+
+  def test_read(self, instance):
+    game = Game.new_game()
+
+    # Serialize the game's only move
+    serializer = MoveSerializer(game.move_set[0])
+    data = serializer.data
+
+    target = {
+      'game_id'     : game.game_id,
+      'move_str'    : 'Reset',
+      'move_num'    : 0,
+      'ball_loc'    : initial_board['ball_loc']
+      'space_array' : initial_board['space_array']
+    }
+
+    self.maxDiff = None
+    compare_structs(self, data, target)
+
+  def test_write(self, instance):
+    pass
