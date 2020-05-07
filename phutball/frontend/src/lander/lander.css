@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   border:0;
-  /*overflow:hidden;*/
+  overflow:visible;
 }
 
 .lander * {
@@ -17,6 +17,11 @@
 
 .lander #p1, .lander #p2, .lander #p3, .lander #p4, .lander #p5 {
   left: 0;
+}
+
+.lander .rules svg {
+  width: auto;
+  height: 50vh;
 }
 
 .lander #p1 { background: #7DE5FF; }
