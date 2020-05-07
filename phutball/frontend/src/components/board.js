@@ -72,6 +72,8 @@ class Vector {
 *****************************************************************************/
 
 function arrow(sourceLoc, targetLoc) {
+	const id = sourceLoc.toString() + targetLoc.toString()
+
 	var source = uiConfig.xyCenterCoords(sourceLoc.letterIndex + 1, sourceLoc.number);
 	var target = uiConfig.xyCenterCoords(targetLoc.letterIndex + 1, targetLoc.number);
 
@@ -90,6 +92,7 @@ function arrow(sourceLoc, targetLoc) {
 			stroke = "red"
 			strokeWidth = "2"
 			markerEnd = "url(#arrow)"
+			key = {id}
 		/>
 	)
 }

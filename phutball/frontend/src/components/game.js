@@ -121,7 +121,7 @@ class Game extends React.Component {
 	renderNextMove() {
 		if (this.state.board.gameOver) {
 			return (
-				<div><h1>
+				<div key="gameover"><h1>
 					Winner: {this.state.board.winner ? this.state.player0Name : this.state.player1Name}
 				</h1></div>
 			)
