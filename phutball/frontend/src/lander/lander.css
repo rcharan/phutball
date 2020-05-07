@@ -1,34 +1,83 @@
-.lander .page {
-  width: 100vw;
-  height: 90vh;
-  margin: 0;
-  padding: 0;
-  border:0;
-  /*overflow:visible;*/
-}
-
 .lander * {
   font-family: 'open sans', 'lato', 'helvetica', sans-serif;
 }
 
 .lander .page {
-  position: relative;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  border:0;
+  left:0;
+  position:relative;
+  color: #fff;
+  font-size: 10px;
+  display: block;
+  overflow: hidden;
 }
 
-.lander #p1, .lander #p2, .lander #p3, .lander #p4, .lander #p5 {
+.lander .pagecontent form {
+  /*color: red;*/
+}
+
+.lander .pagecontent {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
   left: 0;
+  width: 80%;
+  /*height: 70vh;*/
+  margin: auto;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.3;
 }
 
+.lander .pagecontent .text {
+  align-items:left;
+  text-align: left;
+}
+
+.lander .pagecontent .title {
+  display: block;
+  font-size: 38px;
+  line-height: 2;
+}
+
+.lander .pagecontent a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.lander .page#home     {
+  background: #7DE5FF; 
+  height    : 90vh; 
+}
+.lander .page#rules    {
+  background: #2191AD; 
+  height    : 200vh; 
+}
 .lander .rules svg {
   width: auto;
   height: 50vh;
 }
+.lander .rules .pagecontent {
+  /*height:300vh;*/
+}
 
-.lander #p1 { background: #7DE5FF; }
-.lander #p2 { background: #2191AD; }
-.lander #p3 { background: #AD6421; }
-.lander #p4 { background: #32AD3D; }
-.lander #p5 { background: rebeccapurple; }
+.lander .page#play     {
+  background: #AD6421; 
+  height    : 90vh; 
+}
+.lander .page#moremath {
+  background: #32AD3D; 
+  height    : 90vh; 
+}
+.lander .page#about    {
+  background: rebeccapurple; 
+  height    : 90vh; 
+}
 
 .lander .icon {
   color: #fff;
@@ -36,15 +85,8 @@
   display: block;
 }
 
-.lander ul .icon:hover {
-  opacity: 0.5;
-}
 
-.lander .page .icon .title {
-  line-height: 2;
-}
-
-.lander ul {
+.lander #menu {
   position: fixed;
   z-index: 1;
   top: 0;
@@ -57,11 +99,20 @@
   text-align: center;
  }
 
+.lander #menu li {
+  justify-content: center;
+  align-items: center;
+}
+
 .lander #menu .icon {
   margin: 30px 0;
 }
 
-.lander .link {
+.lander #menu active {
+  color: green;
+}
+
+.lander #menu .link {
   text-decoration: none;
   cursor         : pointer;
 }
@@ -73,35 +124,4 @@
   fill  :white !important;
 }
 
-.lander #menu li {
-  justify-content: center;
-  align-items: center;
-}
-
-.lander .content .text {
-  align-items:left;
-  text-align: left;
-}
-
-.lander .title {
-  display: block;
-}
-
-.lander .title {
-  font-size: 38px;
-}
-
-.lander .page .icon {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  width: 80%;
-  height: 70vh;
-  margin: auto;
-  text-align: center;
-  font-size: 16px;
-  line-height: 1.3;
-}
 

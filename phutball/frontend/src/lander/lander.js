@@ -18,21 +18,21 @@ const content = [
   ['About'                  , <About/>   ],
 ]
 
-
-
+var elements = {}
+pageNames.forEach(name => (elements[name] = {}))
 
 export default class LandingPage extends React.Component {
 
   render() {
     return (
-        <ScrollNavigation elements={{ home: {}, rules: {}, about:{}, moremath:{}, play:{}}}>
+        <ScrollNavigation elements={elements}>
           {({ refs, activeElement, goTo }) => (
             <div className="lander home">
               <NavBar onClick={pageName => goTo(pageName)}/>
               <div id="content">
                 {content.map((pageContent, i) => 
-                  <div className="page" id={'p'+(i+1)} ref={refs[pageNames[i]]}>
-                    <section className="icon">
+                  <div className="page" id={pageNames[i]} ref={refs[pageNames[i]]}>
+                    <section className="pagecontent">
                     <span className="title">
                       {pageContent[0]}
                     </span>
