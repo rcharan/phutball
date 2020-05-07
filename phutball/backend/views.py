@@ -5,8 +5,8 @@ from rest_framework import status
 from .serializers import MoveSerializer, GameSerializer
 from .models import Game, Move
 
-@api_view(['GET', 'PUT', 'POST'])
-def game_view(request):
+@api_view(['GET', 'POST'])
+def game_view(request, pk):
   '''Game View:
     GET  - Load an entire game
     PUT  - Create a new game
@@ -15,15 +15,12 @@ def game_view(request):
   if request.method == 'POST':
     return post_move(request)
 
-  elif request.method == 'PUT':
-    return create_game(request)
-
   elif request.method == 'GET':
-    return load_game(request)
+    return load_game(request, pk)
 
-
+@api_view(['PUT'])
 def create_game(request):
-
+  print(f'Recieved a {request.method} request with data {request.data}')
   game_params = {}
   for param in ['ai_player', 'player_0_name', 'player_1_name', 'ai_player_num']:
     if param not in request.data or not request.data[param]:
@@ -34,9 +31,7 @@ def create_game(request):
   game = Game.new_game(**game_params)
   return Response({'game_id' : game.game_id}, status = status.HTTP_201_CREATED)
 
-def load_game(request):
-  game_id = request.data['game_id']
-
+def load_game(request, game_id):
   try:
     game = Game.objects.get(pk = game_id)
   except game.DoesNotExist:

@@ -36,8 +36,8 @@ export default class API {
 
 	}
 
-	createGame() {
-		return axios.put(this.url).then(request => request.data['game_id'])
+	createGame(data) {
+		return axios.put(this.url, data).then(request => request.data['game_id'])
 	}
 
 

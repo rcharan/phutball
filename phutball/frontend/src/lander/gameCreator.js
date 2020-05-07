@@ -15,13 +15,13 @@ export default class GameCreator extends React.Component {
     this.handlePlayer1Change = this.handlePlayer1Change.bind(this)
     this.handleSubmit        = this.handleSubmit.bind(this);
 
-    this.api = API()
+    this.api = new API()
 
   }
 
   handlePlayer0Change(event) {
     if (this.state.requestSent) {
-      event.preventdefault()
+      event.preventDefault()
     } else {
       this.setState({player0Name : event.target.value})
     }
@@ -29,36 +29,41 @@ export default class GameCreator extends React.Component {
 
   handlePlayer1Change(event) {
     if (this.state.requestSent) {
-      event.preventdefault()
+      event.preventDefault()
     } else {
       this.setState({player1Name : event.target.value})
     }
   }
 
   handleSubmit(event) {
-    event.preventdefault()
+    event.preventDefault()
+    const gameParams = {
+      'player_0_name' : this.state.player0Name,
+      'player_1_name' : this.state.player1Name
+    }
+
     this.setState({requestSent : true})
-    this.api.createGame().then(gameID => (window.location.href=`/game/${gameID}`))
+    this.api.createGame(gameParams).then(gameID => (window.location.href=`/game/${gameID}`))
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label for="player0">
+        <label>
           Player 1 (X's) Name:
+          <input type="text" id="player0"
+            value={this.state.player0Name} 
+            onChange={this.handlePlayer0Change}
+          />
         </label>
-        <input type="text" id="player0"
-          value={this.state.player0Name} 
-          onChange={this.handlePlayer0Change}
-        /><br/>
-
-        <label for="player1">
+        <br/>
+        <label>
           Player 2 (O's) Name:
-        </label>
-        <input type="text" id="player1"
-          value={this.state.player1Name} 
-          onChange={this.handlePlayer1Change}
-        /><br/>
+          <input type="text" id="player1"
+            value={this.state.player1Name} 
+            onChange={this.handlePlayer1Change}
+          />
+        </label><br/>
         <input type="submit" value={this.state.requestSent ? 'Preparing your game' : 'Get Started!'}/>
       </form>
     )

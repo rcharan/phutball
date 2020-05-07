@@ -8,6 +8,7 @@ import  './App.css';
 import Game from './components/game'
 import Lander from './lander/lander'
 
+// const BrowserHistory = require('react-router/lib/BrowserHistory').default;
 
 const  BaseLayout  = () => (
 	<div  className="container-fluid">

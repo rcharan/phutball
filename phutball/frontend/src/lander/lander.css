@@ -1,45 +1,45 @@
-html, body, .page {
+.lander .page {
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
   border:0;
-  color: #fff;
+  overflow:hidden;
 }
 
-* {
+.lander * {
   font-family: 'open sans', 'lato', 'helvetica', sans-serif;
 }
 
-.page {
+.lander .page {
   position: relative;
 }
 
-#p1, #p2, #p3, #p4, #p5 {
+.lander #p1, .lander #p2, .lander #p3, .lander #p4, .lander #p5 {
   left: 0;
 }
 
-#p1 { background: darkslateblue; }
-#p2 { background: tomato; }
-#p3 { background: gold; }
-#p4 { background: deeppink; }
-#p5 { background: rebeccapurple; }
+.lander #p1 { background: darkslateblue; }
+.lander #p2 { background: tomato; }
+.lander #p3 { background: gold; }
+.lander #p4 { background: deeppink; }
+.lander #p5 { background: rebeccapurple; }
 
-.icon {
+.lander .icon {
   color: #fff;
   font-size: 32px;
   display: block;
 }
 
-ul .icon:hover {
+.lander ul .icon:hover {
   opacity: 0.5;
 }
 
-.page .icon .title {
+.lander .page .icon .title {
   line-height: 2;
 }
 
-ul {
+.lander ul {
   position: fixed;
   z-index: 1;
   top: 0;
@@ -52,23 +52,23 @@ ul {
   text-align: center;
  }
 
-#menu .icon {
+.lander #menu .icon {
   margin: 30px 0;
 }
 
-a {
+.lander a {
   text-decoration: none;
 }
 
-.title {
+.lander .title {
   display: block;
 }
 
-.title {
+.lander .title {
   font-size: 38px;
 }
 
-.page .icon {
+.lander .page .icon {
   position: absolute;
   top: 0;
   bottom: 0;

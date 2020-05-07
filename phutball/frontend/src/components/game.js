@@ -6,15 +6,14 @@ import History from './history'
 import AI from './ai'
 import API from '../api'
 import './game.css'
-import { useParams } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props);
 
-		let { gameID } = useParams();
-
+		const gameID     = this.props.match.params.gameID
 		const emptyBoard = new BoardState(emptyState, emptyBallLoc);
 
 		this.state = {
@@ -56,15 +55,15 @@ class Game extends React.Component {
 		if (moveInfo === null) {
 			return
 		}
-		const newMoveNum = this.state.moveNum + 1
+		const oldMoveNum = this.state.moveNum
 		this.setState({
 			board         : moveInfo.board,
 			xIsNext       : !this.state.xIsNext,
 			history       : this.state.history.slice(0, this.state.moveNum).concat([moveInfo]),
-			moveNum 	  : newMoveNum,
+			moveNum 	  : oldMoveNum + 1,
 			jumpMouseOver : null,
 		})
-		this.api.postMove(moveInfo, newMoveNum)
+		this.api.postMove(moveInfo, oldMoveNum)
 	}
 
 	handlePlacement(flatIndex) {
@@ -192,7 +191,7 @@ class Game extends React.Component {
 
 	render() {
 		if (this.state.loading) {
-			return <div className="loader">loading</div>
+			return <div className="loader">Loading</div>
 		} else {
 			return (
 				<div className = "game">
@@ -205,4 +204,4 @@ class Game extends React.Component {
 }
 
 
-export default Game
+export default withRouter(Game)

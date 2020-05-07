@@ -20,7 +20,7 @@ from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^api/game/$', views.game_view),
-    url(r'^api/game/(?P<pk>[0-9A-Z]{6,6})$', views.game_view),
+    url(r'^api/game/$', views.create_game),
+    url(r'^api/game/(?P<pk>[A-Z0-9]{6})/?$', views.game_view),
 
 ]

@@ -2,60 +2,70 @@ import React from 'react';
 import './lander.css'
 import GameCreator from './gameCreator'
 
-/*
-@author Alberto Hartzet 
-*
-*I wouldn't mind if you use this piece of code in your project as long 
-as you give credit with a link to my site. www.albertohartzet.com
-*
-Licence (CC BY-NC-SA 4.0) http://creativecommons.org/licenses/by-nc-sa/4.0/
-*/
+const content = [
+  ['Hello' , 'Hello'  , welcomeContent() ],
+  ['Rules' , 'Rules'  , rulesContent()   ],
+  ['Conway', 'Conway' , conwayContent()  ],
+  ['Play'  , 'Play'   , playContent()    ],
+  ['About' , 'About'  , aboutContent()   ]
+]
+
+function welcomeContent() {
+  return 'Welcome to blah'
+}
+
+function rulesContent() {
+  return 'Here be Rules'
+}
+
+function conwayContent() {
+  return 'About John Conway'
+}
+
+function playContent() {
+  return <GameCreator />
+}
+
+function aboutContent() {
+  return 'About blah'
+}
 
 export default class LandingPage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      page : 0
+    }
+  }
+
+  handleClick(pageNum) {
+    this.setState({page : pageNum})
+  }
+
+  doNothing() {
+    return null
+  }
 
   render() {
     return (
-      <div class="landing-page">
+      <div className="lander home">
           <ul id="menu">
-            <a href="#p1"><li class="icon fa fa-bolt" id="uno">Hello</li></a>
-            <a href="#p2"><li class="icon fa fa-keyboard-o" id="dos">Rules</li></a>
-            <a href="#p3"><li class="icon fa fa-rocket" id="tres">Conway</li></a>
-            <a href="#p4"><li class="icon fa fa-dribbble" id="cuatro">Play</li></a>
-            <a href="#p5"><li class="icon fa fa-plus-circle" id="cinco">About</li></a>
+            {content.map((list, i) => 
+              <li className="icon" onClick={() => this.handleClick(i)} key={i}>
+                <a className="icon" href="javascript: void(0)" onClick={this.doNothing}>{list[0]}</a>
+              </li>
+            )}
           </ul>
-          <div class="page" id="p1">
-            <section class="icon fa fa-bolt">
-            <span class="title">Hello</span>
-            <span class="hint">
-              Some welcome text goes here
+          <div className="page" id={'p'+(this.state.page+1)}>
+            <section className="icon">
+            <span className="title">
+              {content[this.state.page][1]}
+            </span>
+            <span className="text">
+              {content[this.state.page][2]}
             </span>
             </section>
           </div>
-          <div class="page" id="p2">
-             <section class="icon fa fa-bolt">
-             <span class="title">Rules</span>
-             <span class="hint">Rules go here</span>
-             </section>  
-          </div>
-          <div class="page" id="p3">
-             <section class="icon fa fa-bolt">
-             <span class="title">John Conway</span>
-             <span class="hint">Some more facts about him</span>
-             </section>  
-          </div>
-          <div class="page" id="p4">
-             <section class="icon fa fa-bolt">
-             <span class="title">Play</span>
-             <span class="hint"><GameCreator /></span>
-             </section>  
-          </div>
-           <div class="page" id="p5">
-             <section class="icon fa fa-bolt">
-             <span class="title">About</span>
-             <span class="hint">Some about info goes here</span>
-             </section>  
-          </div>
-
       </div>
     )
   }
