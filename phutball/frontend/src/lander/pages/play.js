@@ -1,7 +1,18 @@
 import React from 'react';
-import API from '../api'
+import API from '../../api'
 
-export default class GameCreator extends React.Component {
+export default class Play extends React.Component {
+  render() {
+    return (
+      <GameCreator/>
+    );
+  }
+};
+
+
+
+
+class GameCreator extends React.Component {
   constructor(props) {
     super(props)
 
