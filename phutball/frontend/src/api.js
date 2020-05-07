@@ -52,7 +52,6 @@ export default class API {
 **************************************************************************/
 
 function deserializeGame(data) {
-	console.log(data.history)
 	return {
 		board         : deserializeBoard(data.board),
 		gameID        : data.game_id,

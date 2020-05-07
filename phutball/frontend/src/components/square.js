@@ -30,11 +30,12 @@ function rectangle() {
 					  fill="#FFFFFF" fillOpacity="0.0"
 					  stroke="#FFFFFF" strokeWidth={uiConfig.borderWidth}
 					  strokeOpacity="0.0"
+					  key="rect"
 		   />
 }
 
 
-function crossComponent(startX, startY) {
+function crossComponent(startX, startY, id) {
 	const strokeLen = uiConfig.cellOffset/2
 	return (<path
 				d={`M ${strokeLen*startX} ${strokeLen*startY} L ${strokeLen} ${strokeLen}`}
@@ -42,13 +43,14 @@ function crossComponent(startX, startY) {
 				fillOpacity="0.0"
 				stroke="#000000"
 				strokeWidth={uiConfig.borderWidth}
+				key={id}
 			/>)
 }
 
-const leftCross   = crossComponent(0,1)
-const rightCross  = crossComponent(2,1)
-const topCross    = crossComponent(1,0)
-const bottomCross = crossComponent(1,2)
+const leftCross   = crossComponent(0,1, 'left')
+const rightCross  = crossComponent(2,1, 'right')
+const topCross    = crossComponent(1,0, 'top')
+const bottomCross = crossComponent(1,2, 'bottom')
 
 
 class Square extends React.Component {
@@ -74,12 +76,30 @@ class Square extends React.Component {
 
 			case 'player':
 				return ([...this.cross(), 
-					<circle cx="50%" cy="50%" r="30%" stroke="#000000" strokeWidth="2" fill="#000000" fillOpacity="1.0"/>,
+					<circle
+						cx="50%"
+						cy="50%"
+						r="30%"
+						stroke="#000000"
+						strokeWidth="2"
+						fill="#000000"
+						fillOpacity="1.0"
+						key="circle"
+					/>,
 				]);
 
 			case 'playerGray':
 				return ([
-					<circle cx="50%" cy="50%" r="30%" stroke="#999999" strokeWidth="2" fill="#999999" fillOpacity="1.0"/>,
+					<circle
+						cx="50%"
+						cy="50%"
+						r="30%"
+						stroke="#999999"
+						strokeWidth="2"
+						fill="#999999"
+						fillOpacity="1.0"
+						key="circle"
+					/>,
 					...this.cross()
 				]);
 
@@ -88,6 +108,7 @@ class Square extends React.Component {
 							cx="50%" cy="50%" r="30%"
 							stroke="#000000" strokeWidth="2"
 							fill="#FFFFFF" fillOpacity="1.0"
+							key="circle"
 						/>]
 
 			case 'ballGray':
@@ -95,6 +116,7 @@ class Square extends React.Component {
 							cx="50%" cy="50%" r="30%"
 							stroke="#999999" strokeWidth="2"
 							fill="#DDDDDD" fillOpacity="1.0"
+							key="circle"
 					   />]
 
 			default:

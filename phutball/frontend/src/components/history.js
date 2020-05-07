@@ -22,7 +22,7 @@ class History extends React.Component {
 
 		// Render JSX
 		return (
-			<>
+			<div key="historytable">
 			<table>
 				<thead>
 				<tr>
@@ -33,12 +33,15 @@ class History extends React.Component {
 				</thead>
 				<tbody>
 				{rows.map((historyArray, index) => 
-					<HistoryRow
-						rowNum  = {index + 1}
-						items   = {historyArray}
-						onClick = {this.props.onClick}
-						key     = {index + 1}
-					/>
+					<tr key={index+1}>		
+					<td key="row"><b>{index+1}.</b></td>
+						<HistoryRow
+							rowNum  = {index + 1}
+							items   = {historyArray}
+							onClick = {this.props.onClick}
+							key     = {index + 1}
+						/>
+					</tr>
 					)
 				}
 				</tbody>
@@ -48,41 +51,37 @@ class History extends React.Component {
 				moveNum = {initialState.moveNum}
 				moveStr = {initialState.moveStr}
 			/>
-			</>
+			</div>
 		);
 
 	}
-}
+};
 
 
 class HistoryRow extends React.Component {
 	render() {
-		return (
-			<tr key = {this.props.rowNum}>		
-			<td><b>{this.props.rowNum}.</b></td>
-			{this.props.items.map(item => 
-				<HistoryButton
+		return (this.props.items.map((item, i) => (
+				<td key={i}><HistoryButton
 					onClick = {this.props.onClick}
 					moveNum = {item.moveNum}
 					moveStr = {item.moveStr}
 					key     = {item.moveNum}
-				/>
-			)}
-			</tr>
-		)	
+				/></td>
+			))
+		)
 	}
 }
 
 class HistoryButton extends React.Component {
 	render() {
 		return (
-			<td><button
+			<button
 				className   = "historyButton"
 				onClick     = {() => this.props.onClick(this.props.moveNum)}
 				key         = {this.props.moveNum}
 			>
 				{this.props.moveStr}
-			</button></td>
+			</button>
 		)	
 	}
 }

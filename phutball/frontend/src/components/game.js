@@ -108,7 +108,7 @@ class Game extends React.Component {
 
 	renderBoard() {
 		return (
-			<div className = "game-board">
+			<div key="gameboard" className = "game-board">
 				<Board 
 					boardState     = {this.state.board}
 					onPlace        = {(i) => this.handlePlacement(i)}
@@ -122,7 +122,7 @@ class Game extends React.Component {
 		if (this.state.board.gameOver) {
 			return (
 				<div><h1>
-					Winner: {this.state.board.winner ? 'X' : 'O'}
+					Winner: {this.state.board.winner ? this.state.player0Name : this.state.player1Name}
 				</h1></div>
 			)
 		} else if (this.isAiTurn) {
@@ -135,14 +135,16 @@ class Game extends React.Component {
 			)
 		} else {
 			return (
-				<div>
+				<div key="nextplayer">
 					<h1>
 						Next player: {this.state.xIsNext ?
 											this.state.player0Name : 
 											this.state.player1Name
 									 } <br/>
 					</h1>
+					<div>
 					Playing towards: {this.state.xIsNext ? 'Right' : 'Left'}
+					</div>
 				</div>
 			)
 		}
@@ -154,7 +156,7 @@ class Game extends React.Component {
 			return null
 		} else {
 			return (
-				<div className = "jumps"><h1>Jumps</h1><br/>
+				<div key="jumplist" className = "jumps"><h1>Jumps</h1><br/>
 					<JumpList
 						boardState   = {this.state.board}
 						onJump       = {(jumpObj) => this.handleJump(jumpObj)}
@@ -168,7 +170,7 @@ class Game extends React.Component {
 
 	renderHistory() {
 		return (
-			<div className = "history"><h1>History</h1><br/>
+			<div key="history" className="history"><h1>History</h1><br/>
 				<History
 					history     = {this.state.history}
 					onClick     = {(moveNum) => this.handleHistory(moveNum)}
@@ -179,7 +181,7 @@ class Game extends React.Component {
 
 	renderGameInfo() {
 		return (
-			<div className = "game-info">
+			<div key="gameinfo" className = "game-info">
 				{[
 					this.renderNextMove(),
 					this.renderJumpList(),

@@ -51,8 +51,8 @@ export default class LandingPage extends React.Component {
       <div className="lander home">
           <ul id="menu">
             {content.map((list, i) => 
-              <li className="icon" onClick={() => this.handleClick(i)} key={i}>
-                <a className="icon" href="javascript: void(0)" onClick={this.doNothing}>{list[0]}</a>
+              <li className="icon link" onClick={() => this.handleClick(i)} key={i}>
+                {list[0]}
               </li>
             )}
           </ul>
