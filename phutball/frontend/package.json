@@ -10,8 +10,10 @@
     "css-loader": "^3.5.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-katex": "^2.0.2",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "react-single-page-navigation": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -11,8 +11,10 @@ import { ReactComponent as RulesA   } from '../icons/rules-a.svg'
 import { ReactComponent as RulesB   } from '../icons/rules-b.svg'
 import { ReactComponent as RulesC   } from '../icons/rules-c.svg'
 
-import 'katex/dist/katex.min.css';
+// import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
+
+import ScrollNavigation from 'react-single-page-navigation';
 
 
 function homeContent() {
@@ -221,11 +223,15 @@ function aboutContent() {
 }
 
 const content = [
-  [`Philospher's Football`  , homeContent() ],
-  ['Rules'  , rulesContent()   ],
-  ['Play'   , playContent()    ],
-  ['More Fun Things', mathContent()  ],
-  ['About'  , aboutContent()   ]
+  [`Philospher's Football`  , homeContent() , 'home'],
+  ['Rules'  , rulesContent()   ,'rules'],
+  ['Play'   , playContent()    ,'play'],
+  ['More Fun Things', mathContent(),  'moremath'],
+  ['About'  , aboutContent()   ,'about']
+]
+
+const pageNames = [
+  'home', 'rules', 'play', 'moremath', 'about'
 ]
 
 const menuContent = [
@@ -255,25 +261,34 @@ export default class LandingPage extends React.Component {
 
   render() {
     return (
-      <div className="lander home">
-          <ul id="menu">
-            {menuContent.map((content, i) => 
-              <li className="icon link" onClick={() => this.handleClick(i)} key={i}>
+        <ScrollNavigation elements={{ home: {}, rules: {}, about:{}, moremath:{}, play:{}}}>
+          {({ refs, activeElement, goTo }) => (
+            <div className="lander home">
+              <ul id="menu">
+                {menuContent.map((content, i) => 
+                <li className="icon link" onClick={() => goTo(pageNames[i])} key={i}>
                   {content}
-              </li>
-            )}
-          </ul>
-          <div className="page" id={'p'+(this.state.page+1)}>
-            <section className="icon">
-            <span className="title">
-              {content[this.state.page][0]}
-            </span>
-            <span className="text">
-              {content[this.state.page][1]}
-            </span>
-            </section>
-          </div>
-      </div>
+                </li>
+                )}
+              </ul> 
+              <div id="content">
+                {content.map((pageContent, i) => 
+                  <div className="page" id={'p'+(i+1)} ref={refs[pageNames[i]]}>
+                    <section className="icon">
+                    <span className="title">
+                      {pageContent[0]}
+                    </span>
+                    <span className="text">
+                      {pageContent[1]}
+                    </span>
+                    </section>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+     </ScrollNavigation>
+
     )
   }
 
