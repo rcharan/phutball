@@ -27,7 +27,7 @@ export default class LandingPage extends React.Component {
     return (
         <ScrollNavigation elements={elements}>
           {({ refs, activeElement, goTo }) => (
-            <div className="lander home">
+            <div className="lander">
               <NavBar onClick={pageName => goTo(pageName)}/>
               <div id="content">
                 {content.map((pageContent, i) => 
