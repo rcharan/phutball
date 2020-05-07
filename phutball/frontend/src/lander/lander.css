@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   border:0;
-  overflow:hidden;
+  /*overflow:hidden;*/
 }
 
 .lander * {
@@ -19,15 +19,15 @@
   left: 0;
 }
 
-.lander #p1 { background: darkslateblue; }
-.lander #p2 { background: tomato; }
-.lander #p3 { background: gold; }
-.lander #p4 { background: deeppink; }
+.lander #p1 { background: #7DE5FF; }
+.lander #p2 { background: #2191AD; }
+.lander #p3 { background: #AD6421; }
+.lander #p4 { background: #32AD3D; }
 .lander #p5 { background: rebeccapurple; }
 
 .lander .icon {
   color: #fff;
-  font-size: 32px;
+  font-size: 10px;
   display: block;
 }
 
@@ -46,7 +46,7 @@
   bottom: 0;
   left: 0;
   margin: auto;
-  height: 280px;
+  height: 350px;
   width: 10%;
   padding: 0;
   text-align: center;
@@ -58,7 +58,24 @@
 
 .lander .link {
   text-decoration: none;
-  cursor: pointer;
+  cursor         : pointer;
+}
+
+.lander #menu svg {
+  width :30px;
+  height:30px;
+  stroke:white;
+  fill  :white !important;
+}
+
+.lander #menu li {
+  justify-content: center;
+  align-items: center;
+}
+
+.lander .content .text {
+  align-items:left;
+  text-align: left;
 }
 
 .lander .title {
@@ -75,8 +92,8 @@
   bottom: 0;
   right: 0;
   left: 0;
-  width: 270px;
-  height: 170px;
+  width: 80%;
+  height: 70vh;
   margin: auto;
   text-align: center;
   font-size: 16px;
