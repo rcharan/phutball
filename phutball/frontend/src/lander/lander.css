@@ -51,6 +51,10 @@
   margin-bottom: 0;
 }
 
+.lander .pagecontent ul {
+  list-style-type: disc;
+}
+
 /******************************************************************************
 *
 * Page Specifics
@@ -60,23 +64,59 @@
 .lander .page#home     {
   background: #7DE5FF; 
 }
+
+
+
 .lander .page#rules    {
   background: #2191AD; 
 }
 
+
+
 .lander .page#play     {
   background: #AD6421; 
 }
-/*.lander .pagecontent #play form {*/
-  /*color: red;*/
-/*}*/
+
+.lander .page#play #creator {
+  text-align: center;
+}
+
+.lander .page#play #creator input {
+  margin: 10px;
+  border: none;
+}
+
+.lander .page#play #creator input[type="text"] {
+  font-size: 24px;
+  padding: 5px;
+}
+
+.lander .page#play #creator input:focus,
+.lander .page#play #creator input:active {
+  outline: 0;
+  outline-offset: 0 ;
+  background-image: none ;
+  -webkit-box-shadow: none;
+  box-shadow: none ; 
+  color: transparent;
+  text-shadow: 0 0 0 black;
+}
+
+.lander .page#play #creator input.submit {
+  background-color: #2191AD;
+  color: white;
+  min-width: 30vw;
+}
+
+
+
+.lander .page#play #creator .submit {
+  margin: 10px;
+  border: none;
+}
 
 .lander .page#moremath {
   background: #32AD3D; 
-}
-
-.lander .page#moremath ul {
-  list-style-type: disc;
 }
 
 
@@ -228,11 +268,11 @@
 }
 
 .lander #menu .icon[active="yes"] svg {
-  width: 50px;
-  height:50px;
+  width: 60px;
+  height:60px;
 }
 
 .lander #menu .icon[active="yes"] {
-  font-size: 14px;
+  font-size: 16px;
   stroke-width: 2px;
 }

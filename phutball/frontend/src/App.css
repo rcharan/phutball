@@ -4,3 +4,35 @@ html, body {
   border:0;
   overflow-x:hidden;
 }
+
+/* Override default button settings */
+
+button, input.submit {
+	display: inline-block;
+    border: none;
+    padding: 1rem 2rem;
+    margin: 0;
+    text-decoration: none;
+    background: #0069ed;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 250ms ease-in-out, 
+                transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+button:focus,
+button:active,
+input.submit:focus,
+input.submit:active {
+  outline: 0;
+  outline-offset: 0 ;
+  background-image: none ;
+  -webkit-box-shadow: none;
+  box-shadow: none ;
+
+}
