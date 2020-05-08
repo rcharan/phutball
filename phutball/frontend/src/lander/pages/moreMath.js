@@ -105,7 +105,7 @@ export default class MoreMath extends React.Component {
           <ul>
               <li>
               Conway figured out and wrote down the description of three of the
-              (26 or 27, depending how you count &ndash; Conway reportedly counted 27)
+              26 (or 27, depending how you count &ndash; Conway reportedly counted 27)
               sporadic finite simple groups, the <a
               href="https://en.wikipedia.org/wiki/Conway_group">Conway groups</a>.
               </li>

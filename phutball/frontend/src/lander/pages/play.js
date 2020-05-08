@@ -20,7 +20,7 @@ export default class Play extends React.Component {
           real-life person on the same computer. Workarounds are available however:</p>
           <ul>
             <li id="3">
-          Future versions will include bots you can play against!
+          Future versions will include bots you can play against! (This workaround is called &ldquo;waiting&rdquo;)
             </li>
           <li id="2"> If you want to play against another real-life person who will use a
           different computer, you can play pseudo-asynchronously by
@@ -49,8 +49,10 @@ export default class Play extends React.Component {
         <div id="content" className="text" key="d">
           <p>
           Looking to resume a previous game? All games are saved if
-          you played online! Just find a URL like philosophers.football/game/ABC123 in your browser history.
+          your internet was working! Just find a URL like philosophers.football/game/ABC123 in your browser history.
           </p>
+          <p>Can't find your game, or accidentally lost access to the move history to an epic match by going back in the history
+          and starting a new branch? Contact me (see the About section) to get your data back.</p>
         </div>
       </div>
       </span>
