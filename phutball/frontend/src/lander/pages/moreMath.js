@@ -53,9 +53,9 @@ export default class MoreMath extends React.Component {
         <li>My favorite Conway ingenuity is FRACTRAN. I have intentionally not provided a link so 
           you can spend a few minutes trying to figure out the shenanigans.
           <ol>
-            <li>A FRACTRAN program consists of an ordered list (possibly infinite) of positive fractions in lowest terms.</li>
+            <li>A FRACTRAN program consists of an ordered list of positive fractions in lowest terms.</li>
             <li>A FRACTRAN program takes as input a positive integer n.</li>
-            <li>A FRACTRAN program is evaluated by, at each step, find the first
+            <li>A FRACTRAN program is evaluated by, at each step, finding the first
               fraction <InlineMath math="f"/> in the program such
               that <InlineMath math="nf"/> is an integer. Then <InlineMath math="nf"/> is produced as an output
               and the program recurses with the previous output as a new input.
@@ -78,9 +78,14 @@ export default class MoreMath extends React.Component {
                 \frac{55}{ 1}
               \right)"/> with input <InlineMath math="n = 2"/> produces a series of outputs
               which, when filtered to restrict to powers of 2, gives exactly the prime powers
-              of 2 in order. Go Figure.
+              of 2 in order. In other words, it computes the primes.
             </li>
-            <li> FRACTRAN is Turing-complete.</li>
+            <li> FRACTRAN is <a
+              href="https://en.wikipedia.org/wiki/Turing_completeness">
+              Turing-complete</a> (!) and an excellent example
+              of an <a href="https://en.wikipedia.org/wiki/Esoteric_programming_language">
+              esoteric programming language</a>.
+            </li>
           </ol>
         </li>
 
@@ -105,7 +110,7 @@ export default class MoreMath extends React.Component {
             <li> In particular, in a 1979 paper with Simon Norton, he gave the <a
             href="https://en.wikipedia.org/wiki/Monstrous_moonshine">Monstrous Moonshine
             </a> conjecture. So called because you&rsquo;d have to drink quite a bit of Moonshine to
-            believe it.
+            believe it. (Spoiler: it is in fact true)
             </li>
           </ul>
         </li>
