@@ -80,6 +80,7 @@ export default class MoreMath extends React.Component {
               which, when filtered to restrict to powers of 2, gives exactly the prime powers
               of 2 in order. Go Figure.
             </li>
+            <li> FRACTRAN is Turing-complete.</li>
           </ol>
         </li>
 
