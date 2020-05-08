@@ -6,11 +6,11 @@ import { InlineMath, BlockMath } from 'react-katex';
 export default class MoreMath extends React.Component {
   render() {
     return (
-      <div class="content">
-        <div class="subtitle">
+      <div className="content">
+        <div className="subtitle">
           More about Philospher's Football and other Conway things      
         </div>
-        <div class="text">
+        <div className="text">
       <ol> 
         <li>
           Philospher's Football
