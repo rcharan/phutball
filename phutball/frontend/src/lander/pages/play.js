@@ -1,12 +1,18 @@
 import React from 'react';
 import API from '../../api'
+import { version, releaseDate } from '../versionInfo'
 
 export default class Play extends React.Component {
   render() {
     return (
+      <div>
+      <span className="title">
+        Play
+      </span>
+      <span className="text">
       <div className="content">
         <div id="sub" className="subtitle" key="a">
-          Version 0.1 (May 8, 2020)
+          Version {version} ({releaseDate})
         </div>
         <div id="content" className="text" key="b">
           <p id="1">
@@ -46,6 +52,8 @@ export default class Play extends React.Component {
           you played online! Just find a URL like philosophers.football/game/ABC123 in your browser history.
           </p>
         </div>
+      </div>
+      </span>
       </div>
     );
   }
@@ -106,6 +114,7 @@ class GameCreator extends React.Component {
           Player 1 (X's) <input type="text" id="player0"
             value={this.state.player0Name} 
             onChange={this.handlePlayer0Change}
+            placeholder="Player 1"
           />
         </label>
         <br/>
@@ -113,6 +122,7 @@ class GameCreator extends React.Component {
           Player 2 (O's) <input type="text" id="player1"
             value={this.state.player1Name} 
             onChange={this.handlePlayer1Change}
+            placeholder="Player 2"
           />
         </label><br/>
         <input className="submit" type="submit" value={this.state.requestSent ? 'Preparing your game' : 'Get Started!'}/>

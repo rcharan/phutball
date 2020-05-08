@@ -6,7 +6,12 @@ export default class Rules extends React.Component {
   render() {
     return (
       <div>
+	    <span className="title">
+          Rules
+        </span>
+      <span className="text">
         <RulesD/>
+      </span>
       </div>
     );
   }

@@ -3,6 +3,11 @@ import React from "react";
 export default class Home extends React.Component {
   render() {
     return (
+      <div>
+      <span className="title">
+        Philosopher&rsquo;s Football
+      </span>
+      <span className="text">
       <div className="content">
         <div className="subtitle" id="sub">In honor of John Conway,
           <sup>&#10033;</sup>1938 &ndash; <sup>&dagger;</sup>2020</div>
@@ -25,6 +30,8 @@ export default class Home extends React.Component {
           have to find someone to play with (on the same computer). You can also find more about the game and other fun things
           from the mind of John Conway under &ldquo;More Math&rdquo;
         </div>
+      </div>
+      </span>
       </div>
   )
   }

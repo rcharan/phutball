@@ -11,11 +11,11 @@ import About from './pages/about'
 import Rules from './pages/rules'
 
 const content = [
-  [`Philospher's Football`  , <Home/>    ],
-  ['Rules'                  , <Rules/>   ],
-  ['Play'                   , <Play/>    ],
-  ['More Fun Things'        , <MoreMath/>],
-  ['About'                  , <About/>   ],
+  <Home/>,
+  <Rules/> ,
+  <Play/>  ,
+  <MoreMath/>,
+  <About/>   ,
 ]
 
 var elements = {}
@@ -33,12 +33,7 @@ export default class LandingPage extends React.Component {
                 {content.map((pageContent, i) => 
                   <div className="page" id={pageNames[i]} ref={refs[pageNames[i]]}>
                     <section className="pagecontent">
-                    <span className="title">
-                      {pageContent[0]}
-                    </span>
-                    <span className="text">
-                      {pageContent[1]}
-                    </span>
+                      {pageContent}
                     </section>
                   </div>
                 )}
