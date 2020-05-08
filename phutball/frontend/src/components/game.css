@@ -1,6 +1,24 @@
 .game {
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
+  background-color: #2191AD;
+  min-width: 100vw;
+  min-height: 100vh;
+  margin : 0;
+  padding: 0;
+  overflow: visible;
+}
+
+.game .board {
+	min-width: 70vw;
+}
+
+.game .game-info {
+	overflow: scroll;
+	min-width: 30vw;
+	margin: 0;
+	padding: 0;
+	overflow: visible;
 }
 
 .game ol, .game ul {
@@ -16,6 +34,3 @@
   flex-direction: row;
 }
 
-.game .game-info {
-  margin-left: 20px;
-}
