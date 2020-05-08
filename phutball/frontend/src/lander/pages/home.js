@@ -1,14 +1,18 @@
 import React from "react";
+import { ReactComponent as EyeCandy } from '../../icons/philosphers-play-football.svg'
 
 export default class Home extends React.Component {
   render() {
     return (
       <div>
+      <div className="logo-float" key="1">
+        <EyeCandy/>
+      </div>
       <span className="title">
         Philosopher&rsquo;s Football
       </span>
       <span className="text">
-      <div className="content">
+      <div className="content" key="2">
         <div className="subtitle" id="sub">In honor of John Conway,
           <sup>&#10033;</sup>1938 &ndash; <sup>&dagger;</sup>2020</div>
           <br/>

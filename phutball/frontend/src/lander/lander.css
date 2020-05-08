@@ -68,6 +68,15 @@
   background: #7DE5FF; 
 }
 
+.lander .page#home .logo-float {
+  float: right;
+}
+
+.lander .page#home .logo-float svg {
+  width: 20vw;
+  height: auto;
+}
+
 
 
 .lander .page#rules    {
@@ -136,23 +145,22 @@
 }
 
 .lander .page#about svg {
-  height : calc(80vh - 2em);
+  height : calc(80vh - 4em);
   width  : auto;
   margin-top: 5vh;
   margin-bottom: 5vh;
 }
 
-.lander .page#about svg > path {
-  fill:white;
-  stroke:white;
-  stroke-width:0px;
-}
-
+.lander .page#home svg path,
+.lander .page#home svg polygon,
+.lander .page#home svg polyline,
+.lander .page#home svg line,
+.lander .page#about svg path,
 .lander .page#about svg polygon,
 .lander .page#about svg polyline,
 .lander .page#about svg line {
   stroke:white;
-  stroke-width:1px;
+  stroke-width:1.5px;
 }
 
 /******************************************************************************
