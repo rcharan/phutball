@@ -39,6 +39,11 @@
   color: inherit;
 }
 
+.lander .pagecontent .text > ol:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
 /******************************************************************************
 *
 * Page Specifics

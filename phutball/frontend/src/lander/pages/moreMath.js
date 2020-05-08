@@ -110,6 +110,7 @@ export default class MoreMath extends React.Component {
       </ol>
     </div>
     </div>
+
     )
   }
 };
