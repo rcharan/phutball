@@ -182,6 +182,12 @@ function boardCellData(cellData, row, col) {
 *****************************************************************************/
 
 class Board extends React.Component {
+	constructor(props) {
+		super(props)
+		this.rerender = this.rerender.bind(this)
+		this.state = {fresh : 'yes'}
+	}
+
 
 	// Adds labels around the edge of the board
 	addBoundary(boardArray) {
@@ -251,6 +257,19 @@ class Board extends React.Component {
 		return arrowArray
 	}
 
+	// Hacky way to force-re-render on window resizing
+	rerender() {
+		console.log('HELLO')
+		this.setState(this.state)
+	}
+
+	componentDidMount() {
+    	window.addEventListener('resize', this.rerender);
+	}
+	componentWillUnmount() {
+	    window.removeEventListener('resize', this.rerender);
+	}
+
 	render() {
 
 		function flatIndex(squareData) {
@@ -260,8 +279,8 @@ class Board extends React.Component {
 		return (
 			<>
 			<svg
-				width  = {(config.cols + 2)*uiConfig.cellSize}
-				height = {(config.rows + 2)*uiConfig.cellSize}
+				width  = {(config.cols + 2)*uiConfig.cellSize()}
+				height = {(config.rows + 2)*uiConfig.cellSize()}
 			>
 				<defs>
 					{arrowheadDef()}
@@ -272,6 +291,7 @@ class Board extends React.Component {
 							type 	     = {squareData.type}
 							row  	     = {squareData.row}
 							col  	     = {squareData.col}
+							uiConfig     = {uiConfig}
 							key  	     = {squareData.row * (config.cols + 2) + squareData.col}
 							onClick      = {() => this.props.onPlace(     flatIndex(squareData))}
 						/>

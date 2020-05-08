@@ -1,6 +1,6 @@
 import React from 'react';
 import config from '../gameLogic/config'
-import uiConfig from './uiConfig'
+// import uiConfig from './uiConfig'
 
 		// 	// x = {this.props.col / (config.cols + 2)}%
 		// 	// y = {this.props.row / (config.rows + 2)}%
@@ -25,32 +25,28 @@ function labelText(text) {
 }
 
 // Rectangle serves as the button
-function rectangle() {
+function rectangle(props) {
 	return <rect cx="50%" cy="50%" width="100%" height="100%"
 					  fill="#FFFFFF" fillOpacity="0.0"
-					  stroke="#FFFFFF" strokeWidth={uiConfig.borderWidth}
+					  stroke="#FFFFFF" strokeWidth={props.uiConfig.borderWidth}
 					  strokeOpacity="0.0"
 					  key="rect"
 		   />
 }
 
 
-function crossComponent(startX, startY, id) {
-	const strokeLen = uiConfig.cellOffset/2
+function crossComponent(startX, startY, id, props) {
+	const strokeLen = props.uiConfig.cellOffset()/2
 	return (<path
 				d={`M ${strokeLen*startX} ${strokeLen*startY} L ${strokeLen} ${strokeLen}`}
 				fill="#FFFFFF"
 				fillOpacity="0.0"
 				stroke="#000000"
-				strokeWidth={uiConfig.borderWidth}
+				strokeWidth={props.uiConfig.borderWidth}
 				key={id}
 			/>)
 }
 
-const leftCross   = crossComponent(0,1, 'left')
-const rightCross  = crossComponent(2,1, 'right')
-const topCross    = crossComponent(1,0, 'top')
-const bottomCross = crossComponent(1,2, 'bottom')
 
 
 class Square extends React.Component {
@@ -126,6 +122,11 @@ class Square extends React.Component {
 
 
 	cross() {
+		const leftCross   = crossComponent(0,1, 'left', this.props)
+		const rightCross  = crossComponent(2,1, 'right', this.props)
+		const topCross    = crossComponent(1,0, 'top', this.props)
+		const bottomCross = crossComponent(1,2, 'bottom', this.props)
+
 		var out = []
 		if (this.props.col === 1) {
 			out.push(rightCross) 
@@ -147,18 +148,18 @@ class Square extends React.Component {
 			out.push(bottomCross, topCross)
 		}
 
-		return [rectangle(), ...out]
+		return [rectangle(this.props), ...out]
 	}
 
 	render() {
-		const coords = uiConfig.xyCoords(this.props.row, this.props.col);
+		const coords = this.props.uiConfig.xyCoords(this.props.row, this.props.col);
 		return (
 			<>
 			<svg 
 				x = {coords.x}
 				y = {coords.y}
-				width  = {uiConfig.cellSize}
-				height = {uiConfig.cellSize}
+				width  = {this.props.uiConfig.cellSize()}
+				height = {this.props.uiConfig.cellSize()}
 				fillOpacity = "0.0"
 				onClick      = {this.props.onClick}
 			>
