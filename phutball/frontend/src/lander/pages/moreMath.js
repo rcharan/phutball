@@ -1,6 +1,6 @@
 import React from "react";
 
-// import 'katex/dist/katex.min.css';
+import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
 export default class MoreMath extends React.Component {
