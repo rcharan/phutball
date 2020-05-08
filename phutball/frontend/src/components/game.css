@@ -7,30 +7,51 @@
   margin : 0;
   padding: 0;
   overflow: visible;
+  color: white;
+  display: flex;
+  flex-direction: row;
 }
 
-.game .board {
-	min-width: 70vw;
-}
+/******************************************************************************
+*
+* Game Info
+*
+******************************************************************************/
 
 .game .game-info {
-	overflow: scroll;
+	overflow-x: scroll;
 	min-width: 30vw;
 	margin: 0;
 	padding: 0;
 	overflow: visible;
 }
 
-.game ol, .game ul {
+.game .game-info ol, .game .game-info ul {
   padding-left: 30px;
 }
 
-.game .status {
+.game .game-info .status {
   margin-bottom: 10px;
 }
 
-.game {
-  display: flex;
-  flex-direction: row;
+/******************************************************************************
+*
+* Board Rendering
+*
+******************************************************************************/
+
+.game svg > text {
+  stroke: white;
+  fill: white;
+  font-size : calc(100vw * .55 / 21 * .4);
+}
+
+.game svg path {
+  stroke: white;
+}
+
+.game svg > defs > marker > path {
+  stroke: red;
+  fill: red;
 }
 

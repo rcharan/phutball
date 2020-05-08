@@ -2,7 +2,7 @@ import boardConfig from '../gameLogic/config'
 
 function cellSize() {
 	return (
-		window.innerWidth * 0.7 / (boardConfig.cols + 2)
+		window.innerWidth * 0.55 / (boardConfig.cols + 2)
 	)
 }
 

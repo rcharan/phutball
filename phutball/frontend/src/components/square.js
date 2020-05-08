@@ -12,13 +12,8 @@ function labelText(text) {
 				y="50%"
 				fill="#999999"
 				fillOpacity="1.0"
-				// stroke="#999999"
-				// strokeWidth="1"
 				textAnchor="middle"
 				alignmentBaseline="middle"
-				// style = {{
-					// font : "13px sans-serif"
-				// }}
 			>
 				{text}
 			</text>
@@ -102,7 +97,7 @@ class Square extends React.Component {
 			case 'ball':
 				return [...this.cross(), <circle
 							cx="50%" cy="50%" r="30%"
-							stroke="#000000" strokeWidth="2"
+							stroke="#FFFFFF" strokeWidth="2"
 							fill="#FFFFFF" fillOpacity="1.0"
 							key="circle"
 						/>]
@@ -110,7 +105,7 @@ class Square extends React.Component {
 			case 'ballGray':
 				return [...this.cross(), <circle
 							cx="50%" cy="50%" r="30%"
-							stroke="#999999" strokeWidth="2"
+							stroke="#DDDDDD" strokeWidth="2"
 							fill="#DDDDDD" fillOpacity="1.0"
 							key="circle"
 					   />]

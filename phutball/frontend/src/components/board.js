@@ -93,6 +93,7 @@ function arrow(sourceLoc, targetLoc) {
 			strokeWidth = "2"
 			markerEnd = "url(#arrow)"
 			key = {id}
+			className = "arrow"
 		/>
 	)
 }
@@ -110,7 +111,7 @@ function arrowheadDef() {
 	        markerHeight="5"
 	        orient="auto-start-reverse"
 	    >
-	      <path d="M 0 0 L 6 2.5 L 0 5 z" />
+	      <path classname="arrow" d="M 0 0 L 6 2.5 L 0 5 z" />
 	    </marker>
     )
 }
@@ -259,7 +260,6 @@ class Board extends React.Component {
 
 	// Hacky way to force-re-render on window resizing
 	rerender() {
-		console.log('HELLO')
 		this.setState(this.state)
 	}
 
