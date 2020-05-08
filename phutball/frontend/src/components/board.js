@@ -111,7 +111,7 @@ function arrowheadDef() {
 	        markerHeight="5"
 	        orient="auto-start-reverse"
 	    >
-	      <path classname="arrow" d="M 0 0 L 6 2.5 L 0 5 z" />
+	      <path className="arrow" d="M 0 0 L 6 2.5 L 0 5 z" />
 	    </marker>
     )
 }
