@@ -214,9 +214,6 @@
   margin: 30px 0;
 }
 
-.lander #menu active {
-  color: green;
-}
 
 .lander #menu .link {
   text-decoration: none;
@@ -227,7 +224,15 @@
   width :30px;
   height:30px;
   stroke:white;
-  fill  :white !important;
+  fill  :white;
 }
 
+.lander #menu .icon[active="yes"] svg {
+  width: 50px;
+  height:50px;
+}
 
+.lander #menu .icon[active="yes"] {
+  font-size: 14px;
+  stroke-width: 2px;
+}

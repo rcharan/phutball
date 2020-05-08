@@ -25,7 +25,11 @@ export default class NavBar extends React.Component {
     return (
       <ul id="menu">
         {menuContent.map((content, i) => 
-        <li className="icon link" onClick={() => this.props.onClick(pageNames[i])} key={i}>
+        <li
+          className="icon link"
+          active={pageNames[i]===this.props.active ? 'yes' : 'no'}
+          onClick={() => this.props.onClick(pageNames[i])}
+          key={i}>
           {content}
         </li>
         )}

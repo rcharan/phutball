@@ -28,7 +28,7 @@ export default class LandingPage extends React.Component {
         <ScrollNavigation elements={elements}>
           {({ refs, activeElement, goTo }) => (
             <div className="lander">
-              <NavBar onClick={pageName => goTo(pageName)}/>
+              <NavBar active={activeElement} onClick={pageName => goTo(pageName)}/>
               <div id="content">
                 {content.map((pageContent, i) => 
                   <div className="page" id={pageNames[i]} ref={refs[pageNames[i]]}>
