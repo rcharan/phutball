@@ -11,7 +11,7 @@
   left:0;
   color: #fff;
   font-size: 10px;
-  min-height: 80vh;
+  min-height: 100vh;
 }
 
 
@@ -22,17 +22,24 @@
   line-height: 1.3;
 }
 
-
-.lander .pagecontent .text {
-  text-align: left;
-}
-
 .lander .pagecontent .title {
   text-align: center;
   display: block;
   font-size: 38px;
   line-height: 2;
 }
+
+.lander .pagecontent .subtitle {
+  text-align: center;
+  display: block;
+  font-size: 16px;
+  line-height: 2;
+}
+
+.lander .pagecontent .text {
+  text-align: left;
+}
+
 
 .lander .pagecontent a {
   text-decoration: underline;
@@ -56,13 +63,6 @@
 .lander .page#rules    {
   background: #2191AD; 
 }
-.lander .page#rules svg {
-  width: auto;
-  height: 50vh;
-}
-/*.lander .rules .pagecontent {*/
-  /*height:300vh;*/
-/*}*/
 
 .lander .page#play     {
   background: #AD6421; 
@@ -74,8 +74,109 @@
 .lander .page#moremath {
   background: #32AD3D; 
 }
+
+.lander .page#moremath ul {
+  list-style-type: disc;
+}
+
+
+
 .lander .page#about    {
   background: rebeccapurple; 
+}
+
+/******************************************************************************
+*
+* Rules - SVG Styling
+*
+******************************************************************************/
+
+.lander .page#rules svg {
+  width: 100%;
+  height: auto;
+}
+
+.lander .page#rules svg > g#Board line {
+  /*stroke-width:10px;*/
+  stroke:white;
+}
+
+.lander .page#rules svg > g#Label path {
+  fill:white;
+}
+
+.lander .page#rules svg > g#Player circle {
+  /*fill:orange;*/
+  /*stroke:orange;*/
+  /*stroke-width:30px;*/
+}
+
+.lander .page#rules svg > g#Ball circle {
+  stroke-width:0;
+}
+
+.lander .page#rules svg > g#GreyBall circle {
+  stroke-width:0;
+}
+
+.lander .page#rules svg > g#GreyPlayer circle {
+
+}
+
+/* Arrows illustrating possible jumps 
+  circle  - a small dot for many arrows branchign from one place
+  polygon - arrow heads
+  path    - the arrows
+*/
+.lander .page#rules svg > g#Arrow circle,
+.lander .page#rules svg > g#Arrow polygon,
+.lander .page#rules svg > g#Arrow path {
+
+}
+
+/* X's indicate disallowed jumps */
+.lander .page#rules svg > g#X line {
+
+}
+
+/* The backgrounds for the rule shout-outs */
+.lander .page#rules svg > g#RuleBG rect {
+  fill:#AD6421;
+  opacity:0.7;
+}
+
+/* The text for the rules */
+.lander .page#rules svg > g#RuleText path,
+.lander .page#rules svg > g#RuleText polygon {
+  fill:white;
+}
+.lander .page#rules svg > g#RuleText line {
+  stroke:white;
+}
+
+/* The circles for the rule number labels */
+.lander .page#rules svg > g#RuleLabelShape circle {
+  fill:#F2B24B;
+}
+
+/* The rule numbers */
+.lander .page#rules svg > g#RuleLabel path {
+  fill:#AD6421;
+}
+
+/* The arrows for the rules pointing to things */
+.lander .page#rules svg > g#RuleArrow line,
+.lander .page#rules svg > g#RuleArrow polygon,
+.lander .page#rules svg > g#RuleArrow path {
+  stroke:#AD6421;
+}
+.lander .page#rules svg > g#RuleArrow polygon {
+  fill:#AD6421 ;
+}
+
+/* Other callouts from the rules */
+.lander .page#rules svg > g#RuleCallout ellipse {
+  stroke:#AD6421;
 }
 
 
