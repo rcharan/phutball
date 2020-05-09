@@ -1,7 +1,7 @@
 import config from './config'
 import { empty, player, ball } from './locationState'
 import Location from './location'
-import Jump from './jump'
+import getLegalJumps from './jump'
 
 // Set the initial state
 var   initialState    = Array(config.rows * config.cols).fill(empty);
@@ -69,7 +69,7 @@ class BoardState {
   };
 
   getLegalJumps() {
-    return Jump.getLegalJumps(this)
+    return getLegalJumps(this)
   }
 
   // TO DO: Refactor this out( logic already contained in jumpObj)

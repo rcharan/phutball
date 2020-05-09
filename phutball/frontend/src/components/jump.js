@@ -4,7 +4,7 @@ class JumpList extends React.Component {
 	render() {
 		return (
 			<ol>
-			{this.props.boardState.getLegalJumps().map(jumpObj => 
+			{this.props.boardState.getLegalJumps().toList().map(jumpObj => 
 				<li key={jumpObj.toString()}>
 				<JumpButton
 					str          = {jumpObj.toString()}
@@ -18,6 +18,12 @@ class JumpList extends React.Component {
 	}
 
 }
+
+
+function createJumpTree(jumpList) {
+	var out = []	
+}
+
 
 class JumpButton extends React.Component {
 	render () {

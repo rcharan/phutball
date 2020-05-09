@@ -1,8 +1,20 @@
 import directions from './direction'
 import { empty, player } from './locationState'
+import Tree from '../structs/tree'
+
+// Wraps the jumps as a tree
+export default function getLegalJumps(boardState) {
+	const jumpList = Jump.getLegalJumps(boardState)	
+	return Tree.buildTreeAsChildofMatch(jumpList, predecessorPredicate)
+}
+
+
+function predecessorPredicate(child, parent) {
+	return parent.isPredecessorOf(child)
+}
 
 class Jump {
-	constructor(path, endState, removedLocations) {
+	constructor(path, endState, removedLocations, predecessor) {
 		this._path            = path
 		this.endState         = endState
 		this.removedLocations = removedLocations
@@ -20,8 +32,20 @@ class Jump {
 		return '*'+this.path.map(loc => loc.toString()).join('-')
 	}
 
+	isPredecessorOf(other) {
+		if (other.path.length <= this.path.length) {
+			return false
+		}
+		for (var step = 0 ; step < this.path.length; step++) {
+			if (other.path[step] != this.path[step]) {
+				return false
+			}
+		}
+		return true
+	}
+
 	prependTo(nextJump) {
-		const newPath = this.path.concat(nextJump.path)
+		const newPath          = this.path.concat(nextJump.path)
 		const removedLocations = this.removedLocations.concat(nextJump.removedLocations)
 
 		return new Jump(newPath, nextJump.endState, removedLocations)
@@ -100,5 +124,3 @@ class Jump {
 	}
 
 };
-
-export default Jump;
