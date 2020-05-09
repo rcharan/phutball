@@ -114,7 +114,7 @@ class GameCreator extends React.Component {
     this.setState({requestStatus : 'sent'})
     this.api.createGame(gameParams).then(
       gameID => (window.location.href=`/game/${gameID}`)
-    ).catch(error => this.setFailure(error))
+    ).catch(error => window.location.href='/game/offline/')
   }
 
   requestStatusView() {

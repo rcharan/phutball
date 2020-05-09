@@ -16,23 +16,34 @@ export default class ErrorNotifier extends React.Component {
 
 	renderMessage() {
 		if (this.state.focus) {
-			return (
-				<div className = "float" id="error" key="0">
-					<h1>Game is in offline mode<br/>({this.props.errorStatus.message})</h1>
-					<ul>
-						<li key="2"> This could by an issue with your Internet connection;
-							the application (including if you modified it locally); or a server issue</li>
-						<li key="3"> The game is in offline mode and further moves will not be saved
-							unless and until you refresh the page without encountering offline-mode.
-							(Even if the issue is fixed before your refresh)
-						</li>
-						<li key="4"> If the problem persists unexpectedly,
-							please submit bug reports on the
-							github
-						</li>
-					</ul>
-				</div>
+			if (this.props.gameID === 'offline') {
+				return (
+					<div className = "float" id="error" key="0">
+						<h1>Game is in offline mode</h1>
+						The game was created in offline mode and will not recover.
+						To play online (which will save your game and let you play against
+							others), go back to the homepage and create a new game
+					</div>
+				)
+			} else {
+				return (
+					<div className = "float" id="error" key="0">
+						<h1>Game is in offline mode<br/>({this.props.errorStatus.message})</h1>
+						<ul>
+							<li key="2"> This could by an issue with your Internet connection;
+								the application (including if you modified it locally); or a server issue</li>
+							<li key="3"> The game is in offline mode and further moves will not be saved
+								unless and until you refresh the page without encountering offline-mode.
+								(Even if the issue is fixed before your refresh)
+							</li>
+							<li key="4"> If the problem persists unexpectedly,
+								please submit bug reports on the
+								github
+							</li>
+						</ul>
+					</div>
 			)
+		    }
 		} else {
 			return null
 		}

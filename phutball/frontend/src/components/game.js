@@ -48,16 +48,16 @@ class Game extends React.Component {
 			xIsNext    : true,
 			moveNum    : 1,
 			loadStatus : 'failed',
-			errorStatus: error
+			errorStatus: error,
 			offlineMoveQueue : [{moveNum: 0, moveStr : 'Reset', board : initialBoard}]
 		})	
 	}
 
 	goOffline(error, moveInfo, oldMoveNum) {
-		moveInfo[moveNum] = oldMoveNum;
+		moveInfo['moveNum'] = oldMoveNum;
 		this.setState({
 			loadStatus       : 'failed',
-			errorStatus      : error
+			errorStatus      : error,
 			offlineMoveQueue : this.state.offlineMoveQueue.concat([moveInfo])
 		})
 	}
@@ -223,6 +223,7 @@ class Game extends React.Component {
 				<div key="error" className="error">
 					<ErrorNotifier
 						errorStatus={this.state.errorStatus}
+						gameID     ={this.state.gameID}
 					/>
 				</div>
 			)

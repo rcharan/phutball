@@ -228,7 +228,7 @@
   left: 0;
   top: 0;
   height: calc(100vh - 50px);
-  width: calc(57vw - 50px);
+  width: calc(55vw - 50px);
   background-color : #2191AD;
   opacity: 0.92;
   padding-left: 50px;
@@ -280,13 +280,13 @@ conceptual the z-index properly */
   opacity: 0.3;
 }
 
+
 .game .menu > svg polygon,
 .game .menu > svg polyline,
 .game .menu > svg line,
 .game .menu > svg path {
   stroke:white;
 }
-
 
 
 /******************************************************************************
