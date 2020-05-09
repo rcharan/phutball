@@ -72,10 +72,21 @@
 *
 ******************************************************************************/
 
-.game .game-info .error #error button {
+.game .game-info .error#error button {
   color:red;
   font-size: 30px;
   font-weight: bold; 
+}
+
+.game .game-info .error.quiet#error button {
+  color:white;
+}
+
+.game .game-info .error#error button.dismiss {
+  margin-left: 0.7em;
+  color:white;
+  font-size: 16px;
+  font-weight: normal;
 }
 
 .game .error ul > li {

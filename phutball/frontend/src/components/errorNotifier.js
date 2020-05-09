@@ -3,7 +3,10 @@ import React from 'react';
 export default class ErrorNotifier extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = {focus : false}
+		this.state = {
+			focus : false,
+			acknowledged: false
+		}
 	}
 
 	handleMouseEnter() {
@@ -12,6 +15,10 @@ export default class ErrorNotifier extends React.Component {
 
 	handleMouseLeave() {
 		this.setState({focus: false})
+	}
+
+	handleDismiss() {
+		this.setState({acknowledged : true})
 	}
 
 	renderMessage() {
@@ -50,8 +57,17 @@ export default class ErrorNotifier extends React.Component {
 	}
 
 	render() {
+		const buttonClass = (this.state.acknowledged ? 'quiet error' : 'error')
+		const dismissButton = (this.state.acknowledged ? null : 
+				<button
+					className = "dismiss"
+					onClick     ={() => this.handleDismiss()}
+				>
+					dismiss
+				</button>
+		)
 		return (
-			<div className="error" id="error" key="a">
+			<div className={buttonClass} id="error" key="a">
 				{[<button
 					onClick     ={() => this.handleMouseEnter()}
 					onMouseEnter={() => this.handleMouseEnter()}
@@ -59,6 +75,7 @@ export default class ErrorNotifier extends React.Component {
 				>
 				Offline Mode
 				</button>,
+				dismissButton,
 				this.renderMessage()]}
 			</div>
 		)	
