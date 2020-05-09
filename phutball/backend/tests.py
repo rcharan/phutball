@@ -144,11 +144,13 @@ class DataModelTests(TestCase):
 
 class GameSerializerTests(TestCase):
 
-  def test_db_integrity_check(self):
-    game = Game.new_game()
-    game.move_set.create(move_num = 3)
-    with self.assertRaises(IntegrityError):
-      GameSerializer(game).data
+  # Feature removed; instead offer the
+  #  longest possible history
+  # def test_db_integrity_check(self):
+  #   game = Game.new_game()
+  #   game.move_set.create(move_num = 3)
+  #   with self.assertRaises(IntegrityError):
+  #     GameSerializer(game).data
 
 
   def test_serialize_game(self):

@@ -41,3 +41,9 @@ input.submit:active {
 ul {
   list-style-type: disc;
 }
+
+a {
+  text-decoration: underline;
+  cursor: pointer;
+  color: inherit;
+}

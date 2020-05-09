@@ -4,7 +4,7 @@ import Board from './board'
 import JumpList from './jump'
 import History from './history'
 import Rules from './rules'
-import Help from './help'
+import { HelpI, HelpII } from './help'
 import AI from './ai'
 import API from '../api'
 import './game.css'
@@ -30,7 +30,6 @@ class Game extends React.Component {
 			jumpMouseOver : null,
 			xIsNext       : false,
 			loading       : true,
-			hideBoard     : false,
 		};
 		this.api = new API(gameID)
 
@@ -153,7 +152,7 @@ class Game extends React.Component {
 	renderHelp() {
 		return (
 			<div key="help" className="help-section">
-				<Rules/> <Help/>
+				<Rules/> <HelpI/> <HelpII/>
 			</div>
 		)
 	}
