@@ -40,11 +40,6 @@
 }
 
 
-.lander .pagecontent a {
-  text-decoration: underline;
-  cursor: pointer;
-  color: inherit;
-}
 
 .lander .pagecontent a.silent {
   text-decoration: none;
@@ -54,9 +49,6 @@
   margin-bottom: 0;
 }
 
-.lander .pagecontent ul {
-  list-style-type: disc;
-}
 
 /******************************************************************************
 *

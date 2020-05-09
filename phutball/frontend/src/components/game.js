@@ -4,7 +4,9 @@ import Board from './board'
 import JumpList from './jump'
 import History from './history'
 import Rules from './rules'
+import BackButton from './backbutton'
 import { HelpI, HelpII } from './help'
+import { ReactComponent as Logo } from '../icons/philosphers-play-football.svg'
 import AI from './ai'
 import API from '../api'
 import './game.css'
@@ -152,7 +154,7 @@ class Game extends React.Component {
 	renderHelp() {
 		return (
 			<div key="help" className="help-section">
-				<Rules/> <HelpI/> <HelpII/>
+				<BackButton/> <Rules/> <HelpI/> <HelpII/>
 			</div>
 		)
 	}
@@ -187,6 +189,8 @@ class Game extends React.Component {
 
 	renderGameInfo() {
 		return (
+			<div key="gameinfo" className="menu">
+			<Logo/>
 			<div key="gameinfo" className = "game-info">
 				{[
 					this.renderNextMove(),
@@ -194,6 +198,7 @@ class Game extends React.Component {
 					this.renderJumpList(),
 					this.renderHistory()
 				]}
+			</div>
 			</div>
 		)	
 	}

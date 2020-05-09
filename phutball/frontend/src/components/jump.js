@@ -6,6 +6,7 @@ class JumpList extends React.Component {
 	render() {
 		const jumpChains = this.props.boardState.getLegalJumps().descendingChains()
 		return (
+			<div className="ol-container">
 			<ol>
 			{jumpChains.map((chain, i) => 
 				<li key={i}>
@@ -18,6 +19,7 @@ class JumpList extends React.Component {
 				</li>
 			)}
 			</ol>
+			</div>
 		)
 	}
 

@@ -67,12 +67,14 @@
 *
 ******************************************************************************/
 
-.game .jumps {
+.game .jumps .ol-container{
   max-height: 40vh;
-  overflow: scroll;
   text-indent: -1.5em;
   padding-left: 1.5em;
   padding-right: 1em;
+  padding-top: 1em;
+  overflow: scroll;
+  max-height: 40vh;
   margin-bottom: 1em;
 }
 
@@ -162,10 +164,6 @@
   height: 25px;
 }
 
-.game .help-section button:hover {
-  font-size:20px;
-  font-weight:bold;
-}
 
 .game .help-section ol > li {
   margin-top: 20px;
@@ -192,6 +190,52 @@
   padding-left: 50px;
   padding-top: 50px;
   font-size: calc(12 * (100vw) / 1280);
+}
+
+
+/* Required (somehow) to set
+conceptual the z-index properly */
+.game .game-info {
+  position: relative; 
+}
+
+.game .help-section svg {
+  width: 25px;
+  height: 25px;
+  stroke: white;
+  fill: white;
+  position: relative;
+  bottom: -5px;
+}
+
+.game .help-section button:hover {
+  font-size:20px;
+  font-weight:bold;
+}
+
+.game .help-section button:hover svg {
+  width: 35px;
+  height: 35px;
+  stroke-width: 2px;
+  margin-bottom: -10px;
+  margin-right: -10px;
+  bottom: 0px;
+}
+
+
+.game .menu > svg {
+  position: absolute;
+  right: 15vw;
+  width: 30vw;
+  height: auto;
+  opacity: 0.3;
+}
+
+.game .menu > svg polygon,
+.game .menu > svg polyline,
+.game .menu > svg line,
+.game .menu > svg path {
+  stroke:white;
 }
 
 
