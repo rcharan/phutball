@@ -3,6 +3,8 @@ import { BoardState, emptyState, emptyBallLoc} from '../gameLogic/boardState'
 import Board from './board'
 import JumpList from './jump'
 import History from './history'
+import Rules from './rules'
+import Help from './help'
 import AI from './ai'
 import API from '../api'
 import './game.css'
@@ -27,7 +29,8 @@ class Game extends React.Component {
 			moveNum       : 0, // Number of move about to be made, 0 is start-of-game
 			jumpMouseOver : null,
 			xIsNext       : false,
-			loading       : true
+			loading       : true,
+			hideBoard     : false,
 		};
 		this.api = new API(gameID)
 
@@ -121,8 +124,8 @@ class Game extends React.Component {
 	renderNextMove() {
 		if (this.state.board.gameOver) {
 			return (
-				<div key="gameover"><h1>
-					Winner: {this.state.board.winner ? this.state.player0Name : this.state.player1Name}
+				<div className="nextPlayer" key="gameover"><h1>
+					{this.state.board.winner ? this.state.player0Name : this.state.player1Name} wins!
 				</h1></div>
 			)
 		} else if (this.isAiTurn) {
@@ -135,20 +138,24 @@ class Game extends React.Component {
 			)
 		} else {
 			return (
-				<div key="nextplayer">
-					<h1>
-						Next player: {this.state.xIsNext ?
+				<div className="nextplayer" key="nextplayer">
+						{this.state.xIsNext ?
 											this.state.player0Name : 
 											this.state.player1Name
-									 } <br/>
-					</h1>
-					<div>
-					Playing towards: {this.state.xIsNext ? 'Right' : 'Left'}
-					</div>
+									 } to play
+					(Playing to the {this.state.xIsNext ? 'right' : 'left'})
 				</div>
 			)
 		}
 			
+	}
+
+	renderHelp() {
+		return (
+			<div key="help" className="help-section">
+				<Rules/> <Help/>
+			</div>
+		)
 	}
 
 	renderJumpList() {
@@ -170,7 +177,7 @@ class Game extends React.Component {
 
 	renderHistory() {
 		return (
-			<div key="history" className="history"><h1>History</h1><br/>
+			<div key="history" className="history"><h1>History</h1>
 				<History
 					history     = {this.state.history}
 					onClick     = {(moveNum) => this.handleHistory(moveNum)}
@@ -184,6 +191,7 @@ class Game extends React.Component {
 			<div key="gameinfo" className = "game-info">
 				{[
 					this.renderNextMove(),
+					this.renderHelp(),
 					this.renderJumpList(),
 					this.renderHistory()
 				]}

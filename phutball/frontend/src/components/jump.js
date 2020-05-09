@@ -11,7 +11,7 @@ class JumpList extends React.Component {
 				<li key={i}>
 					<JumpChain
 						chain       ={chain}
-						onClick     ={this.props.onClick}
+						onClick     ={this.props.onJump}
 						onMouseEnter={this.props.onMouseEnter}
 						onMouseLeave={this.props.onMouseLeave}
 					/>
@@ -28,7 +28,7 @@ class JumpChain extends React.Component {
 		const options = this.props.chain.map((elt, i) => 
 		    <button 
 				className    = {elt.repeated ? "repeat jump" : "new jump"}
-				onClick      = {() => this.props.onJump(elt.value)}
+				onClick      = {() => this.props.onClick(elt.value)}
 				onMouseEnter = {() => this.props.onMouseEnter(elt.value)}
 				onMouseLeave = {this.props.onMouseLeave}	
 				key          = {i}

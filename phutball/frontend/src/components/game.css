@@ -47,8 +47,28 @@
   margin-top:0;
 }
 
+/******************************************************************************
+*
+* Next Player
+*
+******************************************************************************/
+
+.game .nextplayer {
+  margin-bottom:2em;
+}
+
+.game .nextplayer div {
+  font-size: 20px;
+}
+
+/******************************************************************************
+*
+* Jumps
+*
+******************************************************************************/
+
 .game .jumps {
-  height: 70vh;
+  max-height: 40vh;
   overflow: scroll;
   text-indent: -1.5em;
   padding-left: 1.5em;
@@ -78,10 +98,102 @@
   text-align:center;
 }
 
+/******************************************************************************
+*
+* History
+*
+******************************************************************************/
+
+.game .history .table {
+  max-height: 40vh;
+  overflow: scroll;
+}
+
 .game .history button {
   padding: 5px;
   text-align: center;
+  width: 6em;
+  font-size: 11px;
 }
+
+.game .history h1 {
+  /*padding-bottom: 0.5em;*/
+  margin-bottom: 0.2em;
+}
+
+.game .history .special-history button {
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 1em;
+  padding-top: 0;
+  text-align: left;
+  width: 5em;
+  font-size:16px;
+}
+
+/******************************************************************************
+*
+* Help and Rules
+*
+******************************************************************************/
+
+.game .help-section .rules,
+.game .help-section .help {
+  display: inline;
+  margin-left: 2em;
+}
+
+.game .help-section:hover {
+  cursor: pointer; 
+}
+
+.game .nextplayer {
+  padding-bottom: 1em;
+  margin-bottom : 0;
+}
+
+.game .help-section {
+  padding-bottom: 1em;
+  margin-bottom: 0;
+}
+
+.game .help-section button {
+  padding: 0;
+  height: 25px;
+}
+
+.game .help-section button:hover {
+  font-size:20px;
+  font-weight:bold;
+}
+
+.game .help-section ol > li {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.game .help-section ul {
+  margin-top: 10px;
+}
+
+.game .help-section ul > li{
+  margin: 3px;
+}
+
+
+.game .help-section .float {
+  position: fixed; 
+  left: 0;
+  top: 0;
+  height: calc(100vh - 50px);
+  width: calc(57vw - 50px);
+  background-color : #2191AD;
+  opacity: 0.92;
+  padding-left: 50px;
+  padding-top: 50px;
+  font-size: calc(12 * (100vw) / 1280);
+}
+
 
 
 /******************************************************************************

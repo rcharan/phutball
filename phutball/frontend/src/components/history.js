@@ -23,6 +23,19 @@ class History extends React.Component {
 		// Render JSX
 		return (
 			<div key="historytable">
+			<div className ="special-history" key="1">
+				<HistoryButton
+					onClick = {this.props.onClick}
+					moveNum = {initialState.moveNum}
+					moveStr = {initialState.moveStr}
+				/>
+				{/*<HistoryButton
+					onClick = {this.props.onClick}
+					moveNum = {history.length - 2}
+					moveStr = "Undo"
+				/>*/}
+			</div>
+			<div className="table" key="2">
 			<table>
 				<thead>
 				<tr>
@@ -46,11 +59,7 @@ class History extends React.Component {
 				}
 				</tbody>
 			</table>
-			<HistoryButton
-				onClick = {this.props.onClick}
-				moveNum = {initialState.moveNum}
-				moveStr = {initialState.moveStr}
-			/>
+			</div>
 			</div>
 		);
 
