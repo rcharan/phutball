@@ -108,4 +108,41 @@ export default class Tree {
     }
     return thisList.concat(...childLists)
   }
+
+  // Get all descending chains,
+  //  and annotate with whether an object
+  //  has appeared in a prior (to the left) chain
+  // Output: list of {value: val, repeated: bool}
+  descendingChains() {
+    const childChains = this.children.map(child => child.descendingChains())
+
+    if (this.value === undefined) {
+      return [].concat(...childChains)
+    } else if (this.children.length === 0) {
+      return [[{value: this.value, repeated: false}]]
+    }
+
+    var out = []
+    for (var childNum = 0; childNum < childChains.length; childNum++) {
+
+      var chains = childChains[childNum]
+      for (var chainNum = 0 ; chainNum < chains.length; chainNum++) {
+
+        var chain = chains[chainNum]
+        let repeated
+        // Only the left child can see the parent as unrepeated
+        // *and* a repeated node contaminates all its parents
+        if ((childNum == 0) && !chain[0].repeated) {
+          repeated = false
+        } else {
+          repeated = true
+        }
+        out.push([{value: this.value, repeated: repeated}, ...chain])
+      }
+    }
+
+    return out
+
+  }
+
 }

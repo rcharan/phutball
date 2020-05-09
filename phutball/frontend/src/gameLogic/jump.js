@@ -28,6 +28,10 @@ class Jump {
 		}
 	}
 
+	get endLoc() {
+		return this.path[this.path.length-1]
+	}
+
 	toString() {
 		return '*'+this.path.map(loc => loc.toString()).join('-')
 	}

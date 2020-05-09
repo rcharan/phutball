@@ -156,7 +156,7 @@ class Game extends React.Component {
 			return null
 		} else {
 			return (
-				<div key="jumplist" className = "jumps"><h1>Jumps</h1><br/>
+				<div key="jumplist" className = "jumps"><h1>Jumps</h1>
 					<JumpList
 						boardState   = {this.state.board}
 						onJump       = {(jumpObj) => this.handleJump(jumpObj)}

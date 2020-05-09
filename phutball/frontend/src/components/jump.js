@@ -1,17 +1,21 @@
 import React from 'react';
 
+const intersperse = (arr, sep) => arr.reduce((a,v)=>[...a,v,sep],[]).slice(0,-1)
+
 class JumpList extends React.Component {
 	render() {
+		const jumpChains = this.props.boardState.getLegalJumps().descendingChains()
 		return (
 			<ol>
-			{this.props.boardState.getLegalJumps().toList().map(jumpObj => 
-				<li key={jumpObj.toString()}>
-				<JumpButton
-					str          = {jumpObj.toString()}
-					onClick      = {() => this.props.onJump(jumpObj)}
-					onMouseEnter = {() => this.props.onMouseEnter(jumpObj)}
-					onMouseLeave = {this.props.onMouseLeave}
-				/></li>
+			{jumpChains.map((chain, i) => 
+				<li key={i}>
+					<JumpChain
+						chain       ={chain}
+						onClick     ={this.props.onClick}
+						onMouseEnter={this.props.onMouseEnter}
+						onMouseLeave={this.props.onMouseLeave}
+					/>
+				</li>
 			)}
 			</ol>
 		)
@@ -19,26 +23,24 @@ class JumpList extends React.Component {
 
 }
 
-
-function createJumpTree(jumpList) {
-	var out = []	
-}
-
-
-class JumpButton extends React.Component {
-	render () {
-		return (
+class JumpChain extends React.Component {
+	render() {
+		const options = this.props.chain.map((elt, i) => 
 		    <button 
-		    	className    = "jump"
-		    	onClick      = {this.props.onClick}
-		    	key          = {this.props.str}
-		    	onMouseEnter = {this.props.onMouseEnter}
-		    	onMouseLeave = {this.props.onMouseLeave}
-		    >
-		    	{this.props.str}
+				className    = {elt.repeated ? "repeat jump" : "new jump"}
+				onClick      = {() => this.props.onJump(elt.value)}
+				onMouseEnter = {() => this.props.onMouseEnter(elt.value)}
+				onMouseLeave = {this.props.onMouseLeave}	
+				key          = {i}
+			>
+				{elt.value.endLoc.toString()}
 		    </button>
 		)
+		return options
+		// return intersperse(options, '-')
 	}
 }
+
+
 
 export default JumpList
