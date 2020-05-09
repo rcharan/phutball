@@ -34,6 +34,7 @@ class Game extends React.Component {
 			xIsNext       : false,
 			loadStatus    : 'waiting',
 			errorStatus   : null,
+			offlineMoveQueue  : []
 		};
 		this.api = new API(gameID)
 
@@ -48,13 +49,16 @@ class Game extends React.Component {
 			moveNum    : 1,
 			loadStatus : 'failed',
 			errorStatus: error
+			offlineMoveQueue : [{moveNum: 0, moveStr : 'Reset', board : initialBoard}]
 		})	
 	}
 
-	goOffline(error) {
+	goOffline(error, moveInfo, oldMoveNum) {
+		moveInfo[moveNum] = oldMoveNum;
 		this.setState({
-			loadStatus  : 'failed',
-			errorStatus : error
+			loadStatus       : 'failed',
+			errorStatus      : error
+			offlineMoveQueue : this.state.offlineMoveQueue.concat([moveInfo])
 		})
 	}
 
@@ -88,7 +92,8 @@ class Game extends React.Component {
 			moveNum 	  : oldMoveNum + 1,
 			jumpMouseOver : null,
 		})
-		this.api.postMove(moveInfo, oldMoveNum).catch(error => this.goOffline(error))
+		this.api.postMove(moveInfo, oldMoveNum).catch(error =>
+			this.goOffline(error, moveInfo, oldMoveNum))
 	}
 
 	handlePlacement(flatIndex) {
