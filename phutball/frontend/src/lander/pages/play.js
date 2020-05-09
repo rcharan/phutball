@@ -116,7 +116,7 @@ class GameCreator extends React.Component {
           Player 1 (X's) <input type="text" id="player0"
             value={this.state.player0Name} 
             onChange={this.handlePlayer0Change}
-            placeholder="Player 1"
+            placeholder="X's"
           />
         </label>
         <br/>
@@ -124,7 +124,7 @@ class GameCreator extends React.Component {
           Player 2 (O's) <input type="text" id="player1"
             value={this.state.player1Name} 
             onChange={this.handlePlayer1Change}
-            placeholder="Player 2"
+            placeholder="O's"
           />
         </label><br/>
         <input className="submit" type="submit" value={this.state.requestSent ? 'Preparing your game' : 'Get Started!'}/>

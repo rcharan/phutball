@@ -13,6 +13,25 @@
   flex-direction: row;
 }
 
+
+/******************************************************************************
+*
+* Loader
+*
+******************************************************************************/
+
+.loader {
+  font: 80px "Century Gothic", Futura, sans-serif;
+  background-color: #2191AD;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  color: white;
+  text-align: center;
+  line-height: 100vh;
+}
+
 /******************************************************************************
 *
 * Game Info
@@ -45,6 +64,26 @@
 .game .game-info h1 {
   padding-top: 0;
   margin-top:0;
+}
+
+/******************************************************************************
+*
+* Error Handling
+*
+******************************************************************************/
+
+.game .game-info .error #error button {
+  color:red;
+  font-size: 30px;
+  font-weight: bold; 
+}
+
+.game .error ul > li {
+  margin: 1em;
+}
+
+.game .error button {
+  margin-bottom: 1em;
 }
 
 /******************************************************************************
@@ -172,16 +211,19 @@
   margin-bottom: 20px;
 }
 
-.game .help-section ul {
+.game .help-section ul
+.game .error ul {
   margin-top: 10px;
 }
 
-.game .help-section ul > li{
+.game .help-section ul > li {
   margin: 3px;
 }
 
 
-.game .help-section .float {
+.game .help-section .float,
+.game .error .float
+{
   position: fixed; 
   left: 0;
   top: 0;
@@ -192,8 +234,13 @@
   padding-left: 50px;
   padding-top: 50px;
   font-size: calc(12 * (100vw) / 1280);
+  color: white;
 }
 
+.game .error .float {
+  color: red;
+  font-size: 18px;
+}
 
 /* Required (somehow) to set
 conceptual the z-index properly */

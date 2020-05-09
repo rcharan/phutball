@@ -39,7 +39,11 @@ class BoardState {
   };
 
   get gameOver() {
-    return this.ballLoc.onGoalLine
+    if (this.ballLoc === null) {
+      return false;
+    } else {
+      return this.ballLoc.onGoalLine
+    }
   };
 
   get winner() {
@@ -72,21 +76,11 @@ class BoardState {
     return getLegalJumps(this)
   }
 
-  // TO DO: Refactor this out( logic already contained in jumpObj)
   jump(jumpObj) {
     return {
       board   : jumpObj.endState,
       moveStr : jumpObj.toString()
     }
-    // const legalJumps    = Jump.getLegalJumps(this)
-    // const matchingJumps = legalJumps.filter(jump => (jump.toString() === jumpObj))
-    // if (matchingJumps.length > 0) {
-    //   return ({
-    //     board    : matchingJumps[0].endState,
-    //     moveStr  : matchingJumps[0].toString()
-    //   })
-    // }
-    // return null
 
   }
 

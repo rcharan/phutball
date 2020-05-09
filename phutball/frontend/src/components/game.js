@@ -1,5 +1,5 @@
 import React from 'react';
-import { BoardState, emptyState, emptyBallLoc} from '../gameLogic/boardState'
+import { BoardState, initialState, initialBallLoc, emptyState, emptyBallLoc} from '../gameLogic/boardState'
 import Board from './board'
 import JumpList from './jump'
 import History from './history'
@@ -11,6 +11,7 @@ import AI from './ai'
 import API from '../api'
 import './game.css'
 import { withRouter } from "react-router-dom";
+import ErrorNotifier from './errorNotifier'
 
 
 class Game extends React.Component {
@@ -23,25 +24,45 @@ class Game extends React.Component {
 		this.state = {
 			board         : emptyBoard,
 			gameID        : gameID,
-			player0Name   : '',
-			player1Name   : '',
+			player0Name   : "X's",
+			player1Name   : "O's",
 			aiPlayer      : false,
 			aiPlayerNum   : false,
 			history       : [],
 			moveNum       : 0, // Number of move about to be made, 0 is start-of-game
 			jumpMouseOver : null,
 			xIsNext       : false,
-			loading       : true,
+			loadStatus    : 'waiting',
+			errorStatus   : null,
 		};
 		this.api = new API(gameID)
 
 	}
 
+	loadOffline(error) {
+		const initialBoard = new BoardState(initialState, initialBallLoc)
+		this.setState({
+			board      : initialBoard,
+			history    : [{moveStr : 'Reset', board : initialBoard}],
+			xIsNext    : true,
+			moveNum    : 1,
+			loadStatus : 'failed',
+			errorStatus: error
+		})	
+	}
+
+	goOffline(error) {
+		this.setState({
+			loadStatus  : 'failed',
+			errorStatus : error
+		})
+	}
+
 	componentDidMount() {
 		this.api.getGame().then(result => {
-			result['loading'] = false
+			result['loadStatus'] = 'ready'
 			this.setState(result);
-		})	
+		}).catch(error => this.loadOffline(error))
 	}
 
 	get isAiTurn() {
@@ -67,7 +88,7 @@ class Game extends React.Component {
 			moveNum 	  : oldMoveNum + 1,
 			jumpMouseOver : null,
 		})
-		this.api.postMove(moveInfo, oldMoveNum)
+		this.api.postMove(moveInfo, oldMoveNum).catch(error => this.goOffline(error))
 	}
 
 	handlePlacement(flatIndex) {
@@ -160,7 +181,7 @@ class Game extends React.Component {
 	}
 
 	renderJumpList() {
-		if (this.state.board.gameOver) {
+		if (this.state.board.gameOver || this.state.board.ballLoc === null) {
 			return null
 		} else {
 			return (
@@ -177,14 +198,32 @@ class Game extends React.Component {
 	}
 
 	renderHistory() {
-		return (
-			<div key="history" className="history"><h1>History</h1>
-				<History
-					history     = {this.state.history}
-					onClick     = {(moveNum) => this.handleHistory(moveNum)}
-				/>
-			</div>
-		)
+		if (this.state.history.length === 0) {
+			return null
+		} else {
+			return (
+				<div key="history" className="history"><h1>History</h1>
+					<History
+						history     = {this.state.history}
+						onClick     = {(moveNum) => this.handleHistory(moveNum)}
+					/>
+				</div>
+			)
+		}
+	}
+
+	renderAnyErrors() {
+		if (this.state.loadStatus === 'failed') {
+			return (
+				<div key="error" className="error">
+					<ErrorNotifier
+						errorStatus={this.state.errorStatus}
+					/>
+				</div>
+			)
+		} else {
+			return null
+		}
 	}
 
 	renderGameInfo() {
@@ -193,6 +232,7 @@ class Game extends React.Component {
 			<Logo/>
 			<div key="gameinfo" className = "game-info">
 				{[
+					this.renderAnyErrors(),
 					this.renderNextMove(),
 					this.renderHelp(),
 					this.renderJumpList(),
@@ -204,13 +244,13 @@ class Game extends React.Component {
 	}
 
 	render() {
-		if (this.state.loading) {
+		if (this.state.loadStatus == 'waiting') {
 			return <div className="loader">Loading</div>
 		} else {
 			return (
 				<div className = "game">
 					{[this.renderBoard(),
-					  this.state.loading? null : this.renderGameInfo()]}
+					  this.renderGameInfo()]}
 				</div>
 			)
 		}
