@@ -72,13 +72,15 @@
 *
 ******************************************************************************/
 
+
 .game .game-info .error#error button {
   color:red;
   font-size: 30px;
   font-weight: bold; 
 }
 
-.game .game-info .error.quiet#error button {
+.game .game-info .error.quiet#error button,
+.game .game-info .error.quiet#error .float {
   color:white;
 }
 
