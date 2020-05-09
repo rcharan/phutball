@@ -109,6 +109,8 @@
 .game .history .table {
   max-height: 40vh;
   overflow: scroll;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .game .history button {
