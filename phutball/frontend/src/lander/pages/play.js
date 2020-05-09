@@ -71,7 +71,7 @@ class GameCreator extends React.Component {
     this.state = {
       player0Name : '',
       player1Name : '',
-      requestSent : false,
+      requestStatus : 'unsent',
     }
 
     this.handlePlayer0Change = this.handlePlayer0Change.bind(this);
@@ -83,7 +83,7 @@ class GameCreator extends React.Component {
   }
 
   handlePlayer0Change(event) {
-    if (this.state.requestSent) {
+    if (this.state.requestStatus !== 'unsent') {
       event.preventDefault()
     } else {
       this.setState({player0Name : event.target.value.toUpperCase()})
@@ -91,11 +91,17 @@ class GameCreator extends React.Component {
   }
 
   handlePlayer1Change(event) {
-    if (this.state.requestSent) {
+    if (this.state.requestStatus !== 'unsent') {
       event.preventDefault()
     } else {
       this.setState({player1Name : event.target.value.toUpperCase()})
     }
+  }
+
+  setFailure(error) {
+    this.setState({'requestStatus' : 'failed'}) 
+    setTimeout(() => {this.setState(
+        {'requestStatus' : 'unsent'})}, 3000);
   }
 
   handleSubmit(event) {
@@ -105,8 +111,20 @@ class GameCreator extends React.Component {
       'player_1_name' : this.state.player1Name
     }
 
-    this.setState({requestSent : true})
-    this.api.createGame(gameParams).then(gameID => (window.location.href=`/game/${gameID}`))
+    this.setState({requestStatus : 'sent'})
+    this.api.createGame(gameParams).then(
+      gameID => (window.location.href=`/game/${gameID}`)
+    ).catch(error => this.setFailure(error))
+  }
+
+  requestStatusView() {
+    if (this.state.requestStatus==='unsent') {
+      return 'Get Started'
+    } else if (this.state.requestStatus==='sent') {
+      return 'Preparing your game'
+    } else if (this.state.requestStatus==='failed') {
+      return 'Error preparing your game. Check your connection or try again later.'
+    }
   }
 
   render() {
@@ -127,7 +145,7 @@ class GameCreator extends React.Component {
             placeholder="O's"
           />
         </label><br/>
-        <input className="submit" type="submit" value={this.state.requestSent ? 'Preparing your game' : 'Get Started!'}/>
+        <input className="submit" type="submit" value={this.requestStatusView()}/>
       </form>
     )
   } 
