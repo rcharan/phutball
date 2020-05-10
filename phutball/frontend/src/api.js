@@ -6,17 +6,18 @@ import { ReactComponent as Cloud } from './icons/cloud.svg'
 import { withRouter } from 'react-router-dom'
 
 const API_URL = 'http://localhost:8000';
-
+const BASE_POLL_FREQ = 500
 
 class ConnectionManager extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			focus         : false,
+			dead          : false,
 		}
 
 		this.timerID       = null
-		this.pollFrequency = 1000
+		this.pollFrequency = BASE_POLL_FREQ
 		this.api = new API(this.props.gameID)
 		this.requestIsPending = false // Force async calls to behave synchronously internally
 
@@ -136,7 +137,7 @@ class ConnectionManager extends React.Component {
 				}
 
 			// When loading offline, a new game will need 
-			//  to be created
+			//  to be created before any moves are posted
 			} else if (this.props.gameID === 'offline') {
 				const game = this.api.createGame(this.props.gameParams)
 
@@ -146,10 +147,11 @@ class ConnectionManager extends React.Component {
 						this.api = new API(gameID)
 						this.props.setGameID(gameID)
 						this.props.dequeue();
+						this.revive()
 					}
 				).catch(
 					() => {
-						this.pollFrequency *= 1.1;
+						this.pollFrequency *= 2;
 						this.resetTimer()
 					}
 				).finally(closeRequest)
@@ -161,10 +163,11 @@ class ConnectionManager extends React.Component {
 				this.requestIsPending = true;
 
 				post.then(response => {
-					this.props.dequeue()
+					this.props.dequeue();
+					this.revive()
 				}
 				).catch(error => {
-					this.pollFrequency *= 1.1;
+					this.pollFrequency *= 2;
 					this.resetTimer();
 				}).finally(closeRequest)
 			}
@@ -173,10 +176,16 @@ class ConnectionManager extends React.Component {
 
 	}
 
+	revive() {
+		this.pollFrequency = BASE_POLL_FREQ
+		this.setState({dead : false})
+		this.resetTimer()
+	}
+
 	resetTimer() {
 		this.unsetTimer()
-		if (this.pollFrequency >= (1000*60)) {
-			this.pollFrequency = (1000*60)
+		if (this.pollFrequency >= (BASE_POLL_FREQ*64)) {
+			this.setState({dead : true})
 		} else {
 			this.setTimer()
 		}
@@ -228,12 +237,19 @@ class ConnectionManager extends React.Component {
 				<div className = "float" id="error" key="0">
 					<h1>Game is in offline mode<br/>({this.props.errorStatus.message})</h1>
 					<ul>
-						<li key="2"> This could by an issue with your Internet connection;
-							the application (including if you modified it locally); or a server issue</li>
-						<li key="3"> The game will attempt to reconnect periodically.</li>
+						<li key="2"> This could by an issue with your Internet connection,
+							the application, or a server issue</li>
+						{
+							this.state.dead ? 
+							<li key="3">
+								The game <div className="dead">will not
+								attempt to reconnect</div> automatically.
+								Click to reattempt.
+							</li>
+							:
+							<li key="3"> The game will attempt to reconnect periodically.</li>
+						}
 						<li key="1"> Unsaved moves are greyed out </li>
-						<li key="4"> If the problem persists unexpectedly, please submit bug reports on the github
-						</li>
 					</ul>
 				</div>
 			)
@@ -243,7 +259,16 @@ class ConnectionManager extends React.Component {
 	}
 
 	render() {
-		const buttonClass = (this.props.status === 'offline' ? "offline" : "online")
+		let buttonClass
+		if (this.props.status === 'offline') {
+			if (this.state.dead) {
+				buttonClass = 'dead'
+			} else {
+				buttonClass = 'offline'
+			}
+		} else {
+			buttonClass = 'online'
+		}
 		return (
 			[<button
 				type="button"

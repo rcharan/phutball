@@ -297,8 +297,17 @@ conceptual the z-index properly */
   fill: white;
 }
 
-.game .help-section button.offline #cloud path {
+.game .help-section button.offline #Cloud path {
+  fill: grey;
+}
+
+.game .help-section button.dead #Cloud path {
   fill: red;
+}
+
+.game .help-section div.dead {
+  color: red;
+  display: inline;
 }
 
 .game .help-section button#connection-status:hover svg {
