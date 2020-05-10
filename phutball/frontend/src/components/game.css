@@ -164,7 +164,7 @@
 
 .game .history .table {
   max-height: 40vh;
-  max-width: 15vw;
+  max-width: 250px;
   text-align: center;
   overflow: scroll;
   display: flex;

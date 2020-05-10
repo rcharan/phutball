@@ -89,6 +89,7 @@ class HelpI extends React.Component {
 					onClick     ={() => this.handleMouseEnter()}
 					onMouseEnter={() => this.handleMouseEnter()}
 					onMouseLeave={() => this.handleMouseLeave()}
+					key="3"
 				>
 				Help I
 				</button>,
@@ -152,6 +153,7 @@ class HelpII extends React.Component {
 					onClick     ={() => this.handleMouseEnter()}
 					onMouseEnter={() => this.handleMouseEnter()}
 					onMouseLeave={() => this.handleMouseLeave()}
+					key="42"
 				>
 				Help II
 				</button>,

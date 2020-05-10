@@ -29,6 +29,7 @@ export default class Play extends React.Component {
           </ul>
           <p id="4">
           If playing on different computers, be warned:
+          </p>
             <ul>
               <li key="1"> There is no authentication &ndash; nothing stops a
               third party from interfering in your game by impersonating you,
@@ -40,7 +41,6 @@ export default class Play extends React.Component {
               <li key="2"> You and your opponent will have to refresh the 
               page manually to check for new moves.</li>
             </ul>
-          </p>
 
         </div>
         <div id="creator" className="creator" key="c">

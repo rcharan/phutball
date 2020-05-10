@@ -1,5 +1,4 @@
 import React from 'react';
-import { ReactComponent as RulesD   } from '../icons/rules-d.svg'
 
 export default class Rules extends React.Component {
 	constructor(props) {
@@ -18,7 +17,7 @@ export default class Rules extends React.Component {
 	renderRules() {
 		if (this.state.focus) {
 			return (
-				<div className = "float" key="1">
+				<div className = "float" key="2">
 						<h1>Rules</h1>
 						<ol>
 							<li key="1">
@@ -91,6 +90,7 @@ export default class Rules extends React.Component {
 					onClick     ={() => this.handleMouseEnter()}
 					onMouseEnter={() => this.handleMouseEnter()}
 					onMouseLeave={() => this.handleMouseLeave()}
+					key="1"
 				>
 				Rules
 				</button>,

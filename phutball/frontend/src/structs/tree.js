@@ -132,7 +132,7 @@ export default class Tree {
         let repeated
         // Only the left child can see the parent as unrepeated
         // *and* a repeated node contaminates all its parents
-        if ((childNum == 0) && !chain[0].repeated) {
+        if ((childNum === 0) && !chain[0].repeated) {
           repeated = false
         } else {
           repeated = true

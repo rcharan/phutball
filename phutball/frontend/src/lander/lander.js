@@ -31,7 +31,7 @@ export default class LandingPage extends React.Component {
               <NavBar active={activeElement} onClick={pageName => goTo(pageName)}/>
               <div id="content">
                 {content.map((pageContent, i) => 
-                  <div className="page" id={pageNames[i]} ref={refs[pageNames[i]]}>
+                  <div className="page" key={i} id={pageNames[i]} ref={refs[pageNames[i]]}>
                     <section className="pagecontent">
                       {pageContent}
                     </section>

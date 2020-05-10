@@ -207,7 +207,6 @@ class ConnectionManager extends React.Component {
 
 	componentDidMount() {
 		this.tick()
-		console.log('Mounted')
 	}
 
 	componentWillUnmount() {
@@ -282,11 +281,12 @@ class ConnectionManager extends React.Component {
 		return (
 			[<button
 				type="button"
-				class={buttonClass}
+				className={buttonClass}
 				id="connection-status"
 				onClick     ={this.handleClick}
 				onMouseEnter={this.handleMouseEnter}
 				onMouseLeave={this.handleMouseLeave}
+				key="a"
 			>
 				<Cloud/>
 			</button>,

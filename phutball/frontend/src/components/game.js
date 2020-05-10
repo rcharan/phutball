@@ -61,7 +61,6 @@ class Game extends React.Component {
 									}
 								}]
 		})	
-		console.log('Loaded with queue')
 	}
 
 	loadFromServer(result) {
@@ -280,10 +279,10 @@ class Game extends React.Component {
 		return (
 			[
 				this.state.loadStatus === 'waiting' ?
-				<div className="loader">Loading</div> :
+				<div className="loader" key="a">Loading</div> :
 				null,
 
-				<div className = "game">
+				<div className = "game" key="b">
 					{[this.renderBoard(),
 					  this.renderGameInfo()]}
 				</div>

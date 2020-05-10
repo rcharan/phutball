@@ -41,7 +41,7 @@ class Jump {
 			return false
 		}
 		for (var step = 0 ; step < this.path.length; step++) {
-			if (other.path[step] != this.path[step]) {
+			if (other.path[step] !== this.path[step]) {
 				return false
 			}
 		}

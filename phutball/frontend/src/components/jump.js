@@ -1,7 +1,5 @@
 import React from 'react';
 
-const intersperse = (arr, sep) => arr.reduce((a,v)=>[...a,v,sep],[]).slice(0,-1)
-
 class JumpList extends React.Component {
 	render() {
 		const jumpChains = this.props.boardState.getLegalJumps().descendingChains()
@@ -39,7 +37,6 @@ class JumpChain extends React.Component {
 		    </button>
 		)
 		return options
-		// return intersperse(options, '-')
 	}
 }
 
