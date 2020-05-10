@@ -15,4 +15,4 @@ COPY ./backend/   /app/backend/
 COPY ./phutball/  /app/phutball/
 COPY ./manage.py /app
 
-# For migrations, run: docker-compose run web python3 manage.py migrate
+# For migrations, run: docker-compose run backend python3 manage.py migrate
