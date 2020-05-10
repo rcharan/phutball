@@ -1,3 +1,10 @@
+from .settings_dev import (
+    SECRET_KEY,
+    DEBUG,
+    ALLOWED_HOSTS,
+    CORS_ORIGIN_WHITELIST
+)
+
 """
 Django settings for phutball project.
 
@@ -19,19 +26,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8u!4&6@8ojhp-pfoc%o%nw6f4&=!g^+e7n=8rxc^r8-4nuxmr!'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-CORS_ORIGIN_ALLOW_ALL = False
-
-CORS_ORIGIN_WHITELIST = (
-       'http://localhost:3000',
-)
 
 # Application definition
 

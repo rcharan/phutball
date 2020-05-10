@@ -7,7 +7,7 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  backend:
+  api:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     # ports:
@@ -22,7 +22,7 @@ services:
   #   environment:
   #     - NODE_ENV=development
   #   depends_on:
-  #     - backend
+  #     - api
 
   #   # bug in React-Scripts 3.4.1 (Mar 20, 2020)
   #   # fix is a hack
@@ -33,5 +33,5 @@ services:
     ports: 
       - 80:8080
     depends_on:
-      - backend
+      - api
 

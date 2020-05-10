@@ -5,8 +5,8 @@ import { BoardState } from './gameLogic/boardState'
 import { ReactComponent as Cloud } from './icons/cloud.svg'
 import { withRouter } from 'react-router-dom'
 
-const API_URL = 'http://localhost:8000';
-const BASE_POLL_FREQ = 500
+import { API_URL, BASE_POLL_FREQ } from './settings'
+
 
 class ConnectionManager extends React.Component {
 	constructor(props) {
