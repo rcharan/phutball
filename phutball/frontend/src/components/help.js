@@ -133,6 +133,8 @@ class HelpII extends React.Component {
 							<li key="5"> (Playing remotely) Noting the previous point, it is possible to play remotely by sending your
 							game&rsquo;s URL to your opponent. You will have to refresh the page to see your opponent's moves.
 							</li>
+							<li key="7"> (Support) This game is only supported for Chrome for desktop. But 
+							(desktop versions) of Safari and Firefox should work as well.</li>
 							<li key="6"> (Bug Reports) please submit on github (link in the About section of the home page)
 							</li>
 						</ol>
