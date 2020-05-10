@@ -290,6 +290,7 @@ conceptual the z-index properly */
   bottom: 0px;
 }
 
+
 .game .help-section button#connection-status {
   margin-left: 2em;
 }
@@ -314,7 +315,6 @@ conceptual the z-index properly */
   margin-left: -13px;
   margin-bottom: -10px
 }
-
 
 .game .menu > svg {
   position: absolute;

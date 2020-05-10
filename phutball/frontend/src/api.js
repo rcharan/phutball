@@ -253,6 +253,16 @@ class ConnectionManager extends React.Component {
 					</ul>
 				</div>
 			)
+	    } else if ((this.state.focus) && (this.props.status === 'online')) {
+	    	return (
+				<div className = "float" id="error" key="0">
+					<h1>Game is in online mode</h1>
+					<ul>
+						<li key="1">Your moves are saved and you can return to the game
+						at any time by navigating to the current URL</li>
+					</ul>
+				</div>
+	    	)
 	    } else {
 			return null
 		}
