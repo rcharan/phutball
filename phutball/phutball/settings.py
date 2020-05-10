@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'phutball.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'phutball',
-        'USER': 'rcharan',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
