@@ -241,14 +241,12 @@ class ConnectionManager extends React.Component {
 						{
 							this.state.dead ? 
 							<li key="3">
-								The game <div className="dead">will not
-								attempt to reconnect</div> automatically.
-								Click to reattempt.
+								The game <div className="dead">will not attempt to reconnect</div> automatically. Click to reattempt.
 							</li>
 							:
-							<li key="3"> The game will attempt to reconnect periodically.</li>
+							<li key="3"> The game will attempt to reconnect periodically. After reconnecting, it may take a few seconds to update.</li>
 						}
-						<li key="1"> Unsaved moves are greyed out </li>
+						{/*<li key="1"> Unsaved moves are greyed out </li>*/}
 					</ul>
 				</div>
 			)
