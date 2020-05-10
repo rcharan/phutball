@@ -39,15 +39,15 @@ class History extends React.Component {
 			<table>
 				<thead>
 				<tr>
-					<th/>
-					<th>X</th>
-					<th>O</th>
+					<th className="empty" style={{width: "10%"}}/>
+					<th className="head"  style={{width: "40%"}}>X</th>
+					<th className="head"  style={{width: "40%"}}>O</th>
 				</tr>
 				</thead>
 				<tbody>
 				{rows.map((historyArray, index) => 
 					<tr key={index+1}>		
-					<td key="row"><b>{index+1}.</b></td>
+					<td key="row" className="empty"><b>{index+1}.</b></td>
 						<HistoryRow
 							rowNum  = {index + 1}
 							items   = {historyArray}

@@ -164,12 +164,15 @@
 
 .game .history .table {
   max-height: 40vh;
+  max-width: 15vw;
+  text-align: center;
   overflow: scroll;
   display: flex;
   flex-direction: column-reverse;
 }
 
-.game .history button {
+.game .history button,
+.game .history thead th.head {
   padding: 5px;
   text-align: center;
   width: 6em;
