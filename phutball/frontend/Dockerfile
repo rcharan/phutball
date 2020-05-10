@@ -15,5 +15,5 @@ FROM nginx:latest
 #RUN useradd -ms /bin/bash nginx;
 #USER nginx;
 
-COPY --from=react --chown=nginx:nginx /app/frontend/build/ /var/www/frontend/
+COPY --from=react --chown=nginx:nginx /app/frontend/ /var/www/frontend/
 COPY ./nginx.conf /etc/nginx/
