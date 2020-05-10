@@ -7,11 +7,25 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  web:
+  backend:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     depends_on:
       - db
-      
+  frontend:
+    build: ./frontend
+    command: npm start
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+
+    # bug in React-Scripts 3.4.1 (Mar 20, 2020)
+    # fix is a hack
+    # see https://github.com/facebook/create-react-app/issues/8688 for the bug
+    stdin_open: true 
+
