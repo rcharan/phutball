@@ -5,7 +5,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
-      <div className="logo-float" key="1">
+      <div className="logo float" key="1">
         <EyeCandy/>
       </div>
       <span className="title">

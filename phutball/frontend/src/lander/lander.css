@@ -60,13 +60,21 @@
   background: #7DE5FF; 
 }
 
-.lander .page#home .logo-float {
-  float: right;
+
+.game .menu > svg {
+  position: absolute;
+  right: 15vw;
+  width: 30vw;
+  height: auto;
+  opacity: 0.3;
 }
 
-.lander .page#home .logo-float svg {
-  width: 20vw;
-  height: auto;
+.lander .page#home .logo.float svg {
+  position: absolute;
+  opacity: 0.5;
+  right: 15vw;
+  height: 80vh;
+  width: auto;
 }
 
 

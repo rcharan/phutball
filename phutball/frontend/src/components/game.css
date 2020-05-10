@@ -21,6 +21,7 @@
 ******************************************************************************/
 
 .loader {
+  position: fixed;
   font: 80px "Century Gothic", Futura, sans-serif;
   background-color: #2191AD;
   width: 100vw;
@@ -30,6 +31,8 @@
   color: white;
   text-align: center;
   line-height: 100vh;
+  opacity: 0.8;
+  z-index: 2;
 }
 
 /******************************************************************************
@@ -73,7 +76,7 @@
 ******************************************************************************/
 
 
-.game .game-info .error#error button {
+/*.game .game-info .error#error button {
   color:red;
   font-size: 30px;
   font-weight: bold; 
@@ -98,6 +101,7 @@
 .game .error button {
   margin-bottom: 1em;
 }
+*/
 
 /******************************************************************************
 *
@@ -189,7 +193,7 @@
 
 /******************************************************************************
 *
-* Help and Rules
+* Help and Rules section
 *
 ******************************************************************************/
 
@@ -198,6 +202,8 @@
   display: inline;
   margin-left: 2em;
 }
+
+
 
 .game .help-section:hover {
   cursor: pointer; 
@@ -229,7 +235,7 @@
   margin-top: 10px;
 }
 
-.game .help-section ul > li {
+.game .help-sectionn ul > li {
   margin: 3px;
 }
 
@@ -282,6 +288,22 @@ conceptual the z-index properly */
   margin-bottom: -10px;
   margin-right: -10px;
   bottom: 0px;
+}
+
+.game .help-section button#connection-status {
+  margin-left: 2em;
+}
+.game .help-section button.online path {
+  fill: white;
+}
+
+.game .help-section button.offline #cloud path {
+  fill: red;
+}
+
+.game .help-section button#connection-status:hover svg {
+  margin-left: -13px;
+  margin-bottom: -10px
 }
 
 

@@ -8,10 +8,9 @@ import BackButton from './backbutton'
 import { HelpI, HelpII } from './help'
 import { ReactComponent as Logo } from '../icons/philosphers-play-football.svg'
 import AI from './ai'
-import API from '../api'
 import './game.css'
 import { withRouter } from "react-router-dom";
-import ErrorNotifier from './errorNotifier'
+import ConnectionManager from '../api'
 
 
 class Game extends React.Component {
@@ -32,11 +31,17 @@ class Game extends React.Component {
 			moveNum       : 0, // Number of move about to be made, 0 is start-of-game
 			jumpMouseOver : null,
 			xIsNext       : false,
-			loadStatus    : 'waiting',
+			loadStatus    : 'waiting', // waiting, online, or offline
 			errorStatus   : null,
 			offlineMoveQueue  : []
 		};
-		this.api = new API(gameID)
+
+		this.loadOffline    = this.loadOffline.bind(this)
+		this.loadFromServer = this.loadFromServer.bind(this)
+		this.goOffline      = this.goOffline.bind(this)
+		this.goOnline       = this.goOnline.bind(this)
+		this.dequeueMove    = this.dequeueMove.bind(this)
+		this.setGameID      = this.setGameID.bind(this)
 
 	}
 
@@ -47,26 +52,45 @@ class Game extends React.Component {
 			history    : [{moveStr : 'Reset', board : initialBoard}],
 			xIsNext    : true,
 			moveNum    : 1,
-			loadStatus : 'failed',
+			loadStatus : 'offline',
 			errorStatus: error,
-			offlineMoveQueue : [{moveNum: 0, moveStr : 'Reset', board : initialBoard}]
+			offlineMoveQueue : [{moveNum: 0,
+								 moveInfo: {
+								 		moveStr : 'Reset',
+									 	board : initialBoard
+									}
+								}]
 		})	
+		console.log('Loaded with queue')
 	}
 
-	goOffline(error, moveInfo, oldMoveNum) {
-		moveInfo['moveNum'] = oldMoveNum;
+	loadFromServer(result) {
+		result['loadStatus'] = 'online'
+		this.setState(result)
+	}
+
+	goOffline(error) {
 		this.setState({
-			loadStatus       : 'failed',
+			loadStatus       : 'offline',
 			errorStatus      : error,
-			offlineMoveQueue : this.state.offlineMoveQueue.concat([moveInfo])
 		})
 	}
 
-	componentDidMount() {
-		this.api.getGame().then(result => {
-			result['loadStatus'] = 'ready'
-			this.setState(result);
-		}).catch(error => this.loadOffline(error))
+	goOnline() {
+		this.setState({
+			loadStatus : 'online',
+			errorStatus: null,
+		})
+	}
+
+	setGameID(gameID) {
+		this.setState({gameID : gameID})
+	}
+
+	dequeueMove() {
+		this.setState((state) => ({
+			offlineMoveQueue : state.offlineMoveQueue.slice(1),
+		}))
 	}
 
 	get isAiTurn() {
@@ -84,16 +108,17 @@ class Game extends React.Component {
 		if (moveInfo === null) {
 			return
 		}
-		const oldMoveNum = this.state.moveNum
-		this.setState({
-			board         : moveInfo.board,
-			xIsNext       : !this.state.xIsNext,
-			history       : this.state.history.slice(0, this.state.moveNum).concat([moveInfo]),
-			moveNum 	  : oldMoveNum + 1,
-			jumpMouseOver : null,
-		})
-		this.api.postMove(moveInfo, oldMoveNum).catch(error =>
-			this.goOffline(error, moveInfo, oldMoveNum))
+		this.setState((state) => ({
+			board            : moveInfo.board,
+			xIsNext          : !state.xIsNext,
+			history          : state.history.slice(0, this.state.moveNum).concat([moveInfo]),
+			moveNum 	     : state.moveNum + 1,
+			jumpMouseOver    : null,
+			offlineMoveQueue : state.offlineMoveQueue.concat([{
+				moveNum : state.moveNum,
+				moveInfo: moveInfo,
+			}])
+		}))
 	}
 
 	handlePlacement(flatIndex) {
@@ -181,6 +206,24 @@ class Game extends React.Component {
 		return (
 			<div key="help" className="help-section">
 				<BackButton/> <Rules/> <HelpI/> <HelpII/>
+				<ConnectionManager
+					goOffline   = {this.goOffline}
+					goOnline    = {this.goOnline}
+					loadOffline = {this.loadOffline}
+					loadOnline  = {this.loadFromServer}
+					dequeue     = {this.dequeueMove}
+					moveQueue   = {this.state.offlineMoveQueue}
+					status      = {this.state.loadStatus}
+					setGameID   = {this.setGameID}
+					errorStatus = {this.state.errorStatus}	
+					gameID      = {this.state.gameID}
+					gameParams  = {{
+						player_0_name : this.state.player0Name,
+						player_1_name : this.state.player1Name,
+						ai_player     : this.state.aiPlayer,
+						ai_player_num : this.state.aiPlayerNum
+					}}
+				/>
 			</div>
 		)
 	}
@@ -217,28 +260,12 @@ class Game extends React.Component {
 		}
 	}
 
-	renderAnyErrors() {
-		if (this.state.loadStatus === 'failed') {
-			return (
-				<div key="error" className="error">
-					<ErrorNotifier
-						errorStatus={this.state.errorStatus}
-						gameID     ={this.state.gameID}
-					/>
-				</div>
-			)
-		} else {
-			return null
-		}
-	}
-
 	renderGameInfo() {
 		return (
 			<div key="gameinfo" className="menu">
 			<Logo/>
 			<div key="gameinfo" className = "game-info">
 				{[
-					this.renderAnyErrors(),
 					this.renderNextMove(),
 					this.renderHelp(),
 					this.renderJumpList(),
@@ -250,16 +277,18 @@ class Game extends React.Component {
 	}
 
 	render() {
-		if (this.state.loadStatus == 'waiting') {
-			return <div className="loader">Loading</div>
-		} else {
-			return (
+		return (
+			[
+				this.state.loadStatus === 'waiting' ?
+				<div className="loader">Loading</div> :
+				null,
+
 				<div className = "game">
 					{[this.renderBoard(),
 					  this.renderGameInfo()]}
 				</div>
-			)
-		}
+			]
+		)
 	}
 }
 

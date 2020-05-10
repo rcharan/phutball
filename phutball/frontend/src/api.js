@@ -1,13 +1,273 @@
+import React from 'react'
 import axios from 'axios';
-
-import Location   from './gameLogic/location'
+import Location       from './gameLogic/location'
 import { BoardState } from './gameLogic/boardState'
+import { ReactComponent as Cloud } from './icons/cloud.svg'
+import { withRouter } from 'react-router-dom'
 
 const API_URL = 'http://localhost:8000';
 
-export default class API {
+
+class ConnectionManager extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			focus         : false,
+		}
+
+		this.timerID       = null
+		this.pollFrequency = 1000
+		this.api = new API(this.props.gameID)
+		this.requestIsPending = false // Force async calls to behave synchronously internally
+
+		this.handleMouseEnter = this.handleMouseEnter.bind(this)
+		this.handleMouseLeave = this.handleMouseLeave.bind(this)
+		this.handleClick      = this.handleClick.bind(this)
+
+	}
+
+	redirect(gameID) {
+		this.props.setGameID(gameID);
+		this.props.history.push(`/game/${gameID}`)
+		this.api = new API(gameID)
+	}
+
+
+	/**************************************************************************
+	*
+	* Background: Games can be created with an ID (online mode) or
+	*  without (offline). State is contained in:
+	*  - moveQueue, a queue of moves not yet posted
+	*  - status: waiting (on initial load only), online or offline
+	*  - gameID: "offline" or a valid gameID
+	*  - the Browser's URL: which is either /game/offline or /game/:gameID
+	*     depending on how the game was loaded (offline or online mode).
+	*     Note that the URL does not have to match the game ID if the 
+	*     URL is offline and the game has since been assigned an ID.
+	*
+	* Note: repeated requests are made with truncated exponential backoff
+	*  (except that requests eventually terminate)
+	*
+	* Behaviour (testable behaviours numbered)
+	*  - On loading offline, attempt to create a game.
+	*
+	*	  (1) On failure, play offline.
+	*     Reconnection attempts will be made. If the full move history is
+	*     later posted, the user is redirected to the online game with their 
+	*     full move history available.
+	*
+	*     Internally, the game is locally assigned an ID when that ID is 
+	*      created server side, and then redirect occurs after all history
+	*      is posted.
+	*    
+	*     (2) On success, redirect to an online load
+	*
+	* - On loading online, attempt to load the game.
+	*
+	*     (3) On success, great!
+	*     (4) On failure, redirect to an offline line.
+	*
+	* - (5) During online play, moves are posted asynchronously from being played
+	* - (6) During online play, a failure to post goes to offline mode and 
+	*        reconnection/reposting attempts are periodically made
+	*
+	**************************************************************************/
+
+	tick() {
+		if (this.requestIsPending) {
+			return 
+		}
+
+		const closeRequest = (() => this.requestIsPending = false)
+
+		if (this.props.status === 'waiting') {
+			let promise;
+			if (this.props.gameID === 'offline') {
+				// Try to create a game, otherwise just play offline
+				const game = this.api.createGame(this.props.gameParams)
+
+				this.requestIsPending = true;
+				promise = game.then(
+					gameID => this.redirect(gameID)
+				).catch(
+					error => this.props.loadOffline(error)
+				)
+
+			} else {
+				// Try to play online, otherwise redirect to offline
+				const gameData = this.api.getGame()
+
+				this.requestIsPending = true;
+				promise = gameData.then(
+					result => this.props.loadOnline(result)
+				).catch(
+					error  => this.redirect('offline')
+				)
+			}
+			promise.finally(closeRequest).finally(() => this.setTimer())
+
+		} else if (this.props.status === 'online') {
+			// Try to post a move if there are any to post.
+			//  on failure, go offline and set a timer
+			//  to retry
+			if (this.props.moveQueue.length === 0) {
+				return
+			} else {
+				const data = this.props.moveQueue[0]
+				const post = this.api.postMove(data.moveInfo, data.moveNum)
+
+				this.requestIsPending = true;
+
+				post.then(reponse => {
+					this.props.dequeue(data);
+				}).catch(error => {
+					this.props.goOffline(error);
+				}).finally(closeRequest)
+			}
+		} else if (this.props.status === 'offline') {
+
+			// In case of successful reconnection and 
+			//  now all data has been posted
+			if (this.props.moveQueue.length === 0) {
+				if (this.props.location.pathname.includes('offline')) {
+					this.redirect(this.props.gameID)
+				} else {
+					this.props.goOnline()
+				}
+
+			// When loading offline, a new game will need 
+			//  to be created
+			} else if (this.props.gameID === 'offline') {
+				const game = this.api.createGame(this.props.gameParams)
+
+				this.requestIsPending = true;
+				game.then(
+					gameID => {
+						this.api = new API(gameID)
+						this.props.setGameID(gameID)
+						this.props.dequeue();
+					}
+				).catch(
+					() => {
+						this.pollFrequency *= 1.1;
+						this.resetTimer()
+					}
+				).finally(closeRequest)
+
+			} else {
+				const data = this.props.moveQueue[0]
+				const post = this.api.postMove(data.moveInfo, data.moveNum)
+
+				this.requestIsPending = true;
+
+				post.then(response => {
+					this.props.dequeue()
+				}
+				).catch(error => {
+					this.pollFrequency *= 1.1;
+					this.resetTimer();
+				}).finally(closeRequest)
+			}
+
+		}
+
+	}
+
+	resetTimer() {
+		this.unsetTimer()
+		if (this.pollFrequency >= (1000*60)) {
+			this.pollFrequency = (1000*60)
+		} else {
+			this.setTimer()
+		}
+	}
+
+	setTimer() {
+		this.timerID = setInterval(
+			() => this.tick(),
+			this.pollFrequency
+		)
+	}
+
+	unsetTimer() {
+		if (this.timerID !== null) {
+		    clearInterval(this.timerID);
+		    this.timerID = null
+		}
+	}
+
+	componentDidMount() {
+		this.tick()
+		console.log('Mounted')
+	}
+
+	componentWillUnmount() {
+		this.unsetTimer()
+	}
+
+	handleMouseEnter() {
+		this.setState({focus : true})
+	}
+
+	handleMouseLeave() {
+		this.setState({focus: false})
+	}
+
+	handleClick() {
+		this.pollFrequency = 1000;
+		this.resetTimer()
+	}
+
+	// handleDismiss() {
+	// 	this.setState({acknowledged : true})
+	// }
+
+	renderMessage() {
+		if ((this.state.focus) && (this.props.status === 'offline')) {
+			return (
+				<div className = "float" id="error" key="0">
+					<h1>Game is in offline mode<br/>({this.props.errorStatus.message})</h1>
+					<ul>
+						<li key="2"> This could by an issue with your Internet connection;
+							the application (including if you modified it locally); or a server issue</li>
+						<li key="3"> The game will attempt to reconnect periodically.</li>
+						<li key="1"> Unsaved moves are greyed out </li>
+						<li key="4"> If the problem persists unexpectedly, please submit bug reports on the github
+						</li>
+					</ul>
+				</div>
+			)
+	    } else {
+			return null
+		}
+	}
+
+	render() {
+		const buttonClass = (this.props.status === 'offline' ? "offline" : "online")
+		return (
+			[<button
+				type="button"
+				class={buttonClass}
+				id="connection-status"
+				onClick     ={this.handleClick}
+				onMouseEnter={this.handleMouseEnter}
+				onMouseLeave={this.handleMouseLeave}
+			>
+				<Cloud/>
+			</button>,
+			this.renderMessage()]
+		)
+	}
+}
+
+
+
+
+
+
+class API {
 	constructor(gameID) {
-		if (arguments.length === 0 || gameID === null) {
+		if (arguments.length === 0 || gameID === null || gameID === 'offline') {
 			this.url = `${API_URL}/api/game/`
 
 		} else {
@@ -130,3 +390,7 @@ function serializeLocation(loc) {
 function deserializeLocation(data) {
 	return new Location(null, data.letter_index, data.number_index)
 }
+
+export default withRouter(ConnectionManager);
+export { API } 
+

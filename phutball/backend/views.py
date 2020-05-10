@@ -20,7 +20,7 @@ def game_view(request, pk):
 
 @api_view(['PUT'])
 def create_game(request):
-  print(f'Recieved a {request.method} request with data {request.data}')
+  # print(f'Recieved a {request.method} request with data {request.data}')
   game_params = {}
   for param in ['ai_player', 'player_0_name', 'player_1_name', 'ai_player_num']:
     if param not in request.data or not request.data[param]:

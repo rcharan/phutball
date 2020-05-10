@@ -1,5 +1,5 @@
 import React from 'react';
-import API from '../../api'
+import { API } from '../../api'
 import { version, releaseDate } from '../versionInfo'
 
 export default class Play extends React.Component {
