@@ -7,11 +7,15 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   api:
     build: ./app/api
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
+
   nginx:
     build: ./app/webserver
     ports: 
@@ -19,3 +23,5 @@ services:
     depends_on:
       - api
 
+volumes:
+  pgdata:
