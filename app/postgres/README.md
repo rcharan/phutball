@@ -1,1 +1,0 @@
-This directory contains the database tracking games and moves.
