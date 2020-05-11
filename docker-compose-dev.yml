@@ -11,25 +11,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   api: 
-  frontend:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build:
+      context: ./app/api
+      dockerfile: Dockerfile-dev
+    command: sh entrypoint.sh
     depends_on:
       - db
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile-dev
-    command: npm start
     ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-    depends_on:
-      - api
-
-    # bug in React-Scripts 3.4.1 (Mar 20, 2020)
-    # fix is a hack
-    # see https://github.com/facebook/create-react-app/issues/8688 for the bug
-    stdin_open: true 
-
+      - 8000:8000
