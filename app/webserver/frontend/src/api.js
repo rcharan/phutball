@@ -5,7 +5,7 @@ import { BoardState } from './gameLogic/boardState'
 import { ReactComponent as Cloud } from './icons/cloud.svg'
 import { withRouter } from 'react-router-dom'
 
-import { API_URL, BASE_POLL_FREQ } from './settings'
+import { API_URL, BASE_POLL_FREQ } from './settings/settings'
 
 
 class ConnectionManager extends React.Component {

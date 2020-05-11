@@ -1,5 +1,5 @@
 import React from "react";
-import { version, releaseDate } from '../../settings'
+import { version, releaseDate } from '../../settings/settings'
 import { ReactComponent as EyeCandy } from '../../icons/philosphers-play-football.svg'
 
 export default class About extends React.Component {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { API } from '../../api'
-import { version, releaseDate } from '../../settings'
+import { version, releaseDate } from '../../settings/settings'
 
 export default class Play extends React.Component {
   render() {
