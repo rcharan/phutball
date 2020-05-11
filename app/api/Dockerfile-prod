@@ -1,0 +1,17 @@
+# Python/Django Installation
+FROM python:3.6
+
+# Redirects StdOut
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip3 install --upgrade pip -r requirements.txt
+
+# File Installation
+COPY .  /app/
+
+# Set the Django configuration to local production
+RUN mv ./phutball/config/settings_prod.py ./phutball/config/config.py

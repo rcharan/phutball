@@ -103,7 +103,8 @@ Here's how you can do each of the options above
 1. (Local development environment) both the `api` and `webserver/frontend` folders in the `app` directory structure have READMEs with instructions to run in a local development environment. The frontend runs on localhost:3000 and the backend on localhost:8000
 2. (Frontend-dev) run `docker-compose -f docker-compose-dev.yml up` and the frontend according to the instructions in the `app/webbserver/frontend` directory
 3. (Local production) run `docker-compose up`.
-<!-- 4. (Online production) same as 3 but you have to make sure your secrets are set properly -->
+4. (Online production) set `app/api/phutball/config/secrets.py` to have a `SECRET_KEY`. Configure `app/api/config/settings_prod.py` to whitelist your client (i.e. the domain). Configure `app/webserver/frontend/src/settings/settings-prod.js` to similarly point to your server. Then run
+`docker-compose -f docker-compose-prod.yml up`.
 
 Note: using Docker could take a lot of disc space. See below for cleanup.
 

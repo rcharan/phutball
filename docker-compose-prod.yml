@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: 
+      context: ./app/api
+      dockerfile: Dockerfile-prod
+    command: sh entrypoint.sh
+    depends_on:
+      - db
+
+  nginx:
+    build:
+      context: ./app/webserver
+      dockerfile: Dockerfile-prod
+    ports: 
+      - 80:8080
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
