@@ -13,5 +13,5 @@ RUN pip3 install --upgrade pip -r requirements.txt
 # File Installation
 COPY .  /app/
 
-# Set the Django configuration to local production
-RUN mv ./phutball/config/settings_local_prod.py ./phutball/config/config.py
+# Set the Django configuration to frontend-dev
+RUN mv ./phutball/config/settings_frontend_dev.py ./phutball/config/config.py

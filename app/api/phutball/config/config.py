@@ -1,1 +1,1 @@
-import * from .settings_dev
+from .settings_dev import *
