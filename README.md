@@ -1,6 +1,8 @@
 # Philosopher's Football (Phutball) v0.1 (May 11, 2020)
 
-Reinforcement Learning for phutball (in honor of John Conway). See below for the current way you can play, and stay tuned for more!
+This project was creatd in honor of the late John Conway and also to experiment with Reinforcement Learning. You can find it at [philosphers.football](http://www.philospers.football). See on the website or below for the current way you can play, and stay tuned for more!
+
+![img](./app/webserver/frontend/src/icons/philosphers-play-football.svg) 
 
 ## Play the Game and Read More
 [philosphers.football](http://www.philospers.football)
