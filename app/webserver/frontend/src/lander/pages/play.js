@@ -17,42 +17,39 @@ export default class Play extends React.Component {
         <div id="content" className="text" key="b">
           <p id="1">
           philosophers.football currently only supports playing against another
-          real-life person on the same computer. Workarounds are available however:</p>
+          real-life person on the same computer. However, see below for workarounds</p>
+           <div id="creator" className="creator" key="c">
+            Enter the players' names:
+            <GameCreator/>
+          </div>
+          Some things to keep in mind:
           <ul>
-            <li id="3">
+            <li key="3">
           Future versions will include bots you can play against! (This workaround is called &ldquo;waiting&rdquo;)
             </li>
-          <li id="2"> If you want to play against another real-life person who will use a
-          different computer, you can play pseudo-asynchronously by
-          starting a game and sending them the URL to the game, which
-          contains the unique game ID.</li>
-          </ul>
-          <p id="4">
-          If playing on different computers, be warned:
-          </p>
-            <ul>
-              <li key="1"> There is no authentication &ndash; nothing stops a
-              third party from interfering in your game by impersonating you,
-              or stops your opponent from playing as you. However, you
-              can always and easily undo moves.
-              </li><li key="3">Note: The Game IDs are sufficiently unique
+          <li key="2a">
+            If you want to play against another real-life person who will use a
+            different computer, you can start a game and send them the URL, which
+            contains the unique game ID. Each of you will have to refresh the page 
+            to see new moves.
+          </li>
+            <li key="1"> There is no authentication &ndash; nothing stops a
+              third party with your (hard to guess) Game ID from interfering in your
+              game by impersonating you or stops your opponent from playing
+              as you. However, you can always and easily undo moves.
+              </li>
+              {/*<li key="3">Note: The Game IDs are sufficiently unique
               that an attacker is unlikely to guess yours; hence the 
-              philosophers.football equivalent of Zoom-bombing is unlikely.</li>
-              <li key="2"> You and your opponent will have to refresh the 
-              page manually to check for new moves.</li>
+              philosophers.football equivalent of Zoom-bombing is unlikely.</li>*/}
+              <li key="4">
+                Looking to resume a previous game? All games are saved if
+                your internet was working! Just find a URL like philosophers.football/game/ABC123 in your browser history.
+              </li>
+              <li key="5">
+                Can't find your game, or accidentally lost access to the move history to an epic match by going back in the history
+                and starting a new branch? Contact me (see the About section) to get your data back.
+              </li>
             </ul>
-
-        </div>
-        <div id="creator" className="creator" key="c">
-          <GameCreator/>
-        </div>
-        <div id="content" className="text" key="d">
-          <p>
-          Looking to resume a previous game? All games are saved if
-          your internet was working! Just find a URL like philosophers.football/game/ABC123 in your browser history.
-          </p>
-          <p>Can't find your game, or accidentally lost access to the move history to an epic match by going back in the history
-          and starting a new branch? Contact me (see the About section) to get your data back.</p>
         </div>
       </div>
       </span>

@@ -17,6 +17,11 @@ export default class MoreMath extends React.Component {
         </div>
         <div className="text">
       <ol> 
+        <li key="1">
+           John Conway was a complex self-replicating system who famously studied simpler self-replicating systems and was ultimately undone by one (a virus).
+           He's most famous for the Game of Life, a fantabulously simple construct that exhibits complex emergent phenomena. The &ldquo;game&rdquo; is also Turing complete
+            &ndash; you can simulate any classical computer in it (!) &ndash; and it is possible to build self-replicating systems inside as well.
+        </li>
         <li>
           Philospher's Football
             <ul>
