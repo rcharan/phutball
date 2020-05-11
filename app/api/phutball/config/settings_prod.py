@@ -9,6 +9,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = (
        'http://www.philophers.football',
+       'http://167.172.152.70'
 )
 
 # Database
