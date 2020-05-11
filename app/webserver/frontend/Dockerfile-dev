@@ -1,0 +1,9 @@
+FROM node:12 as react
+
+WORKDIR /app/frontend
+
+COPY package.json package-lock.json /app/frontend/
+RUN npm install
+
+COPY ./src/    /app/frontend/src
+COPY ./public/ /app/frontend/public

@@ -2,7 +2,8 @@ from .settings_dev import (
     SECRET_KEY,
     DEBUG,
     ALLOWED_HOSTS,
-    CORS_ORIGIN_WHITELIST
+    CORS_ORIGIN_WHITELIST,
+    DATABASES,
 )
 
 """
@@ -71,22 +72,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'phutball.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': '5432',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

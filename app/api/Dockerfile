@@ -10,9 +10,7 @@ COPY requirements.txt .
 
 RUN pip3 install --upgrade pip -r requirements.txt
 
-# File Installation - Python Components Only
-COPY ./backend/   /app/backend/
-COPY ./phutball/  /app/phutball/
-COPY ./manage.py  /app
+# File Installation
+COPY .  /app/
 
 # For migrations, do: docker-compose run backend python3 manage.py migrate

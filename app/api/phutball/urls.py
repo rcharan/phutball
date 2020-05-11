@@ -19,7 +19,7 @@ from backend import views
 from django.conf.urls import url
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     url(r'^api/game/$', views.create_game),
     url(r'^api/game/(?P<pk>[A-Z0-9]{6})/?$', views.game_view),
 

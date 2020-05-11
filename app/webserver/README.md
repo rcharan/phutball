@@ -1,0 +1,2 @@
+This directory is a simple wrapper for the frontend directory as well as the nginx config file
+in the nginx folder. It contains the Dockerfile to build the nginx server, which depends on the build of the frontend.
