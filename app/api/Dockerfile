@@ -13,4 +13,7 @@ RUN pip3 install --upgrade pip -r requirements.txt
 # File Installation
 COPY .  /app/
 
+# Set the Django configuration to local production
+RUN mv ./phutball/config/settings_local_prod.py ./phutball/config/config.py
+
 # For migrations, do: docker-compose run backend python3 manage.py migrate

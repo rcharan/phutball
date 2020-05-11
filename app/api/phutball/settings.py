@@ -1,4 +1,4 @@
-from .settings_dev import (
+from .config.config import (
     SECRET_KEY,
     DEBUG,
     ALLOWED_HOSTS,
