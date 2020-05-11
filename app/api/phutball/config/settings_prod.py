@@ -1,4 +1,7 @@
-from .secrets import SECRET_KEY
+# Generate this with ./keygen.sh in this directory
+#  May need to do chmod 777 ./keygen.sh first
+with open('/app/phutball/config/secret.txt', 'r') as f:
+    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
