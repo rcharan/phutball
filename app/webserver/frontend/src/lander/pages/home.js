@@ -28,7 +28,7 @@ export default class Home extends React.Component {
         <br/>
         <div className="text" key="text3">
           Scroll down or use the menu to read the rules and then play. You can also read more about John Conway, his life, and works
-          under the &ldquo;More Math&rdquo; section
+          under the &ldquo;More Math&rdquo; section.
         </div>
       </div>
       </span>

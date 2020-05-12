@@ -20,6 +20,9 @@ class HelpI extends React.Component {
 				<div className = "float" key="1">
 					<h1>Help I</h1>
 						<ol>
+							<li key="2">(Placement)
+								To place a piece, click on the space.
+							</li>
 							<li key="1">(Jumping)
 								Jumps are displayed in the menu at the right.
 								To preview a jump, mouse over it. To make the jump, click.
@@ -43,12 +46,9 @@ class HelpI extends React.Component {
 									</li>
 								</ul>
 							</li>
-							<li key="2">(Placement)
-								To place a piece, click on the space
-							</li>
 							<li key="3">
 								(History/Undo) To undo a move, go to the history menu and click on 
-								the move before it. Or click Reset to go to the beginning of the game
+								the move before it. Or click Reset to go to the beginning of the game.
 								<ul>
 									<li key="1">
 										Even if you go back, the full history of the game will continue to
@@ -121,7 +121,7 @@ class HelpII extends React.Component {
 				<div className = "float" key="1">
 					<h1>Help II </h1>
 						<ol>
-						<li key="4"> (Resuming games; Security) There is no authentication. Anyone with access
+						<li key="4"> (Resuming Games; Security) There is no authentication. Anyone with access
 							  to your game ID, contained in your URL, can access your game and impersonate any player.
 							  Conversely, you can resume a game at any time by navigating to the URL from your
 							  browser history. Note: there is no user data (valuable or otherwise) server-side &ndash; please 
@@ -131,12 +131,12 @@ class HelpII extends React.Component {
 									the latest state with a continuous history of logged-moves available.
 									</li>
 								</ul>
-							<li key="5"> (Playing remotely) Noting the previous point, it is possible to play remotely by sending your
+							<li key="5"> (Playing Remotely) Noting the previous point, it is possible to play remotely by sending your
 							game&rsquo;s URL to your opponent. You will have to refresh the page to see your opponent's moves.
 							</li>
 							<li key="7"> (Support) This game is only supported for Chrome for desktop. But 
 							(desktop versions) of Safari and Firefox should work as well.</li>
-							<li key="6"> (Bug Reports) please submit on github (link in the About section of the home page)
+							<li key="6"> (Bug Reports) please submit on github (link in the About section of the home page).
 							</li>
 						</ol>
 				</div>

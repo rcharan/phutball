@@ -17,7 +17,7 @@ export default class Play extends React.Component {
         <div id="content" className="text" key="b">
           <p id="1">
           philosophers.football currently only supports playing against another
-          real-life person on the same computer. However, see below for workarounds</p>
+          real-life person on the same computer. However, see below for workarounds.</p>
            <div id="creator" className="creator" key="c">
             Enter the players' names:
             <GameCreator/>
@@ -25,7 +25,7 @@ export default class Play extends React.Component {
           Some things to keep in mind:
           <ul>
             <li key="3">
-          Future versions will include bots you can play against! (This workaround is called &ldquo;waiting&rdquo;)
+          Future versions will include bots you can play against! (This workaround is called &ldquo;waiting&rdquo;).
             </li>
           <li key="2a">
             If you want to play against another real-life person who will use a

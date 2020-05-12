@@ -24,8 +24,7 @@ export default class Rules extends React.Component {
 								The white piece is the ball. The black pieces are players.
 							</li>
 							<li key="2">
-								The game ends if the ball ends up in the left- or right-most columns, 
-								<i>or</i> over them.
+								The game ends if the ball ends up in the left- or right-most columns, <i>or</i> over them.
 								<ul>
 									<li key="1">
 										<u>X's</u> win if the game ends with the ball on or over the <u>right</u> side
@@ -33,7 +32,7 @@ export default class Rules extends React.Component {
 									</li>
 									<li key="2">
 										<u>O's</u> win if the game ends with the ball on the <u>left</u> side
-										(columns 1 and &ldquo;0&rdquo;)
+										(columns 1 and &ldquo;0&rdquo;).
 									</li>
 								</ul>
 							</li>
@@ -45,13 +44,13 @@ export default class Rules extends React.Component {
 							the players, and the players are removed when jumped. This is the only way to move the ball!<br/>
 								<ul>
 									<li key = "1">
-										Jumps can be horizontal, vertical, or diagonal
+										Jumps can be horizontal, vertical, or diagonal.
 									</li>
 									<li key = "2">
-										Jumps can be chained (like checkers)
+										Jumps can be chained (like checkers).
 									</li>
 									<li key = "3">
-										Jumps can be over multiple players in a straight line (unlike checkers)
+										Jumps can be over multiple players in a straight line (unlike checkers).
 									</li>
 								</ul>
 							</li>
@@ -63,14 +62,14 @@ export default class Rules extends React.Component {
 									</li>
 									<li key = "2">
 										You <i>can</i> jump over the left or right ends of the board, into
-										the unlabeled &ldquo;columns&rdquo; 0 or 20
+										the unlabeled &ldquo;columns&rdquo; 0 or 20.
 									</li>
 									<li> A jump <i>can</i> be continued/chained through the goalline (columns 1 and 19) without
 									the game ending (as long as the ball doesn't end there). Jumps <i>cannot</i> be continued
 									through the &ldquo;endzone&rdquo; (columns 0 and 20).
 									</li>
 									<li> When a player is jumped, it is removed <i>immediately</i>. It cannot be jumped
-									again in the same move
+									again in the same move.
 									</li>
 								</ul>
 							</li>

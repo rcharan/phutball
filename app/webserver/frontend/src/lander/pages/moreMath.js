@@ -23,11 +23,11 @@ export default class MoreMath extends React.Component {
             &ndash; you can simulate any classical computer in it (!) &ndash; and it is possible to build self-replicating systems inside as well.
         </li>
         <li>
-          Philospher's Football
+          Philospher's Football:
             <ul>
               <li key="1">To be clear, football refers to what Americans call soccer.
                 Conway was English and made his name as a professor
-                at the University of Cambridge
+                at the University of Cambridge.[]
               </li>
               <li key="6"> Conway apparently did not  &ldquo;<a
                   href="https://www.wired.com/2015/09/life-games-playful-genius-john-conway/">
@@ -48,7 +48,7 @@ export default class MoreMath extends React.Component {
                 <ul>
                   <li key="1"> It is <a href="https://arxiv.org/abs/cs/0008025">NP-complete
                   </a> to
-                    determine whether there is a win-in-one move in phutball. (Erik Demaine, Martin Demaine, and David Eppstein)
+                    determine whether there is a win-in-one move in phutball. (Erik Demaine, Martin Demaine, and David Eppstein).
                   </li>
                   <li key="2">Even the 1-dimensional version of the game is <a
                       href="http://library.msri.org/books/Book42/files/grossman.pdf">
