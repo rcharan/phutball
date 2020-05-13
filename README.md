@@ -5,7 +5,7 @@ This project was created in honor of the late John Conway and also to experiment
 ![img](./app/webserver/frontend/src/icons/philosphers-play-football.svg) 
 
 ## Play the Game and Read More
-[philosphers.football](http://www.philospers.football)
+[philosphers.football](http://167.172.152.70/)
 
 ## What is it
 
