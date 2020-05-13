@@ -1,6 +1,6 @@
 # Philosopher's Football (Phutball) v0.1 (May 11, 2020)
 
-This project was created in honor of the late John Conway and also to experiment with Reinforcement Learning. You can find it at [philosphers.football](http://www.philospers.football). See on the website or below for the current way you can play, and stay tuned for more!
+This project was created in honor of the late John Conway and also to experiment with Reinforcement Learning. You can find it at [philosphers.football](http://167.172.152.70/). See on the website or below for the current way you can play, and stay tuned for more!
 
 ![img](./app/webserver/frontend/src/icons/philosphers-play-football.svg) 
 
