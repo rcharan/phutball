@@ -6,7 +6,8 @@ import torch
 from   more_itertools import unique_everseen
 from .utilities import (
   config,
-  BOARD_SHAPE
+  BOARD_SHAPE,
+  product
 )
 
 class InvalidConfiguration(Exception):
@@ -89,3 +90,18 @@ def genLoc(n, *exclude, depth = 0):
 # 50 boards of varying sizes
 np.random.seed(42)
 boards = [create_state('H10', *genLoc(i, 'H10')) for i in range(50)]
+
+###############################################################################
+#
+# Model Parameter Counting
+#
+###############################################################################
+
+
+def get_num_params(model, printIt = True):
+  out = sum(product(p.shape) for p in model.parameters())
+  print(f'{out:,d} parameters')
+
+def get_param_num_details(model):
+  for n, p in model.named_parameters():
+    print(f'{product(p.shape):7,d}', n)
