@@ -10,10 +10,10 @@ from itertools import chain
 ###############################################################################
 
 # Configuration variables
-Config = namedtuple('Config', ['rows', 'cols', 'letters'])
-config = Config(15, 19, 'ABCDEFGHJKLMNOP')
-BOARD_SHAPE    = (config.rows, config.cols)
 NUM_CHANNELS   = 2
+Config = namedtuple('Config', ['rows', 'cols', 'letters', 'num_channels'])
+config = Config(15, 19, 'ABCDEFGHJKLMNOP', NUM_CHANNELS)
+BOARD_SHAPE    = (config.rows, config.cols)
 PLAYER_CHANNEL = 0
 BALL_CHANNEL   = 1
 
