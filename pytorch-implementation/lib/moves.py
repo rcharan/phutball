@@ -331,19 +331,12 @@ def get_jumps(curr_state, max_jumps = None):
     # Compute whether there is a player in each of those directions
     player_occupied   = state[PLAYER_CHANNEL][tuple(zip(*dests))]
 
-
-    debugInfoPrinted = False
-
     # For each potential jump
     for dest, direction, player_occupied in zip(dests, directions, player_occupied):
       
       # Jump is illegal if no player is there
       if not player_occupied:
         continue
-
-      if not debugInfoPrinted:
-        print(f'Computing some jumps!')
-        debugInfoPrinted = False
 
       # Set up the list of initial/intermediate locations
       #  of the ball
@@ -357,7 +350,7 @@ def get_jumps(curr_state, max_jumps = None):
         if not dest:
           break
         else:
-          dest = dests[0]
+          dest = dest[0]
 
         # The bot always moves to the right
         #  Never jump off the left
@@ -402,7 +395,6 @@ def get_jumps(curr_state, max_jumps = None):
             
           break
             
-  print(len(jumps), 'jumps computed')
   if max_jumps is not None and len(jumps) > max_jumps:
     return prioritize_jumps(jumps, max_jumps)
   else:
