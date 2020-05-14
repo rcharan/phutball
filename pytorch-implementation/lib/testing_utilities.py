@@ -91,6 +91,21 @@ def genLoc(n, *exclude, depth = 0):
 np.random.seed(42)
 boards = [create_state('H10', *genLoc(i, 'H10')) for i in range(50)]
 
+# Some special configurations
+test_locs = []
+for let in 'ABCDEF':
+  test_locs.append(f'{let}{11}')
+  test_locs.append(f'{let}{9}')
+for num in range(1,18):
+  test_locs.append(f'G{num}')
+
+winnable_locs = test_locs + ['G18']
+winnable_locs_2 = [f'H{n}' for n in range(11,20)]
+
+test_1           = create_state('H10', *test_locs)
+winnable_state   = create_state('H10', *winnable_locs) #misnomer
+winnable_state_2 = create_state('H10', *winnable_locs_2)
+
 ###############################################################################
 #
 # Model Parameter Counting

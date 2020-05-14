@@ -177,7 +177,7 @@ def _get_dests_from_rest(currPos):
 
   # 5 is not a direction. In order of the best to worst directions
   #  since we may later need to prioritize them.
-  directions = map(Direction, [3,6,9,2,8,1,4,7])
+  directions = map(Direction, [1,4,7,2,8,3,6,9])
 
   dests =  map  (lambda direction : direction.add(*currPos), directions)
   dests = filter(lambda dest      : dest.onBoard           , dests)
@@ -278,7 +278,7 @@ def build_new_state(curr_state, dest_list, new_ball_loc):
 ###############################################################################
 
 
-def get_jumps(curr_state):
+def get_jumps(curr_state, max_jumps = None):
   '''Compute all possible changes giving new states
 
   Input
@@ -384,4 +384,73 @@ def get_jumps(curr_state):
             
           break
             
-  return jumps
+  if max_jumps is not None and len(jumps) > max_jumps:
+    return prioritize_jumps(jumps, max_jumps)
+  else:
+    return jumps
+
+###############################################################################
+#
+# Jump Calculations 6 - Truncation/prioritization
+#
+###############################################################################
+
+END_LOC = -1
+COL     = 1
+CHAIN   = 1
+
+def count_col_endings(jump_chains):
+  # Possible cols are 0 through 18
+  #  (19 is a win condition). Also 0 isn't
+  #  possible but this keeps it simple.
+  value_counts = [0] * (config.cols - 1)
+  for jump_chain in jump_chains:
+    end_col = jump_chain[END_LOC][COL]
+    value_counts[end_col] += 1
+
+  return value_counts
+
+def get_cutoff(col_counts, max_jumps = 300):
+  '''Get the cutoff for where the jump ends
+  
+  Returns (col_num, num_of_that_col_to_take)
+  '''
+  cum = 0
+  for col_num in range(17, -1, -1):
+    cum += col_counts[col_num]
+    if cum > max_jumps:
+      return col_num, max_jumps - cum + col_counts[col_num]
+
+def filter_jumps(jumps, cutoff_col, num_of_cutoff_to_take):
+  left_to_take = num_of_cutoff_to_take
+  out = []
+  
+  for jump in jumps:
+    if jump[1][END_LOC][COL] > cutoff_col:
+      out.append(jump)
+    elif jump[1][END_LOC][COL] == cutoff_col:
+      if left_to_take > 0:
+        left_to_take -= 1
+        out.append(jump)
+
+  return out
+
+def prioritize_jumps(jumps, max_jumps):
+  '''Returns the best max_jumps jumps using heuristics
+
+  The heuristics are: 
+   - Jumps that end close to the goalline are better
+   - Jumps that are computer earlier (meaning they went left,
+      if at all, earlier - based on the tree search order) are
+      better
+  '''
+  # Pull out the jump chain data
+  jump_chains = [jump[1] for jump in jumps]
+
+
+  col_ending_counts = count_col_endings(jump_chains)
+
+  cutoff_col, num_of_cutoff_to_take = get_cutoff(col_ending_counts)
+
+  return filter_jumps(jumps, cutoff_col, num_of_cutoff_to_take)
+  
