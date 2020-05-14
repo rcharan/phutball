@@ -1,11 +1,17 @@
-def training_loop(optimizer, num_games, off_policy = lambda _ : None):
+# Tensorflow solely for the Progress Bar (totally worth it)
+from tensorflow.keras.utils import Progbar as ProgressBar
+
+from .testing_utilities import create_state
+from .move_selection import get_next_move_training
+
+def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : None):
   
   initial_state = create_state('H10').to(device)
   for i in range(num_games):
     print(f'\nPlaying game {i+1} of {num_games}:')
-    game_loop(initial_state, model, optimizer, off_policy)
+    game_loop(initial_state, model, optimizer, device, off_policy)
 
-def game_loop(initial_state, model, optimizer, off_policy):
+def game_loop(initial_state, model, optimizer, device, off_policy):
   '''Training loop that plays one game'''
   # Just in case
   optimizer.zero_grad()
@@ -22,7 +28,7 @@ def game_loop(initial_state, model, optimizer, off_policy):
   while True:
     # Determine the next move
     game_over, moved_off_policy, new_state, score = \
-      get_next_move_training(state, off_policy = off_policy)
+      get_next_move_training(state, model, device, off_policy = off_policy)
     
     if game_over:      
       delta = 1 - v_t

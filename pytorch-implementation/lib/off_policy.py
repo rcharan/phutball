@@ -1,3 +1,5 @@
+import numpy as np
+
 class EpsilonGreedy:
   
   def __init__(self, epsilon):

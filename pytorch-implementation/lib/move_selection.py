@@ -1,6 +1,9 @@
+import torch
+from .moves import get_placements, get_jumps
+
 MAX_JUMPS = 300
 
-def get_next_move_training(curr_state, off_policy = lambda _ : None, batch_size = None):
+def get_next_move_training(curr_state, model, device, off_policy = lambda _ : None, batch_size = None):
   '''Get the next move for the bot
   
   Gets the next move for the bot with computations and
@@ -52,7 +55,7 @@ def get_next_move_training(curr_state, off_policy = lambda _ : None, batch_size 
   '''
 
   # Compute the placements
-  placements = get_placements(curr_state)
+  placements = get_placements(curr_state, device)
 
   # Compute the jumps
   jumps = get_jumps(curr_state, MAX_JUMPS)

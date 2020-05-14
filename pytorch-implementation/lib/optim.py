@@ -1,3 +1,6 @@
+import torch
+from torch.optim import Optimizer
+
 class AlternatingTDLambda(Optimizer):
   '''Implements tracing and updates for the TD(λ) algorithm.
   
