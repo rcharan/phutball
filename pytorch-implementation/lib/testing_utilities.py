@@ -46,7 +46,7 @@ def create_state(ballLoc, *playerLocs):
 def visualize_state(tensor):
   plt.close() # save memory
   
-  data = tensor.numpy()
+  data = tensor.cpu().numpy()
   players = (data[0], 'black')
   ball    = (data[1], 'red')
   
