@@ -34,6 +34,9 @@ from .utilities import (
   join
 )
 
+END_LOC = -1
+COL     = 1
+CHAIN   = 1
 
 
 ###############################################################################
@@ -343,14 +346,14 @@ def get_jumps(curr_state, max_jumps = None):
 
         # The bot always moves to the right
         #  Never jump off the left
-        if dest[1] == -1:
+        if dest[COL] == -1:
           break
 
         # If the bot can jump off the right then the
         #  game is over. Raise that value up as there
         #  is no further inference step for the bot.
         #  i.e. hard-code winning
-        if dest[1] == config.cols:
+        if dest[COL] == config.cols:
           new_state = build_new_state(state, dest_list, new_ball_loc = None)
           jump_data = (new_state, preceding_chain + [dest])
           return [jump_data]
@@ -379,7 +382,7 @@ def get_jumps(curr_state, max_jumps = None):
 
           # Only put the jump_data in the list of 
           #  jumps to evaluate if it doesn't make you lose
-          if dest[1] != 0:
+          if dest[COL] != 0:
             jumps.append(jump_data)
             
           break
@@ -395,9 +398,6 @@ def get_jumps(curr_state, max_jumps = None):
 #
 ###############################################################################
 
-END_LOC = -1
-COL     = 1
-CHAIN   = 1
 
 def count_col_endings(jump_chains):
   # Possible cols are 0 through 18
@@ -406,7 +406,12 @@ def count_col_endings(jump_chains):
   value_counts = [0] * (config.cols - 1)
   for jump_chain in jump_chains:
     end_col = jump_chain[END_LOC][COL]
-    value_counts[end_col] += 1
+    try:
+      value_counts[end_col] += 1
+    except Exception as e:
+      msg = f'end_col: {end_col}\n' + \
+            f'jump_chain: {jump_chain}\n' + \
+            f'value_counts: {value_counts}\n'
 
   return value_counts
 
