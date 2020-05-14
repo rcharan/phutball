@@ -298,7 +298,7 @@ def get_jumps(curr_state, max_jumps = None):
   '''
 
   # Move computations to the cpu
-  state    = curr_state.numpy()
+  state    = curr_state.cpu().numpy()
 
   ball_loc = tuple(np.argwhere(state[BALL_CHANNEL])[0])
 
