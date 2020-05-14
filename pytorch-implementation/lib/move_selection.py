@@ -4,6 +4,62 @@ from .utilities import config
 
 MAX_JUMPS = 300
 
+def get_move_options(curr_state, device):
+  '''Given the current state, determine the move options
+
+  Inputs
+  ------
+
+  curr_state: state tensor of shape (num_channels, rows, cols)
+
+  device: a torch.device where the output will be mapped
+
+  Outputs
+  -------
+
+  force_game_over: Boolean; whether the game can be ended in one
+                   move. If so, this move is forced.
+
+  data           : depends on force_game_over. If force_game_over
+                   is true, a jump chain representing the jump.
+                   If force_game_over is false, a tensor of move
+                   options of shape (num_options, num_channels,
+                   rows, cols) representing the resulting states
+                   of each move option AFTER the board has been
+                   turned around.
+  '''
+
+  # Compute the placements
+  placements = get_placements(curr_state, device)
+
+  # Compute the jumps
+  jumps = get_jumps(curr_state, MAX_JUMPS)
+
+  # Deal with special cases/win condition for the jump
+  
+  # No jumps to worry about
+  if len(jumps) == 0:
+    moves = placements
+  
+  # Win condition
+  elif (
+    len(jumps) == 1 and
+    jumps[0][CHAIN][END_LOC][COL] in [config.cols, config.cols-1]):
+    return True, jumps[0]
+  
+  # Regular jump evaluation
+  else:
+    # Retain only the final state
+    jumps = [jump_data[0] for jump_data in jumps]
+    jumps = torch.tensor(jumps, dtype = torch.bool, device = device)
+    moves = torch.cat([placements, jumps])
+    
+  # Turn the board around to represent the opponent's view
+  moves = torch.flip(moves, [-1])
+
+  return False, moves
+  
+
 def get_next_move_training(curr_state, model, device, off_policy = lambda _ : None, batch_size = None):
   '''Get the next move for the bot
   
@@ -55,34 +111,10 @@ def get_next_move_training(curr_state, model, device, off_policy = lambda _ : No
              OR: value is None if the game is over.
   '''
 
-  # Compute the placements
-  placements = get_placements(curr_state, device)
-
-  # Compute the jumps
-  jumps = get_jumps(curr_state, MAX_JUMPS)
-
-  # Deal with special cases/win condition for the jump
-  
-  # No jumps to worry about
-  if len(jumps) == 0:
-    moves = placements
-  
-  # Win condition
-  elif (
-    len(jumps) == 1 and
-    jumps[0][CHAIN][END_LOC][COL] in [config.cols, config.cols-1]):
+  game_over, moves = get_move_options(curr_state, device)
+  if game_over:
     return True, None, None, None # The game is over!
-  
-  # Regular jump evaluation
-  else:
-    # Retain only the final state
-    jumps = [jump_data[0] for jump_data in jumps]
-    jumps = torch.tensor(jumps, dtype = torch.bool, device = device)
-    moves = torch.cat([placements, jumps])
-    
-  # Turn the board around to represent the opponent's view
-  moves = torch.flip(moves, [-1])
-  
+
   # Either make an off policy move, or evaluate the value-function
   #  to determine the policy
   off_policy_move = off_policy(moves.shape[0])

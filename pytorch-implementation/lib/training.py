@@ -1,8 +1,55 @@
 # Tensorflow solely for the Progress Bar (totally worth it)
-from tensorflow.keras.utils import Progbar as ProgressBar
+from tensorflow.keras.utils import Progbar
 
 from .testing_utilities import create_state
 from .move_selection import get_next_move_training
+
+class ProgressBar:
+  '''Wrapper for tf.keras.progbar that accounts for unknown length of game
+
+  For simplicity, the interface is slightly changed and not all features are
+  supported.
+
+  Methods
+  -------
+
+  step: increment the bar by one step. Will extend the target length if
+        the bar is more than 90% of the way done.
+
+  terminate: step the bar AND cause it to end
+
+  Attributes
+  ----------
+
+  move_num: number of moves made so far
+
+  '''
+
+  def __init__(self, estimated_length, verbose = True):
+    self._bar     = Progbar(estimated_length)
+    self._move_num = 0
+    self.verbose = verbose
+
+  @property
+  def move_num(self):
+    return self._move_num
+
+  def step(self):
+    self._move_num += 1
+
+    curr_target = self._bar.target
+    if self._move_num >= curr_target:
+      self._bar.target += curr_target // 10 + 1
+    
+    if self.verbose:
+      self._bar.update(self._move_num)
+
+  def terminate(self):
+    self._move_num += 1
+    self._bar.target = self._move_num
+
+    if self.verbose:
+      self._bar.update(self._move_num)
 
 def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : None):
   
@@ -23,7 +70,6 @@ def game_loop(initial_state, model, optimizer, device, off_policy):
   
   # Progress Bar
   bar      = ProgressBar(284)
-  move_num = 1
   
   while True:
 
@@ -36,8 +82,7 @@ def game_loop(initial_state, model, optimizer, device, off_policy):
       optimizer.step(delta, update_trace = False)
       
       # Terminate the progress bar
-      bar.target = move_num
-      bar.update(move_num)
+      bar.terminate()
 
       break
     
@@ -55,11 +100,7 @@ def game_loop(initial_state, model, optimizer, device, off_policy):
       state = new_state
       
     # Progress bar
-    move_num += 1
-    if move_num >= bar.target * 0.9:
-      bar.target += bar.target // 10 + 1
-    
-    bar.update(move_num)
+    bar.step()
     
 
 

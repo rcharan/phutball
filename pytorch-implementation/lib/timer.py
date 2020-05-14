@@ -2,10 +2,25 @@ from datetime import datetime
 from math import floor
 from .utilities import product
 
+class _PrettyTimeDelta:
+  def __init__(self, timedelta):
+    self.timedelta = timedelta
+
+  def __repr__(self):
+    return Timer.pretty_print(self.timedelta)
+
 class Timer:
 
   def __init__(self):
     self.start_time = datetime.now()
+
+  def stop(self):
+    self.end_time = datetime.now()
+
+  def __truediv__(self, other):
+    if not hasattr(self, 'end_time'):
+      self.stop()
+    return _PrettyTimeDelta((self.end_time - self.start_time) / other)
 
   def elapsed_time(self):
     return (datetime.now() - self.start_time)
