@@ -2,6 +2,7 @@ import torch
 import torch.cuda as cutorch
 import psutil
 import gc
+import os
 
 def format_bytes(num):
   for unit in 'BKMGTPEZ':
@@ -35,6 +36,7 @@ def garbage_collect_cuda(verbose = False):
 
 # For Memory inspection on CPU
 def print_memory_usage():
+  process = psutil.Process(os.getpid())
   print(format_bytes(process.memory_info().rss))
 
 # Not really implemented on OS X without a full memory profile
