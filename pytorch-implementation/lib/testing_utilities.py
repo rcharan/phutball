@@ -3,12 +3,16 @@ import math
 import numpy as np
 import re
 import torch
+import seaborn as sns
 from   more_itertools import unique_everseen
 from .utilities import (
   config,
   BOARD_SHAPE,
   product
 )
+
+plt.ioff()
+sns.set()
 
 class InvalidConfiguration(Exception):
   pass
