@@ -4,6 +4,8 @@ from tensorflow.keras.utils import Progbar as ProgressBar
 from .testing_utilities import create_state
 from .move_selection import get_next_move_training
 
+from .memory import print_memory_usage
+
 def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : None):
   
   initial_state = create_state('H10').to(device)
@@ -26,6 +28,8 @@ def game_loop(initial_state, model, optimizer, device, off_policy):
   move_num = 1
   
   while True:
+
+    print_memory_usage()
     # Determine the next move
     game_over, moved_off_policy, new_state, score = \
       get_next_move_training(state, model, device, off_policy = off_policy)
