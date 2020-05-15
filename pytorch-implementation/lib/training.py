@@ -25,10 +25,11 @@ class ProgressBar:
 
   '''
 
-  def __init__(self, estimated_length, verbose = True):
+  def __init__(self, estimated_length, verbose = True, expandable = True):
     self._bar     = Progbar(estimated_length)
     self._move_num = 0
     self.verbose = verbose
+    self.expandable = expandable
 
   @property
   def move_num(self):
@@ -38,7 +39,7 @@ class ProgressBar:
     self._move_num += 1
 
     curr_target = self._bar.target
-    if self._move_num >= curr_target:
+    if self._move_num >= curr_target * 0.9 and self.expandable:
       self._bar.target += curr_target // 10 + 1
     
     if self.verbose:

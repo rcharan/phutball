@@ -128,7 +128,13 @@ class Battle:
   Constructor should receive two instances of 
   the Player class
   '''
-  def __init__(self, player1, player2, verbose = 1):
+  def __init__(self, player1, player2, verbose = 2):
+    '''Verbosity:
+     2  - print a progress bar for each game showing each move
+     1  - print a progress bar showing number of games played
+     0  - print only a summary at the end
+     -1 - print nothing
+    '''
     
     self.players = [player1, player2]
     self.order   = [0,1]
@@ -149,7 +155,7 @@ class Battle:
         
   def play_game(self, device = torch.device('cpu')):
     state = create_state('H10').to(device)
-    bar = ProgressBar(150, self.verbose)
+    bar = ProgressBar(150, self.verbose > 1)
         
     xIsNext = True
     
@@ -171,8 +177,10 @@ class Battle:
         raise RuntimeError('Game terminated in a forced draw because it is taking too long')
         
   def play_match(self, num_games, device = torch.device('cpu')):
-    self.timer = Timer()
+    if self.verbosity == 1:
+      bar = ProgressBar(100, expandable = False)
     self.reset_stats()
+    self.timer = Timer()
     
     for _ in range(num_games):
       self.randomize_start_player()
@@ -180,6 +188,9 @@ class Battle:
         self.play_game(device)
       except Draw:
         self.win_counts[-1] = 2
+
+      if self.verbosity == 1:
+        bar.step()
         
     self.timer.stop()
     
