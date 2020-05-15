@@ -36,8 +36,12 @@ def garbage_collect_cuda(verbose = False):
 
 # For Memory inspection on CPU
 def print_memory_usage():
+  print(format_bytes(get_memory_usage()))
+
+def get_memory_usage():
   process = psutil.Process(os.getpid())
-  print(format_bytes(process.memory_info().rss))
+  return process.memory_info().rss
+
 
 # Not really implemented on OS X without a full memory profile
 #  There does seem to be a windows implementation

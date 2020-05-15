@@ -71,6 +71,18 @@ def visualize_state(tensor):
 
   return fig
 
+def random_board(expected_density, device = torch.device('cpu')):
+  player_layer = np.random.uniform(0, 1, (15, 19)) > expected_density
+  ball_layer   = np.zeros((15, 19))
+
+  placed_locs  = np.argwhere(player_layer)
+  ball_choice  = np.random.randint(len(placed_locs))
+  ball_choice  = tuple(placed_locs[ball_choice])
+  player_layer[ball_choice] = False
+  ball_layer  [ball_choice] = True
+
+  return torch.tensor(np.stack([player_layer, ball_layer]), dtype = torch.bool, device = device)  
+
 def genLoc(n, *exclude, depth = 0):
   '''Generate n random locations not overlapping exclude'''
   

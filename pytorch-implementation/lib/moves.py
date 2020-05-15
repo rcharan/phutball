@@ -279,7 +279,7 @@ def build_new_state(curr_state, dest_list, new_ball_loc):
   if new_ball_loc is not None:
     delta[BALL_CHANNEL][new_ball_loc]               = +1
     
-  return curr_state + delta
+  return (curr_state + delta).astype(bool)
 
 
 ###############################################################################
@@ -321,6 +321,9 @@ def get_jumps(curr_state, max_jumps = None):
   jumps                  = []
 
   while to_compute_from_rest:
+
+    if len(jumps) > 1000000:
+      raise RuntimeError('Excessive Number of Jumps')
 
     # Unpack the first item in the queue
     state, ball_loc, preceding_chain  = to_compute_from_rest.pop()
