@@ -1,10 +1,10 @@
 import torch
-from .moves import get_placements, get_jumps, END_LOC, COL, CHAIN
+from .moves import get_placements, get_jumps, END_LOC, CHAIN
 from .utilities import config
 
 MAX_JUMPS = 300
 
-def get_move_options(curr_state, device):
+def get_move_options(curr_state, device, debug = False):
   '''Given the current state, determine the move options
 
   Inputs
@@ -33,7 +33,7 @@ def get_move_options(curr_state, device):
   placements = get_placements(curr_state, device)
 
   # Compute the jumps
-  jumps = get_jumps(curr_state, MAX_JUMPS)
+  jumps = get_jumps(curr_state, MAX_JUMPS, debug = debug)
 
   # Deal with special cases/win condition for the jump
   
@@ -44,7 +44,7 @@ def get_move_options(curr_state, device):
   # Win condition
   elif (
     len(jumps) == 1 and
-    jumps[0][CHAIN][END_LOC][COL] in [config.cols, config.cols-1]):
+    jumps[0][CHAIN][END_LOC].col in [config.cols, config.cols-1]):
     return True, jumps[0]
   
   # Regular jump evaluation
