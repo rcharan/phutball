@@ -48,7 +48,7 @@ class Player:
     
   def eval(self):
     if hasattr(self.model, 'eval'):
-      model.eval()
+      self.model.eval()
     
   def _get_move(self, options):
     '''Return the index of the desired move.
@@ -177,8 +177,8 @@ class Battle:
         raise RuntimeError('Game terminated in a forced draw because it is taking too long')
         
   def play_match(self, num_games, device = torch.device('cpu')):
-    if self.verbosity == 1:
-      bar = ProgressBar(100, expandable = False)
+    if self.verbose == 1:
+      bar = ProgressBar(num_games, expandable = False)
     self.reset_stats()
     self.timer = Timer()
     
@@ -189,7 +189,7 @@ class Battle:
       except Draw:
         self.win_counts[-1] = 2
 
-      if self.verbosity == 1:
+      if self.verbose == 1:
         bar.step()
         
     self.timer.stop()

@@ -52,14 +52,19 @@ class ProgressBar:
     if self.verbose:
       self._bar.update(self._move_num)
 
-def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : None):
+def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : None, verbose = 1):
   
+  bar = ProgressBar(num_games, expandable = False)
   initial_state = create_state('H10').to(device)
   for i in range(num_games):
-    print(f'\nPlaying game {i+1} of {num_games}:')
-    game_loop(initial_state, model, optimizer, device, off_policy)
+    if verbose >= 2:
+      print(f'\nPlaying game {i+1} of {num_games}:')
+    elif verbose >= 1:
+      bar.step()
+      
+    game_loop(initial_state, model, optimizer, device, off_policy, verbose)
 
-def game_loop(initial_state, model, optimizer, device, off_policy):
+def game_loop(initial_state, model, optimizer, device, off_policy, verbose = 2):
   '''Training loop that plays one game'''
   # Just in case
   optimizer.zero_grad()
@@ -70,7 +75,8 @@ def game_loop(initial_state, model, optimizer, device, off_policy):
   v_t      = optimizer.restart(score)
   
   # Progress Bar
-  bar      = ProgressBar(284)
+  if verbose >= 2:
+    bar      = ProgressBar(100)
   
   while True:
 
@@ -82,8 +88,9 @@ def game_loop(initial_state, model, optimizer, device, off_policy):
       delta = 1 - v_t
       optimizer.step(delta, update_trace = False)
       
-      # Terminate the progress bar
-      bar.terminate()
+      if verbose >= 2:
+        # Terminate the progress bar
+        bar.terminate()
 
       break
     
@@ -100,8 +107,9 @@ def game_loop(initial_state, model, optimizer, device, off_policy):
       v_t   = score.item()
       state = new_state
       
-    # Progress bar
-    bar.step()
+    if verbose >= 2:
+      # Progress bar
+      bar.step()
     
 
 
