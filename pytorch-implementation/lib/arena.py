@@ -148,7 +148,7 @@ class Battle:
     self.game_lengths[playerNum].append(turnsTaken)
         
   def play_game(self, device = torch.device('cpu')):
-    state = create_state('H10')
+    state = create_state('H10').to(device)
     bar = ProgressBar(150, self.verbose)
         
     xIsNext = True
