@@ -45,7 +45,7 @@ def get_move_options(curr_state, device, debug = False):
   elif (
     len(jumps) == 1 and
     jumps[0][CHAIN][END_LOC].col in [config.cols, config.cols-1]):
-    return True, jumps[0]
+    return True, jumps[0][CHAIN]
   
   # Regular jump evaluation
   else:

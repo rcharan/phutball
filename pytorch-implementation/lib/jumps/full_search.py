@@ -69,11 +69,7 @@ def get_jumps(curr_state, max_jumps = None, debug = False):
     state, ball_loc, preceding_chain  = to_compute_from_rest.pop()
     
     # Compute the adjacent locations the ball may be able to jump to
-    try:
-      dests, directions = zip(*get_dests_from_rest[ball_loc])
-    except:
-      print(ball_loc)
-      print(get_dests_from_rest[ball_loc])
+    dests, directions = zip(*get_dests_from_rest[ball_loc])
 
     # Compute whether there is a player in each of those directions
     player_occupied   = state[PLAYER_CHANNEL][tuple(zip(*dests))]
@@ -184,7 +180,7 @@ def filter_jumps(jump_data, cutoff_col, num_of_cutoff_to_take):
     elif jump_datum[1][END_LOC].col == cutoff_col:
       if left_to_take > 0:
         left_to_take -= 1
-        out.append(jump_data)
+        out.append(jump_datum)
 
   return out
 
