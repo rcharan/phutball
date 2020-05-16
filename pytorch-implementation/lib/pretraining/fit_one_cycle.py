@@ -24,7 +24,7 @@ def fit_one_cycle(model):
 
   bar = ProgressBar(600)
 
-  while lr < 10.0 ** 1
+  while lr < 10.0 ** 1:
     boards, targets = random_board_batch(
         min_density, 
         max_density, 
