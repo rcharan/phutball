@@ -18,12 +18,11 @@ def fit_one_cycle(model):
   data = []
   min_lr = 10.0 ** -5
   max_lr = 10.0 ** +1
-  delta  = 10.0 ** -10
+  delta  = 1 + 10.0 ** -10
 
-  loops = 60
   lr = min_lr
 
-  bar = ProgressBar()
+  bar = ProgressBar(600)
 
   while lr < 10.0 ** 1
     boards, targets = random_board_batch(
@@ -33,9 +32,10 @@ def fit_one_cycle(model):
         device
     )
 
-    lr *= delta
-    for param_group in optimizer.param_groups:
-        param_group['lr'] = lr
+    if (bar.move_num + 1) % 10 == 0:
+      lr *= delta
+      for param_group in optimizer.param_groups:
+          param_group['lr'] = lr
 
     targets.mul_(1/config.cols)
 
@@ -48,7 +48,7 @@ def fit_one_cycle(model):
 
     bar.step()
 
-    data.append([(lr, loss)])
+    data.append((lr, loss))
 
   return data
 
