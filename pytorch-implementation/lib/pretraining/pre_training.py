@@ -1,13 +1,12 @@
-from .pre_training import random_board_batch
-from tensorflow.keras.utils import Progbarr
+from .data import random_board_batch
+from tensorflow.keras.utils import Progbar
 import torch.nn.functional as F
 from torch.optim import SGD
 import torch
 from ..utilities import config
 
 
-def pre_train(model, loops = 10000, batch_size = 300, seed = None,
-        lr = 0.01):
+def pre_train(model, optimizer, loops = 10000, batch_size = 300, seed = None):
   '''Pre-train the model to learn an simpler value function
 
   The value function is computed by the random board generator
@@ -36,8 +35,6 @@ def pre_train(model, loops = 10000, batch_size = 300, seed = None,
   if seed is not None:
     np.random.seed(seed)
 
-  optimizer = SGD(model.parameters(), lr = 0.01)
-
   device = next(model.parameters()).device
 
   min_density = 0
@@ -61,5 +58,5 @@ def pre_train(model, loops = 10000, batch_size = 300, seed = None,
     loss.backward()
     optimizer.step()
 
-    bar.add(1, loss = loss)
+    bar.add(1, values = ('loss', loss.item()))
 

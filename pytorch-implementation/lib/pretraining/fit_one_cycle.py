@@ -4,9 +4,10 @@ import torch.nn.functional as F
 from torch.optim import SGD
 import torch
 from ..utilities import config
+from math import log, ceil
 
 
-def fit_one_cycle(model):
+def fit_one_cycle(model, batch_size = 300):
 
   optimizer = SGD(model.parameters(), lr = 0.01)
   device = next(model.parameters()).device
@@ -18,11 +19,13 @@ def fit_one_cycle(model):
   data = []
   min_lr = 10.0 ** -5
   max_lr = 10.0 ** +1
-  delta  = 1 + 10.0 ** -10
+  delta  = 1 + 10.0 ** -2
 
   lr = min_lr
 
-  bar = ProgressBar(600)
+  cycle_size = 5
+  approx_steps = ceil(log(max_lr / min_lr)/log(delta)) * cycle_size
+  bar = ProgressBar(approx_steps)
 
   while lr < 10.0 ** 1:
     boards, targets = random_board_batch(
@@ -32,7 +35,7 @@ def fit_one_cycle(model):
         device
     )
 
-    if (bar.move_num + 1) % 10 == 0:
+    if bar.move_num % cycle_size == 0:
       lr *= delta
       for param_group in optimizer.param_groups:
           param_group['lr'] = lr
@@ -49,6 +52,8 @@ def fit_one_cycle(model):
     bar.step()
 
     data.append((lr, loss))
+
+  bar.terminate()
 
   return data
 
