@@ -4,6 +4,7 @@ from .training          import ProgressBar
 from .utilities         import lmap, join
 from .timer import Timer
 from statistics import mean
+from math import sqrt
 
 import numpy as np
 import torch
@@ -206,19 +207,29 @@ class Battle:
 
     names          = lmap(lambda num : self.players[num].get_name(f'Player {num+1}'), [0,1])
     victorPct      = self.win_counts[victor] / sum(finished_games)
+
+    if victorPct == 1.0:
+      print(f'{names[victor]} won every game of {games_played} non-draw games.')
+      print(f'Mean game length: {battle.play_match(900, device)}')
+      print(f'Total time taken: {self.timer} at\n'
+            f' - {self.timer/sum(finished_games)} per finished game.\n'
+            f' - {self.timer/sum(join(self.game_lengths))} per move in a finished game')
     
-    mean_game_lens = lmap(mean, self.game_lengths)
+    else: 
+      mean_game_lens = lmap(mean, self.game_lengths)
+      moe = sqrt(victorPct * (1-victorPct))/sqrt(sum(finished_games))
     
-    print(f'{games_played} games were played between {names[0]} and {names[1]} with {draws} draws.')
+      print(f'{games_played} games were played between {names[0]} and {names[1]} with {draws} draws.')
     
-    if isTie:
-      print(f'Result was a statistically improbable tie!')
-    else:
-      print(f'The winner was {names[victor]} with a {victorPct*100:.1f}% win rate!')
+
+      if isTie:
+        print(f'Result was a statistically improbable tie!')
+      else:
+        print(f'The winner was {names[victor]} with a {victorPct*100:.1f}% win rate!')
       
-    print(f'Player 1 on average won in a game of length {mean_game_lens[0]:.1f}.\n'
-          f'Player 2 on average won in a game of length {mean_game_lens[1]:.1f}\n'
-          f'Overall average length of game was {mean(join(self.game_lengths))}')
+      print(f'{names[0]} on average won in a game of length {mean_game_lens[0]:.1f}.\n'
+            f'{names[1]} on average won in a game of length {mean_game_lens[1]:.1f}\n'
+            f'Overall average length of game was {mean(join(self.game_lengths))}')
     
     if hasattr(self, 'timer'):
       print(f'Total time taken: {self.timer} at\n'
