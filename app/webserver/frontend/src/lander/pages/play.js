@@ -66,40 +66,52 @@ class GameCreator extends React.Component {
     super(props)
 
     this.state = {
-      player0Name : '',
-      player1Name : '',
-      requestStatus : 'unsent',
+      playerNames : ['', ''],
+      playerTypes : ['human', 'human']
     }
 
-    this.handlePlayer0Change = this.handlePlayer0Change.bind(this);
-    this.handlePlayer1Change = this.handlePlayer1Change.bind(this)
-    this.handleSubmit        = this.handleSubmit.bind(this);
+    this.handleName   = this.handleName.bind(this);
+    this.handleType   = this.handleType.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this);
 
     this.api = new API()
 
   }
 
-  handlePlayer0Change(event) {
-    if (this.state.requestStatus !== 'unsent') {
-      event.preventDefault()
-    } else {
-      this.setState({player0Name : event.target.value.toUpperCase()})
-    }
+  handleName(i, event) {
+    const eventValue = event.target.value
+    this.setState(state => {
+      if (state.playerTypes[i] === 'human') {
+        var out = state.playerNames.concat()
+        out[i] = eventValue.toUpperCase()
+        return ({
+          playerNames : out
+        })
+      } else {
+        event.preventDefault()
+        return ({})
+      }
+    })
   }
 
-  handlePlayer1Change(event) {
-    if (this.state.requestStatus !== 'unsent') {
-      event.preventDefault()
-    } else {
-      this.setState({player1Name : event.target.value.toUpperCase()})
-    }
+  handleType(i, event) {
+    const eventValue = event.target.value
+    this.setState(state => {
+      console.log(state)
+      if ((state.playerTypes[1-i] === 'human') ||
+          (eventValue === 'human')) {
+        var out = state.playerTypes.slice()
+        out[i] = eventValue
+        return ({
+          playerTypes : out
+        })
+      } else {
+        event.preventDefault()
+        return ({})
+      }
+    })
   }
 
-  setFailure(error) {
-    this.setState({'requestStatus' : 'failed'}) 
-    setTimeout(() => {this.setState(
-        {'requestStatus' : 'unsent'})}, 3000);
-  }
 
   handleSubmit(event) {
     event.preventDefault()
@@ -114,36 +126,68 @@ class GameCreator extends React.Component {
     ).catch(error => window.location.href='/game/offline/')
   }
 
-  requestStatusView() {
-    if (this.state.requestStatus==='unsent') {
-      return 'Get Started'
-    } else if (this.state.requestStatus==='sent') {
-      return 'Preparing your game'
-    } else if (this.state.requestStatus==='failed') {
-      return 'Error preparing your game. Check your connection or try again later.'
-    }
-  }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label key="1" className="input">
-          Player 1 (X's) <input type="text" id="player0"
-            value={this.state.player0Name} 
-            onChange={this.handlePlayer0Change}
-            placeholder="X's"
-          />
-        </label>
+        <PlayerInput
+          playerNum         = {0}
+          playerType        = {this.state.playerTypes}
+          playerTypeHandler = {this.handleType}
+          playerName        = {this.state.playerNames}
+          playerNameHandler = {this.handleName}
+        />
         <br/>
-        <label key="2" className="input">
-          Player 2 (O's) <input type="text" id="player1"
-            value={this.state.player1Name} 
-            onChange={this.handlePlayer1Change}
-            placeholder="O's"
-          />
-        </label><br/>
-        <input className="submit" type="submit" value={this.requestStatusView()}/>
+        <PlayerInput
+          playerNum         = {1}
+          playerType        = {this.state.playerTypes}
+          playerTypeHandler = {this.handleType}
+          playerName        = {this.state.playerNames}
+          playerNameHandler = {this.handleName}
+        />
+        <br/>
+        <input className="submit" type="submit" value="Play"/>
       </form>
     )
   } 
+}
+
+class PlayerInput extends React.Component {
+  render() {
+    const i = this.props.playerNum
+    return(
+      <label key="1" className="input">
+        Player {i + 1} ({i === 0 ? 'X' : 'O'}'s)
+        {this.renderTypes(i)} 
+        <input type="text"
+          value={ this.props.playerType[i] === 'human' ? 
+                  this.props.playerName[i] : 
+                  this.props.playerType[i].toUpperCase()}
+          onChange={(event) => this.props.playerNameHandler(i, event)}
+          placeholder={i === 0 ? "X's" : "O's"}
+        />
+      </label>
+  )}
+
+  renderTypes(i) {
+    if (this.props.playerType[1-i] === 'human') {
+      return (<select
+          value   ={this.props.playerType[i]}
+          onChange={(event) => this.props.playerTypeHandler(i, event)}
+        >
+          <option value="human"      >Human      </option>
+          <option value="randotron"  >RandoTron  </option>
+          <option value="t.d. conway">T.D. Conway</option>
+        </select>)
+    } else {
+      return (
+        <select
+            value   ={this.props.playerType[i]}
+            onChange={event => null}
+        >
+            <option value="human"      >Human      </option>
+        </select>
+      )
+    }
+  }
 }
