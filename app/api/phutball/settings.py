@@ -4,6 +4,7 @@ from .config.config import (
     ALLOWED_HOSTS,
     CORS_ORIGIN_WHITELIST,
     DATABASES,
+    CHANNEL_LAYERS,
 )
 
 """
