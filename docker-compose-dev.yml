@@ -17,5 +17,15 @@ services:
     command: sh entrypoint.sh
     depends_on:
       - db
+      - redis
+      - models
     ports:
       - 8000:8000
+  redis:
+    image: redis:5
+    ports:
+      - 6379:6379
+  models:
+    build:
+      context: ./pytorch-implementation/ 
+      dockerfile: Dockerfile-dev

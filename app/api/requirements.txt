@@ -14,11 +14,13 @@ daphne==2.5.0
 Django==3.0.6
 django-cors-headers==3.2.1
 djangorestframework==3.11.0
+future==0.18.2
 hiredis==1.0.1
 hyperlink==19.0.0
 idna==2.9
 incremental==17.5.0
 msgpack==0.6.2
+numpy==1.18.4
 psycopg2==2.8.5
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -29,6 +31,7 @@ pytz==2020.1
 service-identity==18.1.0
 six==1.14.0
 sqlparse==0.3.1
+torch==1.5.0
 Twisted==20.3.0
 txaio==20.4.1
 whitenoise==5.0.1
