@@ -66,8 +66,9 @@ class GameCreator extends React.Component {
     super(props)
 
     this.state = {
-      playerNames : ['', ''],
-      playerTypes : ['human', 'human']
+      playerNames   : ['', ''],
+      playerTypes   : ['human', 'human'],
+      requestStatus : 'unsent'
     }
 
     this.handleName   = this.handleName.bind(this);
@@ -85,7 +86,8 @@ class GameCreator extends React.Component {
         var out = state.playerNames.concat()
         out[i] = eventValue.toUpperCase()
         return ({
-          playerNames : out
+          playerNames : out,
+          requestStatus : 'unsent'
         })
       } else {
         event.preventDefault()
@@ -97,13 +99,13 @@ class GameCreator extends React.Component {
   handleType(i, event) {
     const eventValue = event.target.value
     this.setState(state => {
-      console.log(state)
       if ((state.playerTypes[1-i] === 'human') ||
           (eventValue === 'human')) {
         var out = state.playerTypes.slice()
         out[i] = eventValue
         return ({
-          playerTypes : out
+          playerTypes   : out,
+          requestStatus : 'unsent'
         })
       } else {
         event.preventDefault()
@@ -115,21 +117,102 @@ class GameCreator extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const gameParams = {
-      'player_0_name' : this.state.player0Name,
-      'player_1_name' : this.state.player1Name
+
+    if (this.state.requestStatus === 'sent') {
+      return 
+    } else {
+      this.setState({requestStatus : 'sent'})
     }
 
-    this.setState({requestStatus : 'sent'})
-    this.api.createGame(gameParams).then(
-      gameID => (window.location.href=`/game/${gameID}`)
-    ).catch(error => window.location.href='/game/offline/')
+    var playType = event.target.name // 'play' or 'remote'
+
+    let gameParams;
+    if (this.state.playerTypes[0] !== 'human') {
+      gameParams = {
+        ai_player     : this.state.playerTypes[0],
+        ai_player_num : false,
+        player_0_name : this.state.playerTypes[0].toUpperCase(),
+        player_1_name : this.state.playerNames[1],
+      }
+      playType = 'ai'
+    } else if (this.state.playerTypes[1] !== 'human') {
+      gameParams = {
+        ai_player     : this.state.playerTypes[1],
+        ai_player_num : true,
+        player_0_name : this.state.playerNames[0],
+        player_1_name : this.state.playerTypes[1].toUpperCase()
+      }
+      playType = 'ai'
+    } else {
+      gameParams = {
+        player_0_name : this.state.playerNames[0],
+        player_1_name : this.state.playerNames[1]
+      }
+    }
+
+
+    if (playType === 'ai') {
+      this.api.createGame(gameParams).then(
+        gameID => (window.location.href=`/ai/${gameID}`)
+      ).catch(
+        this.setState({requestStatus : 'failed'})
+      )
+    } else if (playType === 'remote') {
+      this.api.createGame(gameParams).then(
+        gameID => (window.location.href=`/live/${gameID}`)
+      ).catch(
+        this.setState({requestStatus : 'failed'})
+      )
+    } else if (playType === 'play') {
+      this.api.createGame(gameParams).then(
+        gameID => (window.location.href=`/game/${gameID}`)
+      ).catch(
+        error => window.location.href='/game/offline/'
+      )
+    }
   }
 
+  renderFailures() { 
+    if (this.state.requestStatus === 'failed') {
+      return (
+        <div>
+        <br/>
+        <div className="fail"> 
+          Issue setting up the game. You can try again or play with two humans
+          locally on your computer though!
+        </div>
+        </div>
+      ) 
+    } else {
+      return null
+    }
+  }
+
+  renderSubmit() {
+    var out = [<input
+                  className="submit"
+                  type="submit"
+                  name="play"
+                  onClick={this.handleSubmit}
+                  value="Play"/>
+              ]
+
+    if (this.state.playerTypes[0] === 'human' && this.state.playerTypes[1] === 'human') {
+      out.push(
+          <input
+            className="submit"
+            type="submit"
+            name="remote"
+            onClick={this.handleSubmit}
+            value="Play Remotely"
+          />)
+    }
+    return out
+  }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={event => event.preventDefault()}>
         <PlayerInput
           playerNum         = {0}
           playerType        = {this.state.playerTypes}
@@ -146,10 +229,12 @@ class GameCreator extends React.Component {
           playerNameHandler = {this.handleName}
         />
         <br/>
-        <input className="submit" type="submit" value="Play"/>
+        {this.renderSubmit()}
+        {this.renderFailures()}
       </form>
     )
   } 
+
 }
 
 class PlayerInput extends React.Component {
