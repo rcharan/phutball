@@ -2,7 +2,8 @@
 
 import  React, { Component } from  'react';
 import { BrowserRouter } from  'react-router-dom'
-import { Route } from  'react-router-dom'
+import { Switch, Route } from  'react-router-dom'
+import PlayerSelector from './components/playerSelector'
 import  './App.css';
 // import './index.css';
 import Game from './components/game'
@@ -13,8 +14,32 @@ import Lander from './lander/lander'
 const  BaseLayout  = () => (
 	<div  className="container-fluid">
 	    <div  className="content">
-	    	<Route  path="/"             exact component={Lander} />
-	        <Route  path="/game/:gameID" exact component={Game}   />
+	    	<Switch>
+	        	<Route path="/game/:gameID">
+					<Game
+						type        = "local"
+						localPlayer = {null}
+					/>
+	        	</Route>
+	        	<Route path="/live/:gameID/X">
+	        		<Game
+	        			type        ="live"
+	        			localPlayer = {false}
+	        		/>
+	        	</Route>
+	        	<Route path="/live/:gameID/O">
+	        		<Game
+	        			type        ="live"
+	        			localPlayer = {true}
+	        		/>
+	        	</Route>
+	        	<Route path="/live/:gameID">
+	        		<PlayerSelector/>
+	        	</Route>
+		    	<Route path="/">
+		    		<Lander/>
+		    	</Route>
+		    </Switch>
 	    </div>
 	</div>
 )

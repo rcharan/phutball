@@ -5,10 +5,18 @@ import { BoardState } from './gameLogic/boardState'
 import { ReactComponent as Cloud } from './icons/cloud.svg'
 import { withRouter } from 'react-router-dom'
 
-import { API_URL, BASE_POLL_FREQ } from './settings/settings'
+import { API_URL, BASE_POLL_FREQ} from './settings/settings'
 
+/**************************************************************************
+*
+* Connection Manager - for local ("offline") games
+*  Uses HTTP Protocol
+*
+**************************************************************************/
 
 class ConnectionManager extends React.Component {
+
+
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -184,7 +192,7 @@ class ConnectionManager extends React.Component {
 
 	resetTimer() {
 		this.unsetTimer()
-		if (this.pollFrequency >= (BASE_POLL_FREQ*64)) {
+		if (this.pollFrequency > (BASE_POLL_FREQ*64)) {
 			this.setState({dead : true})
 		} else {
 			this.setTimer()
@@ -298,6 +306,29 @@ class ConnectionManager extends React.Component {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**************************************************************************
+*
+* API – Manages HTTP Requests
+*
+**************************************************************************/
+
+
 class API {
 	constructor(gameID) {
 		if (arguments.length === 0 || gameID === null || gameID === 'offline') {
@@ -394,7 +425,7 @@ function serializeBoard(board) {
 }
 
 function deserializeBoard(data) {
-	const loc = deserializeLocation(data.ball_loc);
+	const loc        = deserializeLocation(  data.ball_loc);
 	const spaceArray = deserializeSpaceArray(data.space_array)
 	return new BoardState(spaceArray, loc)
 }
@@ -425,5 +456,5 @@ function deserializeLocation(data) {
 }
 
 export default withRouter(ConnectionManager);
-export { API } 
+export { API , serializeMove, deserializeBoard} 
 

@@ -150,24 +150,17 @@ class GameCreator extends React.Component {
       }
     }
 
-
-    if (playType === 'ai') {
-      this.api.createGame(gameParams).then(
-        gameID => (window.location.href=`/ai/${gameID}`)
-      ).catch(
-        this.setState({requestStatus : 'failed'})
-      )
-    } else if (playType === 'remote') {
-      this.api.createGame(gameParams).then(
-        gameID => (window.location.href=`/live/${gameID}`)
-      ).catch(
-        this.setState({requestStatus : 'failed'})
-      )
-    } else if (playType === 'play') {
+    if (playType === 'play') {
       this.api.createGame(gameParams).then(
         gameID => (window.location.href=`/game/${gameID}`)
       ).catch(
         error => window.location.href='/game/offline/'
+      )
+    } else {
+      this.api.createGame(gameParams).then(
+        gameID => (window.location.href=`/live/${gameID}`)
+      ).catch(
+        this.setState({requestStatus : 'failed'})
       )
     }
   }

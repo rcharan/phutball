@@ -34,7 +34,7 @@ def create_game(request):
 def load_game(request, game_id):
   try:
     game = Game.objects.get(pk = game_id)
-  except game.DoesNotExist:
+  except Game.DoesNotExist:
     return game_dne()
 
 

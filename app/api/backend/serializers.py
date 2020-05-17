@@ -118,6 +118,9 @@ class GameSerializer(ModelSerializer):
         break
       history_data.append({'move_str' : move.move_str, 'board' : BoardStateSerializer(move).data})
 
+    if ret['ai_player'] == '':
+      ret['ai_player'] = None
+      
     ret['history']       = history_data
     ret['board']         = history_data[-1]['board']
     ret['moveNum']       = move_num + 1

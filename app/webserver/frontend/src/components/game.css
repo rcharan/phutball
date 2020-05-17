@@ -26,11 +26,11 @@
   background-color: #2191AD;
   width: 100vw;
   height: 100vh;
-  padding: 0;
+  padding-top: 20vh;
   margin: 0;
   color: white;
   text-align: center;
-  line-height: 100vh;
+  line-height: 20vh;
   opacity: 0.8;
   z-index: 2;
 }

@@ -18,7 +18,7 @@ class Game(Model):
   date_created  = models.DateTimeField(auto_now_add=True)
   player_0_name = models.CharField(max_length = 30, default = 'Player 1')
   player_1_name = models.CharField(max_length = 30, default = 'Player 2')
-  ai_player     = models.BooleanField(default = False)
+  ai_player     = models.CharField(max_length = 30, default = None, null = True, )
   ai_player_num = models.BooleanField(default = False)
 
   def get_history(self):
@@ -43,7 +43,7 @@ class Game(Model):
   def new_game(self,
                player_0_name = 'Player 1',
                player_1_name = 'Player 2',
-               ai_player     = False,
+               ai_player     = None,
                ai_player_num = False,
                game_id       = None):
 
