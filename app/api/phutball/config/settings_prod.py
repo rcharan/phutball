@@ -11,7 +11,7 @@ ALLOWED_HOSTS = ['api'] # Should match service name in nginx config
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = (
-       'http://www.philophers.football',
+       'http://www.philosophers.football',
        'http://167.172.152.70'
 )
 
