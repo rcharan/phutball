@@ -236,3 +236,53 @@ class MoveSerializerTests(TestCase):
     source = game.move_set.filter(move_num = 1)[0]
 
     compare_structs(self, source, target)
+
+###############################################################################
+#
+# Check the bots
+#
+###############################################################################
+
+from .bots.bots      import bots
+from .bots.utilities import config
+from .bots.player import Player
+from .game_logic.location_state import empty, player, ball
+
+base_array = empty * config.rows * config.cols
+def flat_index(str_rep):
+  return config.letters.index(str_rep[0]) * config.cols + int(str_rep[1:]) - 1
+
+def str_rep(flat_index):
+  return config.letters[flat_index // config.cols] + str(flat_index % config.cols + 1)
+
+def place(piece, str_rep, board):
+  out = board
+  out[flat_index(str_rep)] = piece
+  return out
+
+class BotTests(TestCase):
+
+  def test_flat_index(self):
+    self.assertEqual(0, flat_index('A1'))
+    self.assertEqual(config.cols + 1, flat_index('B2'))
+
+  def test_inversion(self):
+    for i in range(config.rows * config.cols):
+      self.assertEqual(i, flat_index(str_rep(i)))
+
+  def test_place(self):
+    emptiness = ' ' * (config.rows * config.cols // 2)
+    self.assertEqual(emptiness + 'O' + emptiness, place(ball, 'H10', base_array))
+
+  def test_can_move(self):
+    state = place(ball, 'B2', base_array)
+
+    for bot in bots.values():
+      for move_num in [1,2]:
+        # Bot cannot jump, there are no legal jumps
+        space_array, move_str = bot.make_move(state, move_num)
+
+        old_ball_loc = flat_index('B2')
+        self.assertEqual(ball  , space_array[old_ball_loc])
+        self.assertEqual(player, space_array[flat_index(move_str)])
+
