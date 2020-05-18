@@ -79,7 +79,6 @@ class AIConsumer(WebsocketConsumer):
 
         # TO DO: Load the bot
 
-        self.close() 
         self.accept()
 
     def receive(self, json_string):
