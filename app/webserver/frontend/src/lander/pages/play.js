@@ -182,18 +182,20 @@ class GameCreator extends React.Component {
   }
 
   renderSubmit() {
+    const twoButtons = (this.state.playerTypes[0] === 'human' &&
+                        this.state.playerTypes[1] === 'human')
     var out = [<input
-                  className="submit"
+                  className={twoButtons ? "submit half" : "submit"}
                   type="submit"
                   name="play"
                   onClick={this.handleSubmit}
                   value="Play"/>
               ]
 
-    if (this.state.playerTypes[0] === 'human' && this.state.playerTypes[1] === 'human') {
+    if (twoButtons) {
       out.push(
           <input
-            className="submit"
+            className="submit half"
             type="submit"
             name="remote"
             onClick={this.handleSubmit}

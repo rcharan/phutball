@@ -1,5 +1,5 @@
 import React from 'react';
-import { empty } from '../gameLogic/locationState'
+// import { empty } from '../gameLogic/locationState'
 
 
 class AI extends React.Component {

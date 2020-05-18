@@ -186,7 +186,9 @@ class Board extends React.Component {
 			for (var i = 0; i < toGreyOut.length; i++) {
 				const loc      = toGreyOut[i]
 				const contents = paddedArray.boardLoc(loc)
-				contents.type  = contents.type + 'Gray'
+				if (!contents.type.endsWith('Gray')) {
+					contents.type  = contents.type + 'Gray'
+				}
 			}
 
 			paddedArray.boardLoc(jump.path[jump.path.length-1]).type = 'ball'

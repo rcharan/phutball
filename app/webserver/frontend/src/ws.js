@@ -37,7 +37,6 @@ export default class LiveConnectionManager extends React.Component {
 		} else if (this.props.gameType === 'ai') {
 			this.ws = new WebSocket(WS_URL_AI + '/' + this.props.gameID)
 		} else {
-			console.log('Unrecognized game type')
 			this.die()
 		}
 	}
@@ -53,7 +52,6 @@ export default class LiveConnectionManager extends React.Component {
 				}
 			).catch(
 				error  => {
-					console.log('Unable to load game')
 					this.die()
 				}
 			)	
@@ -71,16 +69,13 @@ export default class LiveConnectionManager extends React.Component {
 		}
 
 		this.ws.onmessage = event => {
-			console.log('Got a message', event)
 			var data     = JSON.parse(event.data)
 			const success  = data.success
 			if (!success) {
-				console.log('Failed move')
 				this.die()
 				return
 			}
 
-			console.log(data.move_data)
 			const moveInfo = {
 				moveStr : data.move_data.move_str,
 				board   : deserializeBoard(data.move_data)
@@ -93,7 +88,6 @@ export default class LiveConnectionManager extends React.Component {
 		}
 
 		this.ws.onclose = () => {
-			console.log('Websocket connection closed')
 			this.die()
 		}
 	}
@@ -103,7 +97,6 @@ export default class LiveConnectionManager extends React.Component {
 	}
 
 	componentDidUpdate() {
-		console.log(this.state, this.props.moveQueue)
 		if (this.state.pendingResponse || this.props.moveQueue.length === 0) {
 			return	
 		} else {
@@ -113,7 +106,6 @@ export default class LiveConnectionManager extends React.Component {
 			var data   = serializeMove(move.moveInfo)
 			data.move_num = move.moveNum
 			data.game_id   = this.props.gameID
-			console.log('sending message', data)
 			this.ws.send(JSON.stringify(data))
 		}
 

@@ -84,6 +84,11 @@
 }
 
 
+/******************************************************************************
+*
+* Play - Game Creator
+*
+******************************************************************************/
 
 .lander .page#play     {
   background: #AD6421; 
@@ -117,15 +122,37 @@
 .lander .page#play #creator input.submit {
   background-color: #2191AD;
   color: white;
-  min-width: 30vw;
-}
-
-
-
-.lander .page#play #creator .submit {
+  min-width: 20vw;
   margin: 10px;
   border: none;
 }
+
+.lander .page#play #creator input.half {
+  min-width: 15vw;
+}
+
+.lander .page#play #creator select {
+  margin: 16px;
+  padding: 16px;
+  outline: 0;
+  outline-offset: 0 ;
+  color: white;
+  background-color: #2191AD;
+  width: 10vw;
+  height: 30px;
+
+  border: none;
+}
+
+.lander .page#play #creator select > option {
+  font: 100px;
+}
+
+/******************************************************************************
+*
+* More Math and About
+*
+******************************************************************************/
 
 .lander .page#moremath {
   background: #32AD3D; 

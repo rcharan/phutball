@@ -174,7 +174,7 @@ class Game extends React.Component {
 		// Check whether the player can move
 
 		// Make sure they haven't gone back in history
-		if (this.state.history.length != this.state.moveNum) {
+		if (this.state.history.length !== this.state.moveNum) {
 			this.setState({
 				errorMessage : 'Please move from the latest position',
 			})
@@ -203,7 +203,6 @@ class Game extends React.Component {
 		}
 
 		else {
-			console.log('Queuing a move')
 			// Queue up the move!
 			this.setState((state) => ({
 				offlineMoveQueue : [{
@@ -216,16 +215,13 @@ class Game extends React.Component {
 	}
 
 	handleRemoteMove(moveInfo, moveNum) {
-		console.log('Handling remote', moveInfo, moveNum)
 		this.setState((state) => {
 			if (moveNum > state.history.length) { 
-				console.log('Out of order move received')
 				return ({
 					errorMessage : 'Out-of-order moves received. Refresh the page.',
 					loadStatus   : 'offline',
 				})
 			} else if (moveNum < state.history.length) {
-				console.log('Received duplicate move')
 				return ({})
 			} else {
 				return ({
@@ -260,13 +256,21 @@ class Game extends React.Component {
 	}
 
 	handleHistory(moveNum) {
-		this.setState({
-			board         : this.state.history[moveNum].board,
-			xIsNext       : (moveNum % 2 === 0),
-			history       : this.state.history,
+		let xIsNext;
+
+		if (this.gameType === 'local') {
+			xIsNext = (state) => moveNum % 2 === 0
+		} else {
+			xIsNext = (state) => state.xIsNext
+		}
+
+		this.setState(state => ({
+			board         : state.history[moveNum].board,
+			xIsNext       : xIsNext(state),
+			history       : state.history,
 			moveNum       : moveNum + 1,
 			jumpMouseOver : null,
-		})
+		}))
 	}
 
 	handleJumpMouseEnter(jumpObj) {
@@ -294,10 +298,12 @@ class Game extends React.Component {
 	}
 
 	renderNextMove() {
-		var out = [<div className="error">{this.state.errorMessage}</div>]
-		out.push(<div className="faceoff">
+		var out = []
+		out.push(<div key="f" className="faceoff">
 			{this.state.player0Name} (X) vs {this.state.player1Name} (O)
 		</div>)
+
+
 
 		// Case 1: Game is over
 		if (this.state.board.gameOver) {
@@ -341,11 +347,13 @@ class Game extends React.Component {
 		// Case 5: You are playing against a bot or a human and it is your turn
 		} else {
 			out.push(
-				<div className="nextplayer" key="nextplayer">
+				<div className="nextplayer alert" key="nextplayer">
 					Your turn
 				</div>
 			)
 		}
+
+		out.push(<div key="e" className="error">{this.state.errorMessage}</div>)
 
 		return out
 		
@@ -439,15 +447,15 @@ class Game extends React.Component {
 	renderGameInfo() {
 		return (
 			<div key="gameinfo" className="menu">
-			<Logo/>
-			<div key="gameinfo" className = "game-info">
-				{[
-					this.renderNextMove(),
-					this.renderHelp(),
-					this.renderJumpList(),
-					this.renderHistory()
-				]}
-			</div>
+				<Logo/>
+				<div key="gameinfo2" className = "game-info">
+					{[
+						this.renderNextMove(),
+						this.renderHelp(),
+						this.renderJumpList(),
+						this.renderHistory()
+					]}
+				</div>
 			</div>
 		)	
 	}

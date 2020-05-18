@@ -44,10 +44,10 @@ class PlayerSelector extends React.Component {
 					Who are you playing as?
 					<br/>
 				<button className="playerSelector" onClick={() => this.handleClick('X')}>
-					X's: {this.state.player0Name}
+					<div className="playertype">X's</div><div className="playerName">{this.state.player0Name}</div>
 				</button>
 				<button className="playerSelector" onClick={() => this.handleClick('O')}>
-					O's: {this.state.player1Name}
+					<div className="playertype">O's</div><div className="playerName">{this.state.player1Name}</div>
 				</button>
 				</div>
 			)

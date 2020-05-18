@@ -35,6 +35,26 @@
   z-index: 2;
 }
 
+.loader button {
+  margin : 5vw;
+  padding: 2vw;
+  min-width: 20vw;
+  min-height: 10vh;
+  background-color: #AD6421;
+  font-size: 30px;
+}
+
+.loader button div {
+  display: inline;
+  margin-right: 1vw;
+  margin-left:  1vw;
+}
+
+.loader button div.playertype {
+  opacity: 0.6;
+  font-weight: bold;
+}
+
 /******************************************************************************
 *
 * Game Info
@@ -67,6 +87,33 @@
 .game .game-info h1 {
   padding-top: 0;
   margin-top:0;
+}
+
+
+.game .game-info .faceoff {
+  text-decoration: underline;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.game .game-info .nextplayer {
+  font-size: 12px;
+  margin:0;
+  padding-bottom: 5px;
+  margin-left:30px;
+  height: 18px;
+}
+
+.game .game-info .alert {
+  font-size: 18px;
+}
+
+
+.game .game-info .error {
+  color: red;
+  margin: 0;
+  margin-left: 30px;
+  height: 25px;
 }
 
 /******************************************************************************
