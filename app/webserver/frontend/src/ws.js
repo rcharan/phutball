@@ -56,6 +56,8 @@ export default class LiveConnectionManager extends React.Component {
 					this.die()
 				}
 			)	
+		} else {
+			this.setup()
 		}
 	}
 
