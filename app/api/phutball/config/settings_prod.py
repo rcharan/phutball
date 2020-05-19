@@ -6,13 +6,13 @@ with open('/app/phutball/config/secret.txt', 'r') as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['api'] # Should match service name in nginx config
+ALLOWED_HOSTS = ['157.245.84.245', 'api', 'philosophers.football'] # Should match service name in nginx config
 
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = (
        'http://www.philosophers.football',
-       'http://167.172.152.70'
+       'http://157.245.84.253',
 )
 
 # Database
