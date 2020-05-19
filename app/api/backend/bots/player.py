@@ -15,15 +15,18 @@ class Player:
 	def __init__(self, model, batch_eval = 32):
 		self.model = model
 		self.batch_eval = batch_eval
+		if hasattr(model, 'eval'):
+			model.eval()
 
 	def _pick_move_index(self, options):
 		if len(options) == 1:
 			best_index = 0
 		else:
-			if self.batch_eval is None:
-				_, best_index = self.model(options)
-			else:
-				_, best_index = batch_eval(self.model, options, self.batch_eval)
+			with torch.no_grad():
+				if self.batch_eval is None:
+					_, best_index = self.model(options)
+				else:
+					_, best_index = batch_eval(self.model, options, self.batch_eval)
 
 		return best_index
 
