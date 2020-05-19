@@ -37,8 +37,8 @@ export default class Play extends React.Component {
                   <li> <b>RandoTron.</b> Weighing in at 200 kilos and as featured in Rick and Morty Season
                   4, <a href="https://www.youtube.com/watch?v=wezE6RLlcDA">RandoTron</a> is a master
                   of the heist and will steal victory from the jaws of defeat. Also RandoTron plays
-                  completly randomly.</li>
-                  <li> <b>T.D. Conway.</b> Weighing in a 4,381,505 floating points, T.D. Conway is a nascent
+                  completely randomly.</li>
+                  <li> <b>T.D. Conway.</b> Weighing in at 4,381,505 floating points, T.D. Conway is a nascent
                   artificial intelligence with a 17-layer convolutional neural network for a brain. However,
                   T.D. Conway hasn't played many games yet, and currently has the intelligence of a small
                   child. Come back later to see how much he improves with intensive Temporal Difference training
@@ -58,10 +58,10 @@ export default class Play extends React.Component {
               <li key="4">
                 Looking to resume a previous game? All games are saved if
                 your internet was working! Just find a URL like philosophers.football/game/ABC123 in your browser history.
-                For live games, look for philosphers.football/live/ABC123. (Leave off the /X or /O ending though)
+                For live games, look for philosophers.football/live/ABC123. (Leave off the /X or /O ending though).
               </li>
-              <li key="5"> Live games are untimed</li>
-              <li key="6"> Live games and AI games don't allow you to undo a move! So move carefully</li>
+              <li key="5"> Live games are untimed.</li>
+              <li key="6"> Live games and AI games don't allow you to undo a move! So move carefully.</li>
             </ul>
           </p>
         </div>
