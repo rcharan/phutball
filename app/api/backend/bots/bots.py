@@ -3,13 +3,18 @@ import numpy as np
 
 from .models.model_v2 import TDConway
 from .utilities import config
-from .player import tdconway
+from .player import Player
 
 # T.D. Conway
 tdconway = TDConway(config)
 version  = '0.2.2'
 game_num = 20500
-sd = torch.load('./models/v{version}-{game_num}.pt')
+
+import os
+dirname  = os.path.dirname(__file__)
+filename = os.path.join(dirname, f'models/v{version}-{game_num}.pt')
+
+sd = torch.load(filename, map_location = torch.device('cpu'))
 tdconway.load_state_dict(sd['model'])
 tdconway = Player(tdconway)
 

@@ -70,12 +70,12 @@ def create_placements(device):
 placements_static = dict()
 
 
-placementStrings = join([
+placementStrings = list(join([
   [f'{letter}{i+1}' for i in range(config.cols)]
   for letter in config.letters
-])
+]))
 
-def get_placements(curr_state, device):
+def get_placements(curr_state, device = torch.device('cpu')):
   '''Given a state curr_state, compute legal next states due to placing
   a piece
   
@@ -94,7 +94,8 @@ def get_placements(curr_state, device):
   legal   = torch.bitwise_or(players, ball).bitwise_not_() # new tensor
 
   legal_indices = legal.flatten().nonzero(as_tuple=True)[0]
-  move_strings  = [placementStrings(i) for i in legal_indices[0].numpy()]
+
+  move_strings  = [placementStrings[i] for i in legal_indices.numpy()]
 
   if device not in placements_static:
     placements_static[device] = create_placements(device)
@@ -103,7 +104,7 @@ def get_placements(curr_state, device):
 
   new_placements = placements.index_select(0, legal_indices)
   new_states     = new_placements + curr_state
-  
+
   return new_states, move_strings
 
 

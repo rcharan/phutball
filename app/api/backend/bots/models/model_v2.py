@@ -38,10 +38,10 @@ class TDConway(Module):
       Flatten(), 
       Linear(128 * pooled_height * pooled_width, 512),
       SELU(),
-      # Dropout(dropout), # Remove in eval
+      Dropout(0), # Remove in eval
       Linear(512, 2048),
       SELU(),
-      # Dropout(dropout), # Remove in eval
+      Dropout(0), # Remove in eval
       Linear(2048, 1),
       # Sigmoid() # Remove in evaluation version
     )

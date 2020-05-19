@@ -45,3 +45,25 @@ def lfilter(predicate, iterable): return list(filter(predicate, iterable))
 # "A monad is just a monoid in the category of endofunctors, what's the problem?"
 join = chain.from_iterable
 
+
+###############################################################################
+#
+# Board Arithmetic
+#
+###############################################################################
+
+
+def flat_index(str_rep):
+  return config.letters.index(str_rep[0]) * config.cols + int(str_rep[1:]) - 1
+
+def index(flat_index):
+  return (flat_index // config.cols, flat_index % config.cols)
+
+def str_rep(flat_index):
+  return config.letters[flat_index // config.cols] + str(flat_index % config.cols + 1)
+
+def str_assign(old_str, index, char):
+  return old_str[:index] + char + old_str[index+1:]
+
+def place(piece, str_rep, board):
+  return str_assign(board, flat_index(str_rep), piece.value)

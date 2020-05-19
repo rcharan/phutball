@@ -5,8 +5,9 @@ from ..game_logic.location_state import empty, player, ball
 from .utilities import (
 	config,
 	PLAYER_CHANNEL,
-	BALL_CHANNEL
+	BALL_CHANNEL,
 )
+from .moves.abstractions import reverse_move_str
 
 
 class Player:
@@ -22,7 +23,7 @@ class Player:
 			if self.batch_eval is None:
 				_, best_index = self.model(options)
 			else:
-				_, best_index = batch_eval(model, options, self.batch_eval)
+				_, best_index = batch_eval(self.model, options, self.batch_eval)
 
 		return best_index
 
@@ -44,9 +45,15 @@ class Player:
 		if force_index is not None:
 			best_index = force_index
 
-		state_tensor = options[best_index]
+		state_tensor = options  [best_index]
+		move_str     = move_strs[best_index]
 
-		move_str = move_strs[best_index]
+		# If the bot is playing as X, the board has been flipped
+		#  around. Turn it back
+		if xIsNext:
+			state_tensor = torch.flip(state_tensor, [-1])
+		else:
+			move_str     = reverse_move_str(move_str)
 
 		space_array, ball_loc = tensor_to_space_array(state_tensor)
 
@@ -67,13 +74,13 @@ def index_to_str(index):
 def space_array_to_tensor(space_array):
 	'''Given the game's representation of the board as a string, construct a tensor'''
 
-	players = np.array([char==player for char in space_array])
-	ball    = np.array([char==ball   for char in space_array])
+	players = np.array([char==player.value for char in space_array])
+	balls   = np.array([char==ball.value   for char in space_array])
 
 	players = players.reshape(config.rows, config.cols)
-	ball    = ball.reshape(config.rows, config.cols)
+	balls   = balls.reshape(config.rows, config.cols)
 
-	state   = np.stack([players, ball])
+	state   = np.stack([players, balls])
 
 	return torch.tensor(state, dtype = torch.bool)
 
@@ -92,9 +99,9 @@ def tensor_to_space_array(tensor):
 	space_array = [' '] * (config.cols * config.rows)
 	for i, player_bool, ball_bool in zip(range(config.cols * config.rows), players.flatten(), balls.flatten()):
 		if player_bool:
-			space_array[i] = player
+			space_array[i] = player.value
 		elif ball_bool:
-			space_array[i] = ball
+			space_array[i] = ball.value
 
 	return space_array, ball_loc
 

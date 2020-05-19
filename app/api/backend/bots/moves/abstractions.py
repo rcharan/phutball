@@ -197,3 +197,8 @@ def build_new_state(curr_state, dest_list, new_ball_loc):
   return (curr_state + delta).astype(bool)
 
 
+def reverse_move_str(move_str):
+  if isinstance(move_str, list):
+    return [Index(t[0], config.cols - 1 - t[1]) for t in move_str]
+  else:
+    return move_str[0] + str(20 - int(move_str[1:]))

@@ -1,5 +1,5 @@
 import torch
-from lib.utilities import config, product
+from ..utilities import config, product
 
 from torch.nn import (
 	Module,

@@ -13,7 +13,7 @@ def get_move_options(curr_state, xIsNext):
 
   curr_state: state tensor of shape (num_channels, rows, cols)
 
-  device: a torch.device where the output will be mapped
+  xIsNext: who is to play next
 
   Outputs
   -------
@@ -29,8 +29,8 @@ def get_move_options(curr_state, xIsNext):
   if not xIsNext:
     curr_state = torch.flip(curr_state, [-1])
 
-  # Compute the placements
-  placements, move_strs = get_placements(curr_state, device)
+  # Compute the placementss
+  placements, move_strs = get_placements(curr_state)
 
   # Compute the jumps
   jumps = get_jumps(curr_state, MAX_JUMPS)
@@ -45,22 +45,25 @@ def get_move_options(curr_state, xIsNext):
   elif (
     len(jumps) == 1 and
     jumps[0][CHAIN][END_LOC].col in [config.cols, config.cols-1]):
-    return [jumps[0][0]], [jumps[0][CHAIN]]
+    state = jumps[0][0]
+    state = torch.tensor(state, dtype = torch.bool).unsqueeze(0)
+    state = torch.flip(state, [-1])
+    return state, [jumps[0][CHAIN]]
   
   # Regular jump evaluation
   else:
     # Retain only the final state
-    jumps = [jump_data[0] for jump_data in jumps]
-    jumps = torch.tensor(jumps, dtype = torch.bool, device = device)
-    moves = torch.cat([placements, jumps])
+    jump_boards = [jump_data[0] for jump_data in jumps]
+    jump_boards = torch.tensor(jump_boards, dtype = torch.bool)
+    moves = torch.cat([placements, jump_boards])
     
   # Turn the board around to represent the opponent's view
   moves = torch.flip(moves, [-1])
 
-  return False, moves, move_strs + [jump_data[CHAIN] for jump_data in jumps]
+  return moves, move_strs + [jump_data[CHAIN] for jump_data in jumps]
   
 
-def batch_eval(model, data, batch_size):
+def batch_eval(model, moves, batch_size):
    # Batch the moves
   batches = torch.split(moves, batch_size)
   

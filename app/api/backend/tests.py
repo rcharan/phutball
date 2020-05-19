@@ -171,7 +171,7 @@ class GameSerializerTests(TestCase):
       'game_id'       : game.game_id, 
       'player_0_name' : 'Player 1',
       'player_1_name' : 'Player 2',
-      'ai_player'     : False,
+      'ai_player'     : None,
       'ai_player_num' : False,
       'history'       : [{'move_str' : 'Reset'      , 'board' : initial_board},
                          {'move_str' : next_move_str, 'board' : next_board   }],
@@ -247,18 +247,15 @@ from .bots.bots      import bots
 from .bots.utilities import config
 from .bots.player import Player
 from .game_logic.location_state import empty, player, ball
+from .bots.utilities import (
+  flat_index,
+  index,
+  str_rep,
+  str_assign,
+  place
+)
 
-base_array = empty * config.rows * config.cols
-def flat_index(str_rep):
-  return config.letters.index(str_rep[0]) * config.cols + int(str_rep[1:]) - 1
-
-def str_rep(flat_index):
-  return config.letters[flat_index // config.cols] + str(flat_index % config.cols + 1)
-
-def place(piece, str_rep, board):
-  out = board
-  out[flat_index(str_rep)] = piece
-  return out
+base_array = empty.value * config.rows * config.cols
 
 class BotTests(TestCase):
 
@@ -272,17 +269,115 @@ class BotTests(TestCase):
 
   def test_place(self):
     emptiness = ' ' * (config.rows * config.cols // 2)
-    self.assertEqual(emptiness + 'O' + emptiness, place(ball, 'H10', base_array))
+    self.assertEqual(emptiness + ball.value + emptiness, place(ball, 'H10', base_array))
 
-  def test_can_move(self):
+  def test_can_place(self):
     state = place(ball, 'B2', base_array)
 
     for bot in bots.values():
       for move_num in [1,2]:
         # Bot cannot jump, there are no legal jumps
-        space_array, move_str = bot.make_move(state, move_num)
+        space_array, ball_loc, move_str = bot.make_move(state, move_num)
 
         old_ball_loc = flat_index('B2')
-        self.assertEqual(ball  , space_array[old_ball_loc])
-        self.assertEqual(player, space_array[flat_index(move_str)])
+        self.assertEqual(ball_loc, index(old_ball_loc))
 
+        a = ''.join(space_array)
+        b = place(player, move_str, state)
+
+        self.assertEqual(a, b)
+  
+  def test_can_jump(self):
+    state = place(ball  , 'B2', base_array)
+    state = place(player, 'B3', state)
+
+    for bot in bots.values():
+      for move_num in [1,2]:
+        space_array, ball_loc, move_str = bot.make_move(state, move_num, force_index = -1)
+
+        self.assertEqual(ball_loc, index(flat_index('B4')))
+
+        a = ''.join(space_array)
+        b = place(ball, 'B4', base_array)
+
+        self.assertEqual(a, b)
+
+        self.assertEqual(move_str, '*B4')
+
+  def test_multi_jump(self):
+    state = place(ball  , 'B2', base_array)
+    state = place(player, 'B3', state)
+    state = place(player, 'B5', state)
+
+    for bot in bots.values():
+      for move_num in [1,2]:
+        space_array, ball_loc, move_str = bot.make_move(state, move_num, force_index = -1)
+
+        self.assertEqual(ball_loc, index(flat_index('B6')))
+
+        a = ''.join(space_array)
+        b = place(ball, 'B6', base_array)
+
+        self.assertEqual(a, b)
+
+        self.assertEqual(move_str, '*B4-B6')
+
+  def test_auto_win(self):
+    state_r  = place(ball  , 'A17', base_array)
+    state_r  = place(player, 'A18', state_r)
+    move_num = 1 
+    for bot in bots.values():
+      space_array, ball_loc, move_str = bot.make_move(state_r, move_num)
+
+      self.assertEqual(ball_loc, index(flat_index('A19')))
+
+      a = ''.join(space_array)
+      b = place(ball, 'A19', base_array)
+
+      self.assertEqual(a, b)
+      self.assertEqual(move_str, '*A19')
+
+
+    state_l  = place(ball  , 'A3', base_array)
+    state_l  = place(player, 'A2', state_l)
+    move_num = 2 
+    for bot in bots.values():
+      space_array, ball_loc, move_str = bot.make_move(state_l, move_num)
+
+      self.assertEqual(ball_loc, index(flat_index('A1')))
+
+      a = ''.join(space_array)
+      b = place(ball, 'A1', base_array)
+
+      self.assertEqual(a, b)
+      self.assertEqual(move_str, '*A1')
+
+
+
+  def test_jump_off_board(self):
+    state_r  = place(ball  , 'A18', base_array)
+    state_r  = place(player, 'A19', state_r)
+    move_num = 1 
+    for bot in bots.values():
+      space_array, ball_loc, move_str = bot.make_move(state_r, move_num)
+
+      self.assertEqual(ball_loc, (0, 19))
+
+      a = ''.join(space_array)
+
+      self.assertEqual(a, base_array)
+      self.assertEqual(move_str, '*A20')
+
+
+    state_l  = place(ball  , 'A2', base_array)
+    state_l  = place(player, 'A1', state_l)
+    move_num = 2 
+    for bot in bots.values():
+      space_array, ball_loc, move_str = bot.make_move(state_l, move_num)
+
+      self.assertEqual(ball_loc, (0, -1))
+
+      a = ''.join(space_array)
+
+      self.assertEqual(a, base_array)
+      self.assertEqual(move_str, '*A0')
