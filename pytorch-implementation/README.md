@@ -17,9 +17,9 @@ The reinforcement learning algorithm used focuses on learning an approximate val
 #### Context
 The algorithm is a slight variant on textbook TD(λ) described in [Sutton and Barto](http://incompleteideas.net/book/the-book-2nd.html) (§12.2 in 2ed). In tabular Temporal Difference (TD) learning, a value function <img src="https://render.githubusercontent.com/render/math?math=v"> may be estimated from a policy <img src="https://render.githubusercontent.com/render/math?math=\pi"> by first initializing <img src="https://render.githubusercontent.com/render/math?math=v"> with a random value for each possible state <img src="https://render.githubusercontent.com/render/math?math=S">. Games are played. At time <img src="https://render.githubusercontent.com/render/math?math=t"> the state is <img src="https://render.githubusercontent.com/render/math?math=S_t"> and a move selected by the policy <img src="https://render.githubusercontent.com/render/math?math=\pi"> is made resulting in state <img src="https://render.githubusercontent.com/render/math?math=S_{t+1}">. (I ignore rewards, because in our context there are none). The value function <img src="https://render.githubusercontent.com/render/math?math=v"> is updated so that <img src="https://render.githubusercontent.com/render/math?math=v(S_t)"> is closed to its realized value <img src="https://render.githubusercontent.com/render/math?math=v(S_{t+1})">. In other words, this makes <img src="https://render.githubusercontent.com/render/math?math=v"> consistent with <img src="https://render.githubusercontent.com/render/math?math=\pi">. (<img src="https://render.githubusercontent.com/render/math?math=\pi"> in turn depends on <img src="https://render.githubusercontent.com/render/math?math=v"> in our setup)
 
-The extension to an approximate value function $\hat{v}$ computed by a neural network is immediate, with the updates done by backpropogation.
+The extension to an approximate value function <img src="https://render.githubusercontent.com/render/math?math=\hat{v}"> computed by a neural network is immediate, with the updates done by backpropogation.
 
-In the TD(λ) algorithm, an *elegibility trace* $z_t$ is used. This is essentially momentum in stochastic gradient descent (SGD) but has a different interpretation. Namely, for example, updates should be made to $\hat{v}(S_t)$ based on later states $\hat{v}(S_{t_2})$ because the value of the state $S_t$ should take into account the value farther into the future than just one move. However, when an off-policy move is made, the trace $z_t$ is reset to 0.
+In the TD(λ) algorithm, an *elegibility trace* <img src="https://render.githubusercontent.com/render/math?math=z_t"> is used. This is essentially momentum in stochastic gradient descent (SGD) but has a different interpretation. Namely, for example, updates should be made to <img src="https://render.githubusercontent.com/render/math?math=\hat{v}(S_t)"> based on later states <img src="https://render.githubusercontent.com/render/math?math=\hat{v}(S_{t_2})"> because the value of the state <img src="https://render.githubusercontent.com/render/math?math=S_t"> should take into account the value farther into the future than just one move. However, when an off-policy move is made, the trace <img src="https://render.githubusercontent.com/render/math?math=z_t"> is reset to 0.
 
 For further details about standard TD(λ) consult Sutton and Barto
 
@@ -27,27 +27,27 @@ For further details about standard TD(λ) consult Sutton and Barto
 The unique setup of this game means there is a perfect symmetry between a player and their opponent simply by turning the game around. We can account for this as follows.
 
 Notation:
- - $\hat{v}$ the approximate value function
- - $\nabla\hat{v}$ its derivative with respect to the weights evaluated at the appropriate state $S_t$ and current weights.
- - $\delta_t$ the temporal difference at step $t$.
- - $S_t$ the state at time $t$ (or $t+1$ depending on the subscript etc.)
- - $S_t'$ the state at time $t$ *with the board turned around*
- - $w_t$ the weights of the network at time $t$
- - $z_t$ the trace (i.e. the momentum)
- - $\lambda$ the decay of the trace (making the momentum an exponentially weighted moving average)
- - $\alpha$ the learning rate
+ - <img src="https://render.githubusercontent.com/render/math?math=\hat{v}"> the approximate value function
+ - <img src="https://render.githubusercontent.com/render/math?math=\nabla\hat{v}"> its derivative with respect to the weights evaluated at the appropriate state <img src="https://render.githubusercontent.com/render/math?math=S_t"> and current weights.
+ - <img src="https://render.githubusercontent.com/render/math?math=\delta_t"> the temporal difference at step <img src="https://render.githubusercontent.com/render/math?math=t">.
+ - <img src="https://render.githubusercontent.com/render/math?math=S_t"> the state at time <img src="https://render.githubusercontent.com/render/math?math=t"> (or <img src="https://render.githubusercontent.com/render/math?math=t+1"> depending on the subscript etc.)
+ - <img src="https://render.githubusercontent.com/render/math?math=S_t'"> the state at time <img src="https://render.githubusercontent.com/render/math?math=t"> *with the board turned around*
+ - <img src="https://render.githubusercontent.com/render/math?math=w_t"> the weights of the network at time <img src="https://render.githubusercontent.com/render/math?math=t">
+ - <img src="https://render.githubusercontent.com/render/math?math=z_t"> the trace (i.e. the momentum)
+ - <img src="https://render.githubusercontent.com/render/math?math=\lambda"> the decay of the trace (making the momentum an exponentially weighted moving average)
+ - <img src="https://render.githubusercontent.com/render/math?math=\alpha"> the learning rate
 
-The core of the training algorithm consists of looping through the following at time $t$:
-1. Evaluate $S_{t+1}'$ = argmin $\hat{v}(S_{t+1}', w_t)$
-2. Compute $\delta_t = 0 + (1 - \hat{v}(S_{t+1}', w_t)) - \hat{v}(S_t, w_t)$
-3. Update $w_{t+1} = w_t + \alpha\delta_t z_t$
-4. Update $z_t = -\lambda z_{t-1} + \nabla\hat{v}(S_{t+1}, w_t)
-5. $S_{t+1} = S_{t+1}'$
+The core of the training algorithm consists of looping through the following at time <img src="https://render.githubusercontent.com/render/math?math=t">:
+1. Evaluate <img src="https://render.githubusercontent.com/render/math?math=S_{t+1}'"> = argmin <img src="https://render.githubusercontent.com/render/math?math=\hat{v}(S_{t+1}', w_t)">
+2. Compute <img src="https://render.githubusercontent.com/render/math?math=\delta_t = 0 + (1 - \hat{v}(S_{t+1}', w_t)) - \hat{v}(S_t, w_t)">
+3. Update <img src="https://render.githubusercontent.com/render/math?math=w_{t+1} = w_t + \alpha\delta_t z_t">
+4. Update <img src="https://render.githubusercontent.com/render/math?math=z_t = -\lambda z_{t-1} + \nabla\hat{v}(S_{t+1}, w_t)">
+5. <img src="https://render.githubusercontent.com/render/math?math=S_{t+1} = S_{t+1}'">
 
-Note carefully the difference between $S$ the board state as viewed by the bot and $S'$ the board state viewed by its opponent. Notice also the crucial minus sign in updating the trace. Because the bot will play as its own opponent next, if it overestimated the value $v(S_t)$, it will next appear as an *underestimate* to the opponent, and so the gradient needs to be reversed.
+Note carefully the difference between <img src="https://render.githubusercontent.com/render/math?math=S"> the board state as viewed by the bot and <img src="https://render.githubusercontent.com/render/math?math=S'"> the board state viewed by its opponent. Notice also the crucial minus sign in updating the trace. Because the bot will play as its own opponent next, if it overestimated the value <img src="https://render.githubusercontent.com/render/math?math=v(S_t)">, it will next appear as an *underestimate* to the opponent, and so the gradient needs to be reversed.
 
 #### Training Algorithm Details
-Training was done with an $\epsilon$-greedy algorithm for off-policy moves. After an off-policy move, the trace has to be reset. For details about hyperparemeters used in various versions of the models' training, consult the training notes in `model-training.ipynb`.
+Training was done with an <img src="https://render.githubusercontent.com/render/math?math=\epsilon">-greedy algorithm for off-policy moves. After an off-policy move, the trace has to be reset. For details about hyperparemeters used in various versions of the models' training, consult the training notes in `model-training.ipynb`.
 
 ## Setup
 
