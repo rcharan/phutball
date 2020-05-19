@@ -404,7 +404,7 @@ class Game extends React.Component {
 		}
 
 		var gameLink = null
-		if (this.gameType === 'ai') {
+		if (this.gameType === 'live') {
 			gameLink = (
 				<div key="link">
 				<br/>
