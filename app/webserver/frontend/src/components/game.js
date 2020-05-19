@@ -65,20 +65,20 @@ class Game extends React.Component {
 		if (this.state.board.gameOver) {
 			return false
 		} else if (this.props.localPlayer === null) {
-			return !this.isAiTurn()
+			return !this.isAITurn
 		} else if ((!this.props.localPlayer &&  this.state.xIsNext) ||
-				  ( this.props.localPlayer && !this.state.xIsNext)) {
+				  (  this.props.localPlayer && !this.state.xIsNext)) {
 			return true
 		} else {
 			return false
 		}
 	}
 
-	get isAiTurn() {
+	get isAITurn() {
 		if (this.state.board.gameOver || this.state.aiPlayer === null) {
 			return false
-		} else if ((!this.props.aiPlayerNum &&  this.state.xIsNext) ||
-				    (this.props.aiPlayerNum && !this.state.xIsNext)) {
+		} else if ((!this.state.aiPlayerNum &&  this.state.xIsNext) ||
+				    (this.state.aiPlayerNum && !this.state.xIsNext)) {
 		   	return true
 	    } else {
 	    	return false
@@ -238,7 +238,7 @@ class Game extends React.Component {
 	}
 
 	handlePlacement(flatIndex) {
-		if (this.state.board.gameOver || this.isAiTurn) {
+		if (this.state.board.gameOver || this.isAITurn) {
 			return
 		} else {
 			const moveInfo = this.state.board.place(flatIndex);
@@ -247,7 +247,7 @@ class Game extends React.Component {
 	}
 
 	handleJump(jumpObj) {
-		if (this.state.board.gameOver || this.isAiTurn) {
+		if (this.state.board.gameOver || this.isAITurn) {
 			return
 		} else {
 			const moveInfo = this.state.board.jump(jumpObj);
@@ -314,10 +314,10 @@ class Game extends React.Component {
 			)
 
 		// Case 2: you are playing against a bot, and it is the bot's turn
-		} else if (this.gameType === 'ai' && this.isAiTurn) {
+		} else if (this.gameType === 'ai' && this.isAITurn) {
 			out.push(
 				<AI
-					name={this.props.aiPlayer}
+					name={this.state.aiPlayer}
 				/>
 			)
 

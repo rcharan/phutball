@@ -20,14 +20,15 @@ class ConnectionManager extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			focus         : false,
-			dead          : false,
+			focus          : false,
+			dead           : false,
 		}
 
 		this.timerID       = null
 		this.pollFrequency = BASE_POLL_FREQ
 		this.api = new API(this.props.gameID)
 		this.requestIsPending = false // Force async calls to behave synchronously internally
+		this.mounted = false
 
 		this.handleMouseEnter = this.handleMouseEnter.bind(this)
 		this.handleMouseLeave = this.handleMouseLeave.bind(this)
@@ -82,9 +83,12 @@ class ConnectionManager extends React.Component {
 	*
 	**************************************************************************/
 
-	tick() {
+	tick(initialCall) {
 		if (this.requestIsPending) {
 			return 
+		} else if (!this.mounted && (initialCall === undefined || !initialCall)) {
+			this.unsetTimer()
+			return
 		}
 
 		const closeRequest = (() => this.requestIsPending = false)
@@ -194,10 +198,11 @@ class ConnectionManager extends React.Component {
 		this.unsetTimer()
 		if (this.pollFrequency > (BASE_POLL_FREQ*64)) {
 			this.setState({dead : true})
-		} else {
+		} else if (this.mounted) {
 			this.setTimer()
 		}
 	}
+
 
 	setTimer() {
 		this.timerID = setInterval(
@@ -214,10 +219,12 @@ class ConnectionManager extends React.Component {
 	}
 
 	componentDidMount() {
-		this.tick()
+		this.mounted = true
+		this.tick(true)
 	}
 
 	componentWillUnmount() {
+		this.mounted = false
 		this.unsetTimer()
 	}
 

@@ -1,8 +1,9 @@
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from .models import Game
+from .models import Game, Move
 from .serializers import MoveSerializer
+from .bots.bots import bots
 
 # Testable behaviours:
 #  - reject connection for non-existent game
@@ -33,9 +34,7 @@ class LiveConsumer(WebsocketConsumer):
         )
 
     def receive(self, text_data):
-        print('Received a message')
         move_data = json.loads(text_data)
-        print(move_data)
 
         #  write to the database
         serializer = MoveSerializer(data = move_data)
@@ -73,16 +72,56 @@ class AIConsumer(WebsocketConsumer):
         self.game_id    = self.scope['url_route']['kwargs']['game_id']
 
         try:
-            self.game = Game.objects.get(pk = game_id)
-        except game.DoesNotExist as e:
+            self.game = Game.objects.get(pk = self.game_id)
+        except Game.DoesNotExist as e:
             raise channels.exceptions.DenyConnection from e
 
-        # TO DO: Load the bot
+        bot_name = self.game.ai_player
+        if bot_name not in bots:
+            raise channels.exceptions.DenyConnection
+
+        self.bot = bots[bot_name]
 
         self.accept()
 
-    def receive(self, json_string):
-        move_data = json.loads(move_data)
+        curr_move_num = len(self.game.get_history())
+        o_is_next     = (curr_move_num % 2 == 0)
+
+        if self.game.ai_player_num == o_is_next:
+            self.do_bot_move()
+
+    def do_bot_move(self, prev_move = None):
+        if prev_move is None:
+            prev_move = self.game.get_history()
+            prev_move = prev_move[len(prev_move) - 1]
+            prev_move = MoveSerializer(prev_move)
+
+        move_num    = prev_move.data['move_num'] + 1
+        board_state = prev_move.data['space_array']
+
+        board_state, ball_loc, move_str = self.bot.make_move(board_state, move_num)
+
+        move = Move.objects.create(
+            board_state = board_state,
+            move_num    = move_num,
+            move_str    = move_str,
+            game_id     = self.game,
+            ball_loc_number_index = ball_loc.col,
+            ball_loc_letter_index = ball_loc.row
+        )
+        move.save()
+
+        serializer = MoveSerializer(move)
+        move_data  = serializer.data
+
+        self.send(text_data = json.dumps({
+            'success'  : True,
+            'move_type': 'ai',
+            'move_data': move_data
+        }))
+
+    def receive(self, text_data):
+        move_data = json.loads(text_data)
 
         # Handle the player move and write to the database
         serializer = MoveSerializer(data = move_data)
@@ -91,7 +130,8 @@ class AIConsumer(WebsocketConsumer):
             serializer.save()
             self.send(text_data = json.dumps({
                 'success'   : True,
-                'move_type' : 'player'
+                'move_type' : 'player',
+                'move_data' : move_data
             }))
 
         else:
@@ -101,11 +141,5 @@ class AIConsumer(WebsocketConsumer):
             }))
             return
 
-        # TO DO: Get the Bot's Move
+        self.do_bot_move(serializer)
 
-
-        self.send(text_data = json.dumps({
-            'success'  : True,
-            'move_type': 'ai',
-            'move_data': move_data
-        }))

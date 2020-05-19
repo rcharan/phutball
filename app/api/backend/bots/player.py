@@ -7,7 +7,7 @@ from .utilities import (
 	PLAYER_CHANNEL,
 	BALL_CHANNEL,
 )
-from .moves.abstractions import reverse_move_str
+from .moves.abstractions import reverse_move_str, Index
 
 
 class Player:
@@ -92,7 +92,7 @@ def tensor_to_space_array(tensor):
 	balls   = arr[BALL_CHANNEL]
 
 	try:
-		ball_loc = tuple(np.argwhere(balls)[0])
+		ball_loc = Index(*np.argwhere(balls)[0])
 	except IndexError:
 		ball_loc = None
 
@@ -103,6 +103,6 @@ def tensor_to_space_array(tensor):
 		elif ball_bool:
 			space_array[i] = ball.value
 
-	return space_array, ball_loc
+	return ''.join(space_array), ball_loc
 
 

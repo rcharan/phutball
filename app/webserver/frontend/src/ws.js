@@ -28,10 +28,11 @@ export default class LiveConnectionManager extends React.Component {
 		this.handleMouseEnter = this.handleMouseEnter.bind(this)
 		this.handleMouseLeave = this.handleMouseLeave.bind(this)
 
-		this.newWebSocket()		
+		console.log('constructing')
 	}
 
 	newWebSocket() {
+		console.log('new socket')
 		if (this.props.gameType === 'live') {
 			this.ws = new WebSocket(WS_URL_LIVE + '/' + this.props.gameID)
 		} else if (this.props.gameType === 'ai') {
@@ -41,22 +42,22 @@ export default class LiveConnectionManager extends React.Component {
 		}
 	}
 
-	load() {
-		if (this.props.status === 'waiting') {
-			const gameData = this.api.getGame()
+	// load() {
+	// 	if (this.props.status === 'waiting') {
+	// 		const gameData = this.api.getGame()
 
-			gameData.then(
-				result => {
-					this.props.loadOnline(result)
-					this.setup()
-				}
-			).catch(
-				error  => {
-					this.die()
-				}
-			)	
-		}
-	}
+	// 		gameData.then(
+	// 			result => {
+	// 				this.props.loadOnline(result)
+	// 				this.setup()
+	// 			}
+	// 		).catch(
+	// 			error  => {
+	// 				this.die()
+	// 			}
+	// 		)	
+	// 	}
+	// }
 
 	die() {
 		this.props.goDead()	
@@ -64,6 +65,8 @@ export default class LiveConnectionManager extends React.Component {
 	}
 
 	setup() {
+		this.newWebSocket()		
+
 		this.ws.onopen = () => {
 			this.props.goOnline()
 		}
@@ -93,7 +96,7 @@ export default class LiveConnectionManager extends React.Component {
 	}
 
 	componentDidMount() {
-		this.load()	
+		this.setup()
 	}
 
 	componentDidUpdate() {
