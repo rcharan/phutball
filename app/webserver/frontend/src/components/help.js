@@ -18,7 +18,7 @@ class HelpI extends React.Component {
 		if (this.state.focus) {
 			return (
 				<div className = "float" key="1">
-					<h1>Help I</h1>
+					<h1>Guide: how to play</h1>
 						<ol>
 							<li key="2">(Placement)
 								To place a piece, click on the space.
@@ -41,36 +41,25 @@ class HelpI extends React.Component {
 										with the redundant parts of the branch greyed out.
 									</li>
 									<li key="4"> All legal jumps are listed in the menu. If you can't find a jump,
-									try scrolling down in the jumps section! If you really think your jump is missing,
-									please submit a bug report on github (link in the About section of the homepage). (But, hint: it&rsquo;s not missing)
+									try scrolling down in the jumps section!
 									</li>
 								</ul>
 							</li>
 							<li key="3">
-								(History/Undo) To undo a move, go to the history menu and click on 
-								the move before it. Or click Reset to go to the beginning of the game.
+								(History/Undo)  To view an earlier position, click on a move in the history 
+								menu to see the board after that move was made. To undo a move, view an earlier
+								position then make a new move.
 								<ul>
-									<li key="1">
-										Even if you go back, the full history of the game will continue to
-										display. If you make a new move after going back to a previous state,
-										the history will update to represent the new history-branch.
-									</li>
-									<li key="2">
-										If your internet connection and the server are working properly,
-										all moves are logged, including abandoned branches. All logging is anonymous
-										and will be used to train an AI player.
-									</li>
-									<li key="4"> If your internet connection or the server are broken, the game
-										will work fine, but moves will not be logged.
-									</li>
-									<li key="3">
-										If you abandon a history-branch by going back and making a new move (even by repeating
-										what would have been the next move), you cannot see the previous branch. If you had
-										and epic game and would like it back, the data exists but will have to be recovered manually.
-										Contact me if you feel so strongly. (See the about section of the home page).
-									</li>
 									<li key="5">
 										If you can't see your latest move, try scrolling in the history section.
+									</li>
+									<li key="1">
+										Undo is only available in local play with two humans on the same computer. Otherwise,
+										all you can do is view past positions.
+									</li>
+									<li key="3">
+										When you undo a move by making a new move from an earlier position, the undone moves
+										are no longer displayed.
 									</li>
 								</ul>
 							</li>
@@ -91,7 +80,7 @@ class HelpI extends React.Component {
 					onMouseLeave={() => this.handleMouseLeave()}
 					key="3"
 				>
-				Help I
+				Guide
 				</button>,
 				this.renderHelp()]}
 			</div>
@@ -119,25 +108,16 @@ class HelpII extends React.Component {
 		if (this.state.focus) {
 			return (
 				<div className = "float" key="1">
-					<h1>Help II </h1>
+					<h1>Game Modes</h1>
 						<ol>
-						<li key="4"> (Resuming Games; Security) There is no authentication. Anyone with access
-							  to your game ID, contained in your URL, can access your game and impersonate any player.
-							  Conversely, you can resume a game at any time by navigating to the URL from your
-							  browser history. Note: there is no user data (valuable or otherwise) server-side &ndash; please 
-							  don't abuse this.
+							<li key="1"> (Local or AI) If you are playing with another human on the same computer (local mode) or against a bot, you can resume
+							your game at any time by navigating to the game page in your browser history. The URL will look like
+							<a href="http://philosophers.football/game/ABC123">http://philosophers.football/game/ABC123</a>.
 							</li>
-								<ul><li>If there was an issue logging any moves, the game will restore to 
-									the latest state with a continuous history of logged-moves available.
-									</li>
-								</ul>
-							<li key="5"> (Playing Remotely) Noting the previous point, it is possible to play remotely by sending your
-							game&rsquo;s URL to your opponent. You will have to refresh the page to see your opponent's moves.
-							</li>
-							<li key="7"> (Support) This game is only supported for Chrome for desktop. But 
-							(desktop versions) of Safari and Firefox should work as well.</li>
-							<li key="6"> (Bug Reports) please submit on github (link in the About section of the home page).
-							</li>
+							<li key="2"> (Online Remote) If you are playing against another human online from different computers, you will need
+							to send them the Game Link at the right. They should choose X or O depending on who they are playin as.
+							You can resume the game from that link at any time.</li>
+							<li key="7"> (Mobile) This game doesn't work on mobile. If you are having any issues, try using Chrome for desktop. </li>
 						</ol>
 				</div>
 			)
@@ -155,7 +135,7 @@ class HelpII extends React.Component {
 					onMouseLeave={() => this.handleMouseLeave()}
 					key="42"
 				>
-				Help II
+				Modes
 				</button>,
 				this.renderHelp()]}
 			</div>

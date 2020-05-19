@@ -96,6 +96,27 @@
 
 .lander .page#play #creator {
   text-align: center;
+  margin-top: 3em;
+  margin-bottom: 4em;
+}
+
+.lander .page#play .content > .subsub {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: -15px;
+}
+
+.lander .page#play .content h2 {
+  text-decoration: underline;
+}
+
+.lander .page#play li {
+  padding: 5px;
+}
+
+.lander .page#play p {
+  margin:0;
+  padding:0;
 }
 
 .lander .page#play #creator input {

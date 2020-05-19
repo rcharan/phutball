@@ -49,6 +49,15 @@ class PlayerSelector extends React.Component {
 				<button className="playerSelector" onClick={() => this.handleClick('O')}>
 					<div className="playertype">O's</div><div className="playerName">{this.state.player1Name}</div>
 				</button>
+				<br/>
+				<div className = "invite">
+				<div className = "no-select">
+					Invite your opponent to play at: 
+				</div>
+				<div className = "game-link">
+					{`philosophers.football/live/${this.state.gameID}`}
+				</div>
+				</div>
 				</div>
 			)
 		}

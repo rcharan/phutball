@@ -14,42 +14,56 @@ export default class Play extends React.Component {
         <div id="sub" className="subtitle" key="a">
           Version {version} ({releaseDate})
         </div>
+        <div key="7" className="subsub">
+          philosophers.football can be played in 3 modes: local, remote/online, or AI.
+        </div>
         <div id="content" className="text" key="b">
-          <p id="1">
-          philosophers.football currently only supports playing against another
-          real-life person on the same computer. However, see below for workarounds.</p>
-           <div id="creator" className="creator" key="c">
-            Enter the players' names:
+          <div id="creator" className="creator" key="c">
+            Choose your player type and enter your names
             <GameCreator/>
           </div>
-          Some things to keep in mind:
+          <p key="1">
+            <h2>Game Modes</h2>
+            <ul>
+              <li key="1"> (<b>Local</b>) Play against another human on the same computer. Just type in
+              your names and click the "Play" button.</li>
+              <li key="2"> (<b>Remote</b>) Play against another human on different computers. One of you should
+              type in your names and click the "Play Remote" button. You will get a link to
+              share with your opponent.
+              </li>
+              <li key="3"> (<b>AI</b>) Play against a bot! Select one of the players to a bot using the
+              dropdown menu below, then type in your name and click the "Play" button!
+                <ul>
+                  <li> <b>RandoTron.</b> Weighing in at 200 kilos and as featured in Rick and Morty Season
+                  4, <a href="https://www.youtube.com/watch?v=wezE6RLlcDA">RandoTron</a> is a master
+                  of the heist and will steal victory from the jaws of defeat. Also RandoTron plays
+                  completly randomly.</li>
+                  <li> <b>T.D. Conway.</b> Weighing in a 4,381,505 floating points, T.D. Conway is a nascent
+                  artificial intelligence with a 17-layer convolutional neural network for a brain. However,
+                  T.D. Conway hasn't played many games yet, and currently has the intelligence of a small
+                  child. Come back later to see how much he improves with intensive Temporal Difference training
+                  and check out his sweet eligibility trace.</li>
+                </ul>
+              </li>
+            </ul>
+          </p>
+          <p key="2">
+          <h2>Some things to keep in mind</h2>
           <ul>
-            <li key="3">
-          Future versions will include bots you can play against! (This workaround is called &ldquo;waiting&rdquo;).
-            </li>
-          <li key="2a">
-            If you want to play against another real-life person who will use a
-            different computer, you can start a game and send them the URL, which
-            contains the unique game ID. Each of you will have to refresh the page 
-            to see new moves.
-          </li>
             <li key="1"> There is no authentication &ndash; nothing stops a
               third party with your (hard to guess) Game ID from interfering in your
               game by impersonating you or stops your opponent from playing
-              as you. However, you can always and easily undo moves.
+              as you.
               </li>
-              {/*<li key="3">Note: The Game IDs are sufficiently unique
-              that an attacker is unlikely to guess yours; hence the 
-              philosophers.football equivalent of Zoom-bombing is unlikely.</li>*/}
               <li key="4">
                 Looking to resume a previous game? All games are saved if
                 your internet was working! Just find a URL like philosophers.football/game/ABC123 in your browser history.
+                For live games, look for philosphers.football/live/ABC123. (Leave off the /X or /O ending though)
               </li>
-              <li key="5">
-                Can't find your game, or accidentally lost access to the move history to an epic match by going back in the history
-                and starting a new branch? Contact me (see the About section) to get your data back.
-              </li>
+              <li key="5"> Live games are untimed</li>
+              <li key="6"> Live games and AI games don't allow you to undo a move! So move carefully</li>
             </ul>
+          </p>
         </div>
       </div>
       </span>
@@ -171,8 +185,8 @@ class GameCreator extends React.Component {
         <div>
         <br/>
         <div className="fail"> 
-          Issue setting up the game. You can try again or play with two humans
-          locally on your computer though!
+          {/*Issue setting up the game. You can try again or play with two humans
+          locally on your computer though!*/}
         </div>
         </div>
       ) 

@@ -259,7 +259,8 @@
   cursor: pointer; 
 }
 
-.game .help-section .no-select {
+.game .help-section .no-select,
+.loader .invite .no-select {
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
@@ -268,7 +269,13 @@
   margin-right: 0.7em;
 }
 
-.game .help-section .game-link {
+.loader .invite {
+  margin-top: -10vh;
+  font-size: 20px;
+}
+
+.game .help-section .game-link,
+.loader .invite .game-link {
   text-decoration: underline;
   cursor: text;
   display: inline;
@@ -287,6 +294,9 @@
 .game .help-section button {
   padding: 0;
   height: 25px;
+  width: 60px;
+  margin-left: -10px;
+  margin-right: -10px;
 }
 
 
@@ -351,7 +361,8 @@ conceptual the z-index properly */
   height: 35px;
   stroke-width: 2px;
   margin-bottom: -10px;
-  margin-right: -10px;
+  margin-right: -5px;
+  marign-left: -5px;
   bottom: 0px;
 }
 
