@@ -17,6 +17,7 @@ services:
     command: sh entrypoint.sh
     depends_on:
       - db
+      - redis
 
   nginx:
     build:
@@ -26,6 +27,11 @@ services:
       - 80:8080
     depends_on:
       - api
+
+  redis:
+    image: redis:5
+    ports:
+      - 6379:6379
 
 volumes:
   pgdata:
