@@ -259,6 +259,21 @@
   cursor: pointer; 
 }
 
+.game .help-section .no-select {
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+  display: inline;
+  margin-right: 0.7em;
+}
+
+.game .help-section .game-link {
+  text-decoration: underline;
+  cursor: text;
+  display: inline;
+}
+
 .game .nextplayer {
   padding-bottom: 1em;
   margin-bottom : 0;

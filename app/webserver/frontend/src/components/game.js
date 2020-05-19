@@ -403,11 +403,26 @@ class Game extends React.Component {
 
 		}
 
+		var gameLink = null
+		if (this.gameType === 'ai') {
+			gameLink = (
+				<div key="link">
+				<br/>
+				<div className = "no-select">
+					Game Link:
+				</div>
+				<div className = "game-link">
+					{`philosophers.football/live/${this.state.gameID}`}
+				</div>
+				</div>
+			)
+		}
+
 
 		return (
 			<div key="help" className="help-section">
 				<BackButton/> <Rules/> <HelpI/> <HelpII/>
-				{connectionManager}	
+				{connectionManager} {gameLink}
 			</div>
 		)
 	}
