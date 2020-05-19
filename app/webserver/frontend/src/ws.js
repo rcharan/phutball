@@ -42,22 +42,23 @@ export default class LiveConnectionManager extends React.Component {
 		}
 	}
 
-	// load() {
-	// 	if (this.props.status === 'waiting') {
-	// 		const gameData = this.api.getGame()
+	load() {
+		if (this.props.status === 'waiting') {
+			const gameData = this.api.getGame()
 
-	// 		gameData.then(
-	// 			result => {
-	// 				this.props.loadOnline(result)
-	// 				this.setup()
-	// 			}
-	// 		).catch(
-	// 			error  => {
-	// 				this.die()
-	// 			}
-	// 		)	
-	// 	}
-	// }
+			gameData.then(
+				result => {
+					this.props.loadOnline(result)
+					this.setup()
+				}
+			).catch(
+				error  => {
+					this.die()
+				}
+			)	
+		}
+	}
+
 
 	die() {
 		this.props.goDead()	
@@ -96,7 +97,7 @@ export default class LiveConnectionManager extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setup()
+		this.load()
 	}
 
 	componentDidUpdate() {
