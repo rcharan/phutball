@@ -55,7 +55,7 @@ class PlayerSelector extends React.Component {
 					Invite your opponent to play at: 
 				</div>
 				<div className = "game-link">
-					{`philosophers.football/live/${this.state.gameID}`}
+					{`http://philosophers.football/live/${this.state.gameID}`}
 				</div>
 				</div>
 				</div>

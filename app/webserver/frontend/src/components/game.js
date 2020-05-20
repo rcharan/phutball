@@ -412,7 +412,7 @@ class Game extends React.Component {
 					Game Link:
 				</div>
 				<div className = "game-link">
-					{`philosophers.football/live/${this.state.gameID}`}
+					{`http://philosophers.football/live/${this.state.gameID}`}
 				</div>
 				</div>
 			)
