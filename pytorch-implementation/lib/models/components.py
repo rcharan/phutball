@@ -68,3 +68,39 @@ class ResidualConvStack(Module):
       signal = self.activation(signal)
       
     return signal
+
+class ConvStack(Module):
+
+  def __init__(self, kernel_size, conv_depth, num_layers, initial_depth = None, activation = SELU):
+    '''Convolution Stack with Residual Structure.
+    
+    Inputs
+    ------
+    
+    kernel_size    : as in Conv2d
+    conv_depth     : output depth
+    layer_strucutre: list of ints. The first int represents the number of convolutions
+                     to apply initially. After that, each int represents a number of
+                     convolutions to apply before adding the residual from the previous
+                     state. The default [1,2] does 1 convolution to output "x" and then 
+                     does two convolutions and adds x
+    initial_depth  : depth of the first input (defaults to conv_depth)
+    activation     : class for activation
+    
+    '''
+    super(ConvStack, self).__init__()
+    
+    if initial_depth is None:
+      initial_depth = conv_depth
+    
+    self.convs = Sequential()
+    self.convs.append('conv_1', Conv2d(initial_depth, conv_depth, kernel_size, padding = kernel_size // 2))
+    
+    for i in range(num_layers - 1):
+      self.convs.add_module(f'activation_{i+1}', activation())
+      self.convs.add_module(f'conv_{i+1}'      , Conv2d(conv_depth, conv_depth, kernel_size, padding = kernel_size // 2))
+    
+
+  def forward(self, signal):
+
+    return self.convs(signal)
