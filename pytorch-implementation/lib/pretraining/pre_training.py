@@ -58,5 +58,5 @@ def pre_train(model, optimizer, loops = 10000, batch_size = 300, seed = None):
     loss.backward()
     optimizer.step()
 
-    bar.add(1, values = ('loss', loss.item()))
+    bar.add(1, values = [('loss', loss.item())])
 
