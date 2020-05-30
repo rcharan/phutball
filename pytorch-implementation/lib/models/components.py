@@ -94,11 +94,11 @@ class ConvStack(Module):
       initial_depth = conv_depth
     
     self.convs = Sequential()
-    self.convs.append('conv_1', Conv2d(initial_depth, conv_depth, kernel_size, padding = kernel_size // 2))
+    self.convs.add_module('conv_1', Conv2d(initial_depth, conv_depth, kernel_size, padding = kernel_size // 2))
     
     for i in range(num_layers - 1):
       self.convs.add_module(f'activation_{i+1}', activation())
-      self.convs.add_module(f'conv_{i+1}'      , Conv2d(conv_depth, conv_depth, kernel_size, padding = kernel_size // 2))
+      self.convs.add_module(f'conv_{i+2}'      , Conv2d(conv_depth, conv_depth, kernel_size, padding = kernel_size // 2))
     
 
   def forward(self, signal):

@@ -16,7 +16,7 @@ from torch.nn import (
 
 import torch.nn.functional as F
 
-from .models.components import ResidualConvStack
+from .models.components import ConvStack
 
 class TDConway(Module):
   
