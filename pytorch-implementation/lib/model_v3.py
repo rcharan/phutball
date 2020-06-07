@@ -55,7 +55,7 @@ class TDConway(Module):
     signal = self.stack_2(signal)
     signal = self.fc(signal)
     
-    values = signal.squeeze()
+    values = signal.squeeze(dim = -1)
         
     if get_all_values:
       return values
