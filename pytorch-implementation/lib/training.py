@@ -1,7 +1,7 @@
 # Tensorflow solely for the Progress Bar (totally worth it)
 from tensorflow.keras.utils import Progbar
 
-from .testing_utilities import create_state
+from .testing_utilities import create_state, random_board
 from .move_selection import get_next_move_training
 
 class ProgressBar:
@@ -52,10 +52,15 @@ class ProgressBar:
     if self.verbose:
       self._bar.update(self._move_num)
 
-def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : None, verbose = 1):
+def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : None, verbose = 1, initial = None):
   
   bar = ProgressBar(num_games, expandable = False)
-  initial_state = create_state('H10').to(device)
+
+  if initial = None:
+    initial_state = create_state('H10').to(device)
+  else:
+    initial_state = random_board(initial)
+
   for i in range(num_games):
     if verbose >= 2:
       print(f'\nPlaying game {i+1} of {num_games}:')
