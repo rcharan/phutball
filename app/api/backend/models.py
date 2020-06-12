@@ -39,6 +39,9 @@ class Game(Model):
 
     return history
 
+  def game_is_over(self):
+    return list(self.get_history)[-1].game_is_over()
+
   @classmethod
   def new_game(self,
                player_0_name = 'Player 1',
@@ -85,5 +88,8 @@ class Move(Model):
 
   def __repr__(self):
     return f'{self.game_id.game_id} - Move {self.move_num} : {self.move_str}'
+
+  def game_is_over(self):
+    return self.ball_loc_number_index in [0, 1, board_cols - 1, board_cols]
 
 
