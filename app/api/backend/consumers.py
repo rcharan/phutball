@@ -91,6 +91,9 @@ class AIConsumer(WebsocketConsumer):
             self.do_bot_move()
 
     def do_bot_move(self, prev_move = None):
+        if self.game.game_is_over():
+            return
+            
         if prev_move is None:
             prev_move = self.game.get_history()
             prev_move = prev_move[len(prev_move) - 1]
