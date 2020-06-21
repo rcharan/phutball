@@ -17,6 +17,7 @@ from torch.nn import (
 import torch.nn.functional as F
 
 from .models.components import ConvStack
+from .temperature       import stochastic_move
 
 class TDConway(Module):
   
@@ -46,7 +47,7 @@ class TDConway(Module):
       Sigmoid()
     )
     
-  def forward(self, signal, get_all_values = False):
+  def forward(self, signal, get_all_values = False, temperature = None):
     signal = signal.float()
     
 
@@ -59,6 +60,8 @@ class TDConway(Module):
         
     if get_all_values:
       return values
-    else:
+    elif temperature is None or temperature == 0:
       (best_value, best_index) = torch.min(values, 0)
       return best_value, best_index
+    else:
+      return stochastic_move(values, temperature)
