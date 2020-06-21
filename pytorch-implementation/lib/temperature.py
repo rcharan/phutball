@@ -1,4 +1,9 @@
 '''Implements temperature to choose from top k moves'''
+import torch.nn.functional as F
+from torch.distributions.categorical import Categorical
 
-def get_move(move_vals, temp):
-	pass
+def stochastic_move(move_vals, temp):
+  probs = F.softmax(move_vals / temp)
+  dist  = Categorical(probs = probs)
+  index = dist.sample()
+  return move_vals[index], index
