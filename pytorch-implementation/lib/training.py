@@ -9,7 +9,7 @@ def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : N
   
   bar = ProgressBar(num_games, expandable = False)
 
-  if initial = None:
+  if initial is None:
     initial_state = create_state('H10').to(device)
   else:
     initial_state = random_board(initial)
