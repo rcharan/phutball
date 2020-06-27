@@ -12,7 +12,7 @@ def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : N
   if initial is None:
     initial_state = create_state('H10').to(device)
   else:
-    initial_state = random_board(initial)
+    initial_state = random_board(initial).to(device)
 
   for i in range(num_games):
     if verbose >= 2:
