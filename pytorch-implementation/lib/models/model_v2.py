@@ -17,11 +17,13 @@ from torch.nn import (
 import torch.nn.functional as F
 
 from .components import ResidualConvStack
+from .temperature import stochastic_move
 
 class TDConway(Module):
   
-  def __init__(self, config, dropout = 0.2):
+  def __init__(self, config, dropout = 0.2, temperature = None):
     super(TDConway, self).__init__()
+    self.temperature = temperature
     
     self.stack_1 = ResidualConvStack(3, 64, layer_structure = [1,2,2,2], initial_depth = config.num_channels)
 
@@ -59,6 +61,8 @@ class TDConway(Module):
         
     if get_all_values:
       return values
-    else:
+    elif self.temperature is None or temperature == 0:
       (best_value, best_index) = torch.min(values, 0)
       return best_value, best_index
+    else:
+      return stochastic_move(values, self.temperature) 
