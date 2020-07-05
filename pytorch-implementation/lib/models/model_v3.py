@@ -61,7 +61,7 @@ class TDConway(Module):
         
     if get_all_values:
       return values
-    elif self.temperature is None or temperature == 0:
+    elif self.temperature is None or self.temperature == 0:
       (best_value, best_index) = torch.min(values, 0)
       return best_value, best_index
     else:
