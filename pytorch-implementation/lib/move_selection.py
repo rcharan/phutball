@@ -1,5 +1,5 @@
 import torch
-from .moves import get_placements, get_jumps, END_LOC, CHAIN
+from .moves.moves import get_placements, get_jumps, END_LOC, CHAIN
 from .utilities import config
 
 MAX_JUMPS = 300
