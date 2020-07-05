@@ -33,11 +33,6 @@ from .utilities import (
   cartesian_product,
   join
 )
-from .jumps.full_search import (
-  get_jumps,
-  END_LOC,
-  CHAIN
-)
 
 ###############################################################################
 #
