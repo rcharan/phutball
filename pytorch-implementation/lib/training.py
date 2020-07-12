@@ -25,7 +25,7 @@ def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : N
     if verbose >= 2:
       print(f'\nPlaying game {i+1} of {num_games}:')
     elif verbose >= 1:
-      bar.step(values = ('game-length', num_moves))
+      bar.step(values = [('game-length', num_moves)])
 
 def game_loop(initial_state, model, optimizer, device, off_policy, verbose = 2):
   '''Training loop that plays one game'''
