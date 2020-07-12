@@ -10,6 +10,7 @@ from .utilities import (
   BOARD_SHAPE,
   product
 )
+from .training import create_state
 
 plt.ioff()
 sns.set()
