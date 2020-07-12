@@ -3,6 +3,11 @@ from .utilities import ProgressBar
 from .move_selection import get_next_move_training
 import torch
 import numpy as np
+from .utilities import (
+  config,
+  BOARD_SHAPE,
+  product
+)
 
 def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : None, verbose = 1, initial = None):
   
