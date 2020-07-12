@@ -2,7 +2,7 @@ from .move_selection    import get_move_options, batch_eval
 from .testing_utilities import create_state
 from .training          import ProgressBar
 from .utilities         import lmap, join
-from .timer import Timer
+from .utilities import Timer
 from statistics import mean
 from math import sqrt
 
