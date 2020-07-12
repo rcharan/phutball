@@ -21,7 +21,7 @@ import torch
 import numpy as np
 
 from collections import namedtuple
-from .utilities import (
+from ..utilities import (
   BOARD_SHAPE,
   NUM_CHANNELS,
   PLAYER_CHANNEL,
