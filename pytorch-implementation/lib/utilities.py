@@ -78,7 +78,7 @@ class ProgressBar:
   def move_num(self):
     return self._move_num
 
-  def step(self):
+  def step(self, **kwargs):
     self._move_num += 1
 
     curr_target = self._bar.target
@@ -86,7 +86,7 @@ class ProgressBar:
       self._bar.target += curr_target // 10 + 1
     
     if self.verbose:
-      self._bar.update(self._move_num)
+      self._bar.update(self._move_num, **kwargs)
 
   def terminate(self):
     self._move_num += 1
