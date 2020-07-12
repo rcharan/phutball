@@ -19,20 +19,6 @@ class InvalidConfiguration(Exception):
   pass
 
 
-def parseLocation(locStr):
-  '''Turn a string like H10 into a location tuple''' 
-  try:
-    match = re.match(f'([{config.letters}])(\\d+)', locStr)
-  except Exception as e:
-    raise ValueError(f'Bad Location {locStr}') from e
-  if not match:
-    raise ValueError(f'Bad location {locStr}')
-
-  row, col = match.groups()
-  row = config.letters.index(row)
-  col = int(col) - 1
-  
-  return row, col
 
 
 def visualize_state(tensor):

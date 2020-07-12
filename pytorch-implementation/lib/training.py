@@ -101,3 +101,19 @@ def random_board(expected_density, device = torch.device('cpu')):
   ball_layer  [ball_choice] = True
 
   return torch.tensor(np.stack([player_layer, ball_layer]), dtype = torch.bool, device = device)  
+
+
+def parseLocation(locStr):
+  '''Turn a string like H10 into a location tuple''' 
+  try:
+    match = re.match(f'([{config.letters}])(\\d+)', locStr)
+  except Exception as e:
+    raise ValueError(f'Bad Location {locStr}') from e
+  if not match:
+    raise ValueError(f'Bad location {locStr}')
+
+  row, col = match.groups()
+  row = config.letters.index(row)
+  col = int(col) - 1
+  
+  return row, col
