@@ -13,28 +13,32 @@ def training_loop(model, optimizer, num_games, device, off_policy = lambda _ : N
     initial_state = random_board(initial).to(device)
 
   for i in range(num_games):
+    num_moves = game_loop(initial_state, model, optimizer, device, off_policy, verbose)
+
     if verbose >= 2:
       print(f'\nPlaying game {i+1} of {num_games}:')
     elif verbose >= 1:
-      bar.step()
-      
-    game_loop(initial_state, model, optimizer, device, off_policy, verbose)
+      bar.step(values = ('game-length', num_moves))
 
 def game_loop(initial_state, model, optimizer, device, off_policy, verbose = 2):
   '''Training loop that plays one game'''
+
   # Just in case
   optimizer.zero_grad()
   
   # Initialization
-  state    = initial_state
-  score, _ = model(state.unsqueeze(0))
-  v_t      = optimizer.restart(score)
+  state     = initial_state
+  score, _  = model(state.unsqueeze(0))
+  v_t       = optimizer.restart(score)
+  num_moves = 0
   
   # Progress Bar
   if verbose >= 2:
     bar      = ProgressBar(100)
   
   while True:
+
+    num_moves += 1
 
     # Determine the next move
     game_over, moved_off_policy, new_state, score = \
@@ -48,7 +52,7 @@ def game_loop(initial_state, model, optimizer, device, off_policy, verbose = 2):
         # Terminate the progress bar
         bar.terminate()
 
-      break
+      return num_moves
     
     elif moved_off_policy:
       # Equivalent to starting a new game
