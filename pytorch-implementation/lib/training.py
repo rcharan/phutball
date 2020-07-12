@@ -3,6 +3,7 @@ from .utilities import ProgressBar
 from .move_selection import get_next_move_training
 import torch
 import numpy as np
+import re
 from .utilities import (
   config,
   BOARD_SHAPE,
