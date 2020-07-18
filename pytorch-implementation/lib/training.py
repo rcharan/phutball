@@ -92,7 +92,7 @@ def create_state(ballLoc, *playerLocs):
 
 
 def random_board(expected_density, device = torch.device('cpu')):
-  player_layer = np.random.uniform(0, 1, (15, 19)) > expected_density
+  player_layer = np.random.uniform(0, 1, (15, 19)) < expected_density
   ball_layer   = np.zeros((15, 19))
 
   placed_locs  = np.argwhere(player_layer)
