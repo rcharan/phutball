@@ -11,7 +11,7 @@ channels-redis==2.4.2
 constantly==15.1.0
 cryptography==2.9.2
 daphne==2.5.0
-Django==3.0.7
+Django==3.1.12
 django-cors-headers==3.2.1
 djangorestframework==3.11.0
 future==0.18.2
